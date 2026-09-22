@@ -93,3 +93,24 @@ export function categoryPath(locale: string, slug: string): string {
 export function postPath(locale: string, slug: string): string {
   return `${localePrefix(locale)}/news/${slug}`;
 }
+
+/**
+ * A dynamic route parameter, ready to match against a stored slug.
+ *
+ * Slugs are Thai UTF-8 (§14 decision 17), and Thai always reaches the server
+ * percent-encoded, so a route that compares `params.slug` to the database
+ * value directly never matches and returns 404 for every Thai-titled record.
+ *
+ * Decoding an already-decoded slug is a no-op because a stored slug can only
+ * contain Thai, `a-z`, `0-9` and `-` — never `%`. A malformed sequence such as
+ * `%zz` would make `decodeURIComponent` throw, which would surface as a 500;
+ * returning the raw value instead lets the lookup miss and render a normal 404.
+ */
+export function decodeSlugParam(raw: string): string {
+  if (!raw.includes("%")) return raw;
+  try {
+    return decodeURIComponent(raw);
+  } catch {
+    return raw;
+  }
+}

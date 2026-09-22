@@ -1,3 +1,9 @@
+:root {
+  --v-ink: #242320;
+  /* 4.8:1 on the darkest surface it sits on (#eae7df); #716e67 measured
+     4.33-4.42 on the tinted cards and failed WCAG AA for body text. */
+  --v-muted: #67645d;
+  --v-paper: #f6f5f0;
 /* Public gallery. Anuphan and the official seal are shared with the CMS. */
 .v-site {
   --v-ink: #282326;
@@ -383,6 +389,9 @@
   line-height: 1.85;
 }
 .v-marquee.reverse {
+  /* 4.9:1 on the #e8e6dd band; #858579 measured 2.98 at 19px. */
+  color: #656559;
+  font-size: 19px;
   color: #786a6b;
   font-size: 15px;
 }

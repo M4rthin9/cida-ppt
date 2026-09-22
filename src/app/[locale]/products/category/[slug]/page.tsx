@@ -5,6 +5,7 @@ import { listCategories } from "@/lib/vocational/data";
 import { Catalog } from "@/components/vocational/Catalog";
 import type { PublicSearchParams } from "@/components/vocational/catalog-query";
 import { publicMetadata } from "@/lib/seo/metadata";
+import { decodeSlugParam } from "@/lib/slug";
 export const dynamic = "force-dynamic";
 export async function generateMetadata({
   params,
@@ -12,6 +13,8 @@ export async function generateMetadata({
   params: Promise<{ locale: string; slug: string }>;
 }) {
   const { locale, slug } = await params,
+    decoded = decodeSlugParam(slug),
+    c = (await listCategories()).find((c) => c.slug === decoded);
     c = (await listCategories()).find((c) => c.slug === decodeURIComponent(slug));
   if (!c) return {};
   return publicMetadata({
@@ -30,6 +33,8 @@ export default async function Page({
   searchParams: Promise<PublicSearchParams>;
 }) {
   const { slug } = await params,
+    decoded = decodeSlugParam(slug),
+    c = (await listCategories()).find((c) => c.slug === decoded);
     c = (await listCategories()).find((c) => c.slug === decodeURIComponent(slug));
   if (!c) notFound();
   return (
