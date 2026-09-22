@@ -35,7 +35,6 @@ export default async function Page({
 }) {
   const { locale, slug } = await params,
     n = (await listNews({ slug: decodeSlugParam(slug) })).items[0];
-    n = (await listNews({ slug: decodeURIComponent(slug) })).items[0];
   if (!n) notFound();
   const [images, general] = await Promise.all([
     gallery(n.id, "news"),

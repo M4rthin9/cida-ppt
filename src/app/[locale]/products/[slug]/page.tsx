@@ -17,7 +17,6 @@ export async function generateMetadata({
 }) {
   const { locale, slug } = await params,
     p = (await listProducts({ slug: decodeSlugParam(slug), limit: 1 })).items[0];
-    p = (await listProducts({ slug: decodeURIComponent(slug), limit: 1 })).items[0];
   if (!p) return {};
   return publicMetadata({
     locale,
@@ -34,8 +33,6 @@ export default async function Page({
 }) {
   const { locale, slug } = await params,
     p = (await listProducts({ slug: decodeSlugParam(slug), limit: 1 })).items[0];
-    p = (await listProducts({ slug: decodeURIComponent(slug), limit: 1 })).items[0];
-  if (!p) notFound();
   if (!p) notFound();
   const [images, related] = await Promise.all([
     gallery(p.id),

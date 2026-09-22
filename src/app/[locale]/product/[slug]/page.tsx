@@ -8,6 +8,5 @@ export default async function Page({
   const { locale, slug } = await params;
   permanentRedirect(
     `${localePrefix(locale)}/products/${encodeURIComponent(decodeSlugParam(slug))}`,
-    `${localePrefix(locale)}/products/${encodeURIComponent(decodeURIComponent(slug))}`,
   );
 }
