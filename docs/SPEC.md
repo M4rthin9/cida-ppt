@@ -569,7 +569,7 @@ Keep the hero minimal.
 
 Use existing frames located at:
 
-`public/frames_150.zip`
+`public/frames/<set>/` — imported frame sequences, one folder per named set
 
 Frames:
 
@@ -1345,9 +1345,9 @@ Example:
 
 Components:
 
-`components/vocational/VocationalHero.tsx`
+`components/vocational/CinematicHero.tsx`
 
-`components/vocational/ScrollSequence.tsx`
+`components/vocational/ApertureSection.tsx`
 
 `components/vocational/CategoryMarquee.tsx`
 

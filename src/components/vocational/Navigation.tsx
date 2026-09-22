@@ -1,7 +1,7 @@
 "use client";
 import { Link, usePathname } from "@/i18n/navigation";
 import Image from "next/image";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { SiteIcon } from "@/components/site/icons";
 const links = [
   ["/", "หน้าแรก"],
@@ -16,6 +16,17 @@ export function Navigation({ categories }: { categories: { name_th: string; slug
     path = usePathname();
   const productMenu = useRef<HTMLDetailsElement>(null);
   const menuToggle = useRef<HTMLButtonElement>(null);
+  const [scrolled, setScrolled] = useState(false);
+
+  // The bar floats over the opening frame, where it needs to stay light; once
+  // the reader is past it the glass gains weight so the links keep their
+  // contrast over whatever scrolls underneath.
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
   function closeMenus() {
     setOpen(false);
     if (productMenu.current) productMenu.current.open = false;
@@ -26,6 +37,7 @@ export function Navigation({ categories }: { categories: { name_th: string; slug
   return (
     <header
       className="v-header"
+      data-scrolled={scrolled}
       onKeyDown={(event) => {
         if (event.key !== "Escape") return;
         if (productMenu.current?.open) {

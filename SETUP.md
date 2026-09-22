@@ -77,11 +77,16 @@ Editors can manage products, categories, media, news and inquiries. Owners also 
 
 ## Cinematic assets
 
-The cinematic hero is intentionally deferred until the public and CMS structure is finished. The homepage uses the server-rendered `VocationalHero` static introduction, which requires no archive, canvas, frame requests or scroll player JavaScript. Continue building and reviewing the rest of the application without `frames_150.zip`.
+The homepage opens on two scroll-driven stages: `CinematicHero`, whose frame sequence is scrubbed by the scroll, and `ApertureSection`, which opens from its centre line onto a second sequence. Both sequences are optional. With none imported the page renders the designed static composition instead — no canvas, no frame requests, and the same page height either way — so the rest of the application can be built and reviewed without any footage.
 
-For the later hero phase, retain `ScrollSequence` and the frame importer. Place `frames_150.zip` in `public/` and run `pnpm frames:import`; it validates all 150 original PNGs and writes the manifest last. Importing does not activate the animation. Reconnect the player to the homepage only when ready to review the real sequence, including responsive crops, loading, scroll performance and reduced motion. Large frame delivery/storage can later move to a CDN while keeping the player manifest contract.
+Import a sequence from a folder of frames or a ZIP, into either named set:
 
-No real product photos, product inventory or vocational news are invented by the seed. Populate these through the CMS before launch. The hero fallback is explicitly labeled as a conceptual illustration.
+    pnpm frames:import "frames/merged_20s_frames" --set hero
+    pnpm frames:import "frames/clip2_frames" --set reveal
+
+The importer reads every PNG or JPEG in natural order, samples the set down to exactly 150 frames (`--max` takes 8 to 600), checks that every frame decodes and shares one size, copies the original image bytes unmodified under sequential names, and writes `manifest.json` last so a rejected import leaves the previous sequence intact. Starting from a video instead, run `pnpm frames:make` first. Frame delivery can later move to a CDN while keeping the same manifest contract. See [docs/SCROLL-SEQUENCE.md](docs/SCROLL-SEQUENCE.md).
+
+No real product photos, product inventory or vocational news are invented by the seed. Populate these through the CMS before launch. The hero's no-footage fallback is explicitly labeled as a conceptual illustration, and the aperture section falls back to a typographic panel rather than to stock imagery.
 
 ## Backups and recovery
 
