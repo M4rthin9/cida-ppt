@@ -78,13 +78,13 @@ export default async function ContactPage({
         <p>{t("intro")}</p>
       </header>
 
-      <div className="mt-12 grid gap-12 lg:grid-cols-2">
+      <div className="v-contact-layout">
         {/*
          * Phone, address and LINE at the same weight — a public-sector body
          * cannot make a chat app the only way to reach it (§14, raised by the
          * seal). The LINE block is one of the three, not the page's headline.
          */}
-        <section aria-labelledby="contact-channels">
+        <section className="v-contact-channels" aria-labelledby="contact-channels">
           <SectionHeading id="contact-channels">{t("channels")}</SectionHeading>
 
           <dl className="mt-8 divide-y divide-(--color-border) border-y border-(--color-border)">
@@ -156,7 +156,7 @@ export default async function ContactPage({
           )}
         </section>
 
-        <section aria-labelledby="contact-form">
+        <section className="v-contact-form-panel" aria-labelledby="contact-form">
           <SectionHeading id="contact-form">{t("formTitle")}</SectionHeading>
           {product && (
             <aside

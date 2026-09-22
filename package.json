@@ -19,7 +19,8 @@
     "db:generate": "node --env-file-if-exists=.env node_modules/drizzle-kit/bin.cjs generate",
     "db:migrate": "node --env-file-if-exists=.env node_modules/drizzle-kit/bin.cjs migrate",
     "db:push": "node --env-file-if-exists=.env node_modules/drizzle-kit/bin.cjs push",
-    "frames:import": "python3 scripts/import-frames.py",
+    "frames:import": "node scripts/run-python.mjs import-frames.py",
+    "frames:make": "node scripts/run-python.mjs make-frames.py",
     "db:seed": "node --env-file-if-exists=.env --import tsx src/db/seed.ts",
     "admin:create": "node --env-file-if-exists=.env --import tsx scripts/create-admin.ts"
   },

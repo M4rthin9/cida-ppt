@@ -2,6 +2,7 @@
 import { Link, usePathname } from "@/i18n/navigation";
 import Image from "next/image";
 import { useRef, useState } from "react";
+import { SiteIcon } from "@/components/site/icons";
 const links = [
   ["/", "หน้าแรก"],
   ["/products", "ผลิตภัณฑ์"],
@@ -59,7 +60,7 @@ export function Navigation({ categories }: { categories: { name_th: string; slug
           else setOpen(true);
         }}
       >
-        {open ? "ปิดเมนู ✕" : "เมนู ☰"}
+        {open ? "ปิดเมนู" : "เมนู"} <SiteIcon name={open ? "close" : "menu"} />
       </button>
       <nav id="public-navigation" aria-label="เมนูหลัก" className={open ? "open" : ""}>
         {links.map(([href, label]) =>

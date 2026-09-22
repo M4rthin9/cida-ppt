@@ -2,6 +2,14 @@
 
 Implementation verified in isolated test environments, September 2026. Test accounts, products, news and generated frame fixtures are not seeded or committed.
 
+## Visual redesign — 22 September 2026
+
+- Reworked public typography, navigation, collection cards, story sections, catalog filters, empty states, contact panels and footer. The static introduction uses the original labeled conceptual image; cinematic activation remains deferred.
+- Reworked CMS surfaces and the sign-in page around white/cloud panels and burgundy accents. Account creation, authentication, role checks and data mutations are unchanged.
+- Browser inspection covers the complete homepage and catalog at 1440px and 390px, contact at 1440px and 360px, and login at 1440px and 390px. Inspected pages have no horizontal document overflow. Mobile menu opening and Escape dismissal work. Contact validation displays inline errors and burgundy borders without creating an inquiry.
+- The database still has no published products or news. Product cards, galleries and authenticated CMS screens were reviewed against their markup and CSS; this pass does not claim a populated-catalog or authenticated CMS browser test.
+- All **228 tests across 28 files** pass. TypeScript, ESLint and formatting checks pass. Public-route and anonymous-access smoke checks pass, including four category pages, missing-record 404s, protected CMS routes and anonymous media-upload rejection.
+
 ## Structure follow-up — 22 September 2026
 
 The frame archive and cinematic hero are intentionally deferred. The homepage now renders `VocationalHero` without a canvas or frame references; the existing scroll player remains disconnected for the later hero phase.
