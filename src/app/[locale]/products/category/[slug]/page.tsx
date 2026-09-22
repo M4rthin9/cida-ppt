@@ -15,6 +15,7 @@ export async function generateMetadata({
   const { locale, slug } = await params,
     decoded = decodeSlugParam(slug),
     c = (await listCategories()).find((c) => c.slug === decoded);
+    c = (await listCategories()).find((c) => c.slug === decodeURIComponent(slug));
   if (!c) return {};
   return publicMetadata({
     locale,
@@ -34,6 +35,7 @@ export default async function Page({
   const { slug } = await params,
     decoded = decodeSlugParam(slug),
     c = (await listCategories()).find((c) => c.slug === decoded);
+    c = (await listCategories()).find((c) => c.slug === decodeURIComponent(slug));
   if (!c) notFound();
   return (
     <main id="content" className="v-page">

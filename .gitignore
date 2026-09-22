@@ -26,3 +26,4 @@ playwright-report/
 node_modules
 /data/
 /public/frames_150.zip
+/public/frames/*.zip

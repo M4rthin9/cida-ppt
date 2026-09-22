@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import type { Locale } from "@/i18n/routing";
 import { listCategories, listProducts } from "@/lib/vocational/data";
 import { ProductCard } from "./ProductCard";
+import { SiteIcon } from "@/components/site/icons";
 import { Pager } from "./Pager";
 import { catalogHref, catalogQuery, type PublicSearchParams } from "./catalog-query";
 export async function Catalog({
@@ -73,13 +74,16 @@ export async function Catalog({
         {query.category && <input type="hidden" name="category" value={query.category} />}
         <label className="v-search">
           <span>ค้นหาผลงาน</span>
-          <input
-            type="search"
-            name="q"
-            maxLength={160}
-            defaultValue={query.q}
-            placeholder="ชื่อสินค้า รายละเอียด หรือรหัสสินค้า"
-          />
+          <span className="v-search-control">
+            <SiteIcon name="search" />
+            <input
+              type="search"
+              name="q"
+              maxLength={160}
+              defaultValue={query.q}
+              placeholder="ชื่อสินค้า รายละเอียด หรือรหัสสินค้า"
+            />
+          </span>
         </label>
         <label>
           <span>ความพร้อม</span>
@@ -131,6 +135,9 @@ export async function Catalog({
         </div>
       ) : (
         <div className="v-catalog-empty">
+          <div className="v-empty-icon">
+            <SiteIcon name="image" />
+          </div>
           <span>CRAFTED WITH PURPOSE</span>
           <h2>{hasFilters ? "ยังไม่พบผลงานที่ตรงกับตัวกรอง" : "ยังไม่มีผลงานที่เผยแพร่"}</h2>
           <p>
