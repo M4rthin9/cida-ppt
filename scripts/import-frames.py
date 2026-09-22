@@ -5,6 +5,8 @@ import argparse
 import hashlib
 import json
 from pathlib import Path, PurePosixPath
+import shutil
+import subprocess
 import zipfile
 
 from frame_utils import (
@@ -25,6 +27,10 @@ DEFAULT_MAX = 150
 SETS = ("hero", "reveal")
 FILE_LIMIT = 20 * 1024 * 1024
 TOTAL_LIMIT = 900 * 1024 * 1024
+# What a visitor actually downloads. A sequence past this never keeps up with
+# the scroll, so the import stops and says how to bring it down rather than
+# quietly publishing it.
+DELIVERY_BUDGET = 40 * 1024 * 1024
 
 
 def safe_path(name):
@@ -71,6 +77,36 @@ def collect_directory(directory):
     return [(name, found[name].read_bytes()) for name in sorted(found, key=natural_key)]
 
 
+def encode(frames, staged, width, quality):
+    """Hand the sampled frames to sharp, then read back what it wrote."""
+    node = shutil.which("node")
+    if not node:
+        raise ValueError("--encode needs Node.js on PATH; it re-encodes with the project's sharp")
+    work = staged / "encode"
+    work.mkdir()
+    for index, (original, data) in enumerate(frames, start=1):
+        (work / f"{index:04d}{Path(original).suffix.lower()}").write_bytes(data)
+    script = Path(__file__).resolve().parent / "encode-frames.mjs"
+    result = subprocess.run(
+        [node, str(script), str(work), str(width), str(quality)],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    if result.returncode != 0:
+        raise ValueError(f"Encoding failed: {result.stderr.strip() or result.stdout.strip()}")
+    report = json.loads(result.stdout.strip().splitlines()[-1])
+    print(
+        f"Encoded {report['frames']} frames at most {report['maxWidth']}px wide, quality "
+        f"{report['quality']}: {report['bytesBefore'] / 1048576:.1f} MB -> "
+        f"{report['bytesAfter'] / 1048576:.1f} MB."
+    )
+    encoded = sorted(work.iterdir(), key=lambda path: natural_key(path.name))
+    if len(encoded) != len(frames):
+        raise ValueError("Encoder returned a different number of frames")
+    return [(path.name, path.read_bytes()) for path in encoded]
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("source", nargs="?", help="Folder or ZIP of frames (default: public/frames/_150.zip)")
@@ -81,6 +117,18 @@ def main():
         type=int,
         default=DEFAULT_MAX,
         help=f"Frame ceiling; longer sets are sampled evenly (default: {DEFAULT_MAX})",
+    )
+    parser.add_argument(
+        "--encode",
+        action="store_true",
+        help="Re-encode for delivery instead of copying the original bytes",
+    )
+    parser.add_argument("--quality", type=int, default=76, help="--encode JPEG quality (40-95)")
+    parser.add_argument("--width", type=int, default=1280, help="--encode maximum width in pixels")
+    parser.add_argument(
+        "--allow-large",
+        action="store_true",
+        help="Publish a sequence over the delivery budget anyway",
     )
     args = parser.parse_args()
     if not MIN_FRAMES <= args.max <= MAX_FRAMES:
@@ -106,6 +154,8 @@ def main():
 
         output.mkdir(parents=True, exist_ok=True)
         with staging_directory(output.parent, ".frames-import-") as staged:
+            if args.encode:
+                kept = encode(kept, staged, args.width, args.quality)
             dimensions = None
             extension = None
             digest = hashlib.sha256()
@@ -124,11 +174,21 @@ def main():
                 (staged / name).write_bytes(data)
                 written.append(name)
 
+            delivered = sum(len(data) for _, data in kept)
+            if delivered > DELIVERY_BUDGET and not args.allow_large:
+                raise ValueError(
+                    f"The sequence would serve {delivered / 1048576:.0f} MB, over the "
+                    f"{DELIVERY_BUDGET // 1048576} MB budget. Re-run with --encode (optionally "
+                    "--quality/--width), or fewer frames with --max, or --allow-large to publish "
+                    "it as it is."
+                )
             manifest = {
                 "count": count,
                 "pattern": frame_pattern(pad, extension),
                 "source": source.name,
                 "sampledFrom": len(frames),
+                "encoded": bool(args.encode),
+                "bytes": delivered,
                 "width": dimensions[0],
                 "height": dimensions[1],
                 "version": digest.hexdigest()[:16],
@@ -150,7 +210,11 @@ def main():
         parser.error(str(error))
 
     sampled = "" if count == len(frames) else f" sampled from {len(frames)}"
-    print(f"Imported {count} original frames{sampled} ({dimensions[0]}x{dimensions[1]}) to {output}.")
+    kind = "re-encoded" if args.encode else "original"
+    print(
+        f"Imported {count} {kind} frames{sampled} ({dimensions[0]}x{dimensions[1]}, "
+        f"{delivered / 1048576:.1f} MB) to {output}."
+    )
     print("Frames and manifest are ready. See docs/SCROLL-SEQUENCE.md.")
 
 

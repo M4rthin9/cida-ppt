@@ -75,6 +75,13 @@ export function CinematicHero({ sequence }: { sequence?: SequenceManifest }) {
           <span className="v-cine-vignette" />
         </div>
 
+        {/* Readability, not decoration. The sequence runs from a dark wall to a
+            bright sunlit workshop, so a fixed veil is either too heavy for the
+            dark frames or too light for the bright ones. This is a soft pool of
+            shade under the copy alone: no edge, no box, and the frame's own
+            corners stay open. */}
+        <span className="v-cine-scrim" aria-hidden="true" />
+
         <div className="v-cine-inner">
           <p className="v-cine-badge">
             <span className="v-cine-badge-dot" aria-hidden="true" />
@@ -95,10 +102,18 @@ export function CinematicHero({ sequence }: { sequence?: SequenceManifest }) {
           </Link>
         </div>
 
-        <p className="v-cine-cue" aria-hidden="true">
-          <span className="v-cine-cue-rule" />
-          เลื่อนเพื่อสำรวจ
-        </p>
+        <div className="v-cine-foot">
+          <p className="v-cine-cue" aria-hidden="true">
+            <span className="v-cine-cue-rule" />
+            เลื่อนเพื่อสำรวจ
+          </p>
+          {/* The typographic anchor of the opening. It repeats the name already
+              in the bar and the badge, so it is decoration to a screen reader
+              and hidden from one rather than read out a third time. */}
+          <p className="v-cine-wordmark" aria-hidden="true">
+            ฝ่ายฝึกวิชาชีพผู้ต้องขัง
+          </p>
+        </div>
       </div>
 
       {/* Feathered hand-off: this band scrolls up over the pinned stage at the

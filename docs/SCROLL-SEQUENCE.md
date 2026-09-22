@@ -16,8 +16,8 @@
 นำเข้าได้ทันทีจากโฟลเดอร์ ไม่ต้องบีบเป็น ZIP และไม่ต้องเปลี่ยนชื่อไฟล์ก่อน
 
 ```powershell
-pnpm frames:import "frames\merged_20s_frames" --set hero
-pnpm frames:import "frames\clip2_frames" --set reveal
+pnpm frames:import "frames\merged_20s_frames" --set hero --encode
+pnpm frames:import "frames\clip2_frames" --set reveal --encode
 ```
 
 ตัวนำเข้าจะ
@@ -29,6 +29,14 @@ pnpm frames:import "frames\clip2_frames" --set reveal
 5. เขียน `manifest.json` เป็นขั้นตอนสุดท้าย หากการตรวจไม่ผ่าน ชุดเฟรมเดิมจะยังอยู่ครบ
 
 ต้องการจำนวนอื่นให้ใช้ `--max` เช่น `--max 240` สำหรับภาพที่ลื่นขึ้นแต่ดาวน์โหลดหนักขึ้น หรือ `--max 90` สำหรับชุดที่เบากว่า รองรับตั้งแต่ 8 ถึง 600 เฟรม
+
+### ขนาดไฟล์ที่ผู้ชมต้องดาวน์โหลด
+
+ภาพที่ส่งออกจากกล้องหรือโปรแกรมตัดต่อมักใหญ่เกินกว่าที่เว็บต้องใช้มาก ชุด `merged_20s_frames` มีขนาดรวม 139 MB เมื่อเลือกมา 150 เฟรม ซึ่งมากเกินกว่าที่ภาพจะตามการเลื่อนทัน
+
+`--encode` จะบีบภาพใหม่สำหรับใช้งานบนเว็บ (JPEG คุณภาพ 76 กว้างไม่เกิน 1280 พิกเซล ปรับได้ด้วย `--quality` และ `--width`) ชุดจริงลดจาก **139 MB เหลือ 17.3 MB** โดยไม่เปลี่ยนไฟล์ต้นฉบับใน `frames/` แต่อย่างใด
+
+หากไม่ใส่ `--encode` ตัวนำเข้าจะคัดลอกข้อมูลภาพต้นฉบับไว้เหมือนเดิม และถ้าชุดนั้นรวมกันเกิน 40 MB จะหยุดพร้อมบอกวิธีลดขนาด ต้องการนำเข้าไฟล์ใหญ่ตามเดิมจริง ๆ ให้ใช้ `--allow-large`
 
 ## 2. เริ่มจากคลิปวิดีโอ
 
@@ -80,6 +88,8 @@ node scripts/verify-scroll-sequence.mjs
 | อาการ | วิธีแก้ |
 | --- | --- |
 | `Frames missing` | ตรวจเส้นทางโฟลเดอร์หรือ ZIP ให้ตรงกับไฟล์จริง |
+| `over the 40 MB budget` | เพิ่ม `--encode` หรือลด `--max` หรือใช้ `--allow-large` ถ้าตั้งใจ |
+| `--encode needs Node.js on PATH` | เปิด Terminal ที่มี Node.js เวอร์ชัน 22 ขึ้นไปตาม SETUP.md |
 | `Found N frames; at least 8 needed` | โฟลเดอร์มีภาพน้อยเกินไป หรือไฟล์ไม่ใช่ PNG/JPEG |
 | `Mismatched dimensions` | ทุกเฟรมต้องมีขนาดเท่ากัน ให้ส่งออกใหม่จากคลิปเดียว |
 | `Mixed formats` | อย่าปน PNG กับ JPEG ในชุดเดียวกัน |
