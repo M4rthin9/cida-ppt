@@ -75,6 +75,13 @@ export function CinematicHero({ sequence }: { sequence?: SequenceManifest }) {
           <span className="v-cine-vignette" />
         </div>
 
+        {/* Readability, not decoration. The sequence runs from a dark wall to a
+            bright sunlit workshop, so a fixed veil is either too heavy for the
+            dark frames or too light for the bright ones. This is a soft pool of
+            shade under the copy alone: no edge, no box, and the frame's own
+            corners stay open. */}
+        <span className="v-cine-scrim" aria-hidden="true" />
+
         <div className="v-cine-inner">
           <p className="v-cine-badge">
             <span className="v-cine-badge-dot" aria-hidden="true" />

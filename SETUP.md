@@ -81,10 +81,10 @@ The homepage opens on two scroll-driven stages: `CinematicHero`, whose frame seq
 
 Import a sequence from a folder of frames or a ZIP, into either named set:
 
-    pnpm frames:import "frames/merged_20s_frames" --set hero
-    pnpm frames:import "frames/clip2_frames" --set reveal
+    pnpm frames:import "frames/merged_20s_frames" --set hero --encode
+    pnpm frames:import "frames/clip2_frames" --set reveal --encode
 
-The importer reads every PNG or JPEG in natural order, samples the set down to exactly 150 frames (`--max` takes 8 to 600), checks that every frame decodes and shares one size, copies the original image bytes unmodified under sequential names, and writes `manifest.json` last so a rejected import leaves the previous sequence intact. Starting from a video instead, run `pnpm frames:make` first. Frame delivery can later move to a CDN while keeping the same manifest contract. See [docs/SCROLL-SEQUENCE.md](docs/SCROLL-SEQUENCE.md).
+The importer reads every PNG or JPEG in natural order, samples the set down to exactly 150 frames (`--max` takes 8 to 600), checks that every frame decodes and shares one size, and writes `manifest.json` last so a rejected import leaves the previous sequence intact. It copies the original bytes by default; `--encode` re-encodes for delivery instead (JPEG quality 76 at up to 1280px, tunable with `--quality` and `--width`), which took the supplied 20-second set from 139 MB to 17.3 MB. A sequence that would serve more than 40 MB is refused rather than published, since one that large never keeps up with the scroll; `--allow-large` overrides that deliberately. Starting from a video instead, run `pnpm frames:make` first. Frame delivery can later move to a CDN while keeping the same manifest contract. See [docs/SCROLL-SEQUENCE.md](docs/SCROLL-SEQUENCE.md).
 
 No real product photos, product inventory or vocational news are invented by the seed. Populate these through the CMS before launch. The hero's no-footage fallback is explicitly labeled as a conceptual illustration, and the aperture section falls back to a typographic panel rather than to stock imagery.
 

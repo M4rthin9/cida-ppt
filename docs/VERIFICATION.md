@@ -2,6 +2,18 @@
 
 Implementation verified in isolated test environments, September 2026. Test accounts, products, news and generated frame fixtures are not seeded or committed.
 
+## Real footage imported — 22 September 2026
+
+The supplied `frames/merged_20s_frames` set is now driving the hero. It holds 185 JPEGs numbered `frame_001` to `frame_187` with gaps, at 1280x720 and roughly 930 KB each.
+
+- Sampled to exactly 150 frames and imported to `public/frames/hero`. Confirmed in the browser against the real sequence: 0% scroll renders frame 001, 25% frame 038, 50% frame 075, 75% frame 113, 100% frame 150, over a 400vh section with one canvas.
+- **The original bytes were too heavy to serve.** 150 of them is 139 MB, which no amount of progressive preloading keeps ahead of a scroll. The importer gained an opt-in `--encode` step, which re-encodes through the project's existing sharp dependency at JPEG quality 76 and at most 1280px: **139 MB to 17.3 MB**, an average of 118 KB a frame. The source folder is untouched, and without the flag the importer still copies original bytes.
+- The importer now also refuses to publish a sequence that would serve more than 40 MB, naming the flags that bring it down. Verified: importing the raw set without `--encode` stops with that error and leaves nothing behind.
+- Two defects found and fixed in the encoder while checking its output: it reported the source size as zero, and it handed the encoded buffer back to sharp to save, re-encoding every frame a second time (19.5 MB written against 17.3 MB produced, for a second generation of loss).
+- A soft radial scrim was added behind the hero copy. The sequence runs from a dark perimeter wall to a bright sunlit workshop, and at frame 075 the lede lost its contrast against the bright frame. The scrim sits above the footage but outside it, so it is unaffected by the 75% media opacity and leaves the 35% veil reduction unchanged; it has no edge, keeps the frame's corners open, and fades out with the copy at the hand-off.
+- All **249 tests across 30 files** pass. TypeScript, ESLint and Prettier pass. `scripts/verify-scroll-sequence.mjs` passes. The production build passes with `NEXT_STANDALONE=false`.
+- Still unverified: playback on a real network and on real mobile hardware. 17.3 MB is a normal weight for a full-screen 150-frame sequence, but the decode cost and cache behaviour on a mid-range phone have only been exercised in a desktop browser here.
+
 ## Cinematic opening — 22 September 2026
 
 The homepage now opens on two scroll-driven stages: `CinematicHero`, whose frame sequence is scrubbed frame by frame, and `ApertureSection`, which opens from its centre line onto a second sequence with the copy set on the right. The retired `VocationalHero` and `ScrollSequence` are removed, along with their CSS.
@@ -58,7 +70,7 @@ The earlier baseline checks below describe the previous implementation verificat
 
 ## Deployment limits
 
-No real footage has been imported. The scroll-driven opening is verified with synthetic frames only, so the visual continuity, decoding cost and image quality of the intended sequences still need a review against the real clips after `pnpm frames:import`. Until then the homepage renders its static composition, whose hero image is a labeled conceptual illustration from the original project.
+The hero sequence is imported and verified in a desktop browser; the `reveal` set has no footage yet and renders its typographic panel. Playback has not been measured on a real network or on mobile hardware. The supplied frames are institutional and vocational footage from the project owner; nothing here is invented or sourced elsewhere.
 
 No real products, product photos or vocational news have been invented. Administrators must populate the live catalog. No production host, DNS, TLS, SMTP or external backup restoration has been deployed or verified. Local integration checks use PGlite; the included GitHub CI workflow separately targets PostgreSQL 16.
 

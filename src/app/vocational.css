@@ -519,6 +519,27 @@
   );
 }
 
+/* Sits above the footage but outside it, so it is not dimmed by
+   --v-media-opacity and the copy keeps its contrast whatever the frame does.
+   It also stays out of the veil's budget: the two dials over the footage are
+   unchanged, this only shades what is behind the words. */
+.v-cine-scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: radial-gradient(
+    62% 56% at 50% 45%,
+    rgb(6 4 5 / 0.74) 0%,
+    rgb(6 4 5 / 0.62) 32%,
+    rgb(6 4 5 / 0.34) 62%,
+    rgb(6 4 5 / 0.1) 84%,
+    transparent 100%
+  );
+  /* Fades out with the copy it protects. */
+  opacity: calc(1 - var(--v-exit));
+}
+
 .v-cine-inner {
   position: relative;
   z-index: 2;
@@ -574,7 +595,9 @@
   letter-spacing: var(--v-tracking-display);
   text-wrap: balance;
   color: #fff;
-  text-shadow: 0 2px 40px rgb(0 0 0 / 0.45);
+  text-shadow:
+    0 1px 2px rgb(6 4 5 / 0.5),
+    0 2px 48px rgb(6 4 5 / 0.6);
 }
 
 .v-cine-title span {
@@ -591,7 +614,8 @@
   margin: 0;
   font-size: var(--v-t-lede);
   line-height: 1.95;
-  color: rgb(246 241 236 / 0.82);
+  color: rgb(246 241 236 / 0.92);
+  text-shadow: 0 1px 14px rgb(6 4 5 / 0.65);
   text-wrap: pretty;
 }
 

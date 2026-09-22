@@ -66,11 +66,11 @@ unset ADMIN_PASSWORD
 นำเข้าชุดเฟรมจากโฟลเดอร์ที่มีอยู่แล้วได้โดยตรง:
 
 ```bash
-pnpm frames:import "frames/merged_20s_frames" --set hero
-pnpm frames:import "frames/clip2_frames" --set reveal
+pnpm frames:import "frames/merged_20s_frames" --set hero --encode
+pnpm frames:import "frames/clip2_frames" --set reveal --encode
 ```
 
-ตัวนำเข้าเลือกเฟรมให้เหลือ 150 ภาพพอดีโดยกระจายทั่วทั้งชุด ตรวจขนาดภาพให้เท่ากันทุกเฟรม รักษาข้อมูลภาพต้นฉบับไว้โดยไม่แก้ไข แล้วเขียน `manifest.json` เป็นขั้นตอนสุดท้าย ถ้าเริ่มจากไฟล์วิดีโอให้ใช้ `pnpm frames:make` ก่อน รายละเอียดทั้งหมดอยู่ที่ [docs/SCROLL-SEQUENCE.md](docs/SCROLL-SEQUENCE.md)
+ตัวนำเข้าเลือกเฟรมให้เหลือ 150 ภาพพอดีโดยกระจายทั่วทั้งชุด ตรวจขนาดภาพให้เท่ากันทุกเฟรม แล้วเขียน `manifest.json` เป็นขั้นตอนสุดท้าย `--encode` จะบีบภาพสำหรับเว็บ (ชุดจริงลดจาก 139 MB เหลือ 17.3 MB) ถ้าไม่ใส่จะคัดลอกไฟล์ต้นฉบับไว้ทั้งหมด ถ้าเริ่มจากไฟล์วิดีโอให้ใช้ `pnpm frames:make` ก่อน รายละเอียดทั้งหมดอยู่ที่ [docs/SCROLL-SEQUENCE.md](docs/SCROLL-SEQUENCE.md)
 
 ภาพนิ่งที่ใช้เมื่อยังไม่มีเฟรมมีคำกำกับว่าเป็นภาพประกอบแนวคิด ไม่ได้ใช้เป็นรูปสินค้าจริง
 

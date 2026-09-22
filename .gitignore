@@ -27,3 +27,6 @@ node_modules
 /data/
 /public/frames_150.zip
 /public/frames/*.zip
+
+# Python bytecode from the frame tooling
+__pycache__/
