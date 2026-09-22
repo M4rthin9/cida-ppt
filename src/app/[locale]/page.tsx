@@ -26,7 +26,7 @@ export default async function Home() {
   const words = [...categories.map((c) => c.name_th), "งานฝึกวิชาชีพ", "CRAFTED WITH PURPOSE"];
   return (
     <main id="content">
-      <VocationalHero />
+      <VocationalHero categories={categories} />
       <div className="v-marquees">
         {/* ARIA forbids naming a generic element, so an aria-label here was
             silently ignored and the marquee reached assistive tech as nothing

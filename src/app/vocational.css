@@ -182,18 +182,63 @@
   cursor: pointer;
 }
 
-/* Static introduction. The frame sequence remains deferred. */
+/* Editorial opening. The cinematic frame sequence remains deferred, so the
+   depth here is layered CSS rather than extra assets. */
 .v-intro {
+  position: relative;
+  isolation: isolate;
+  overflow: clip;
+  border-bottom: 1px solid var(--v-line);
+  background: radial-gradient(125% 95% at 76% -12%, #fefdfb 0%, #f7f2eb 44%, var(--v-paper) 80%);
+}
+.v-intro-canvas {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+.v-intro-bloom {
+  position: absolute;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  filter: blur(70px);
+}
+.v-intro-bloom-a {
+  width: min(48vw, 640px);
+  top: -18%;
+  left: -13%;
+  background: radial-gradient(circle, #f2d8e199 0%, #f2d8e100 70%);
+  animation: v-intro-drift 24s ease-in-out infinite alternate;
+}
+.v-intro-bloom-b {
+  width: min(42vw, 560px);
+  right: -12%;
+  bottom: -26%;
+  background: radial-gradient(circle, #e8dcc7cc 0%, #e8dcc700 70%);
+  animation: v-intro-drift 31s ease-in-out infinite alternate-reverse;
+}
+.v-intro-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(#2823260a 1px, transparent 1px),
+    linear-gradient(90deg, #2823260a 1px, transparent 1px);
+  background-size: 96px 96px;
+  -webkit-mask-image: radial-gradient(88% 72% at 28% 18%, #000 0%, transparent 74%);
+  mask-image: radial-gradient(88% 72% at 28% 18%, #000 0%, transparent 74%);
+}
+.v-intro-inner {
   max-width: 1600px;
   margin: auto;
-  padding: 44px var(--v-gutter) 58px;
+  padding: 40px var(--v-gutter) 32px;
   display: grid;
   grid-template-columns: 1.05fr 1fr;
   align-items: stretch;
   gap: clamp(28px, 4vw, 70px);
 }
 .v-intro-copy {
-  padding: 35px 0 8px;
+  padding: 26px 0 8px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -215,20 +260,73 @@
   background: currentColor;
   flex-shrink: 0;
 }
-.v-intro h1 {
-  font-size: clamp(44px, 4.7vw, 73px);
-  line-height: 1.5;
+.v-intro-badge {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 26px;
+  padding: 8px 17px 8px 14px;
+  border: 1px solid #e3d7da;
+  border-radius: 100px;
+  background: #fffffff0;
+  box-shadow: 0 6px 18px -12px #3b2a2f80;
+  font-size: 13px;
   font-weight: 500;
+  line-height: 1.6;
 }
-.v-intro h1 span {
+.v-intro-badge small {
+  color: var(--v-muted);
+  font-size: 11px;
+}
+.v-intro-badge-dot {
+  align-self: center;
+  width: 7px;
+  height: 7px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--v-burgundy);
+  box-shadow: 0 0 0 0 #781c3b59;
+  animation: v-intro-pulse 2.8s ease-out infinite;
+}
+.v-intro h1 {
+  font-size: clamp(46px, 5vw, 78px);
+  line-height: 1.42;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+}
+.v-intro-accent {
+  position: relative;
+  display: inline-block;
   color: var(--v-burgundy);
+  background: linear-gradient(96deg, #781c3b 8%, #a8395c 52%, #7a2b46 96%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.v-intro-underline {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -0.12em;
+  width: 100%;
+  height: 0.18em;
+  overflow: visible;
+}
+.v-intro-underline path {
+  fill: none;
+  stroke: #c07a93;
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-dasharray: 340;
+  stroke-dashoffset: 0;
+  animation: v-intro-draw 1.2s ease-out 0.5s backwards;
 }
 .v-intro-description {
   color: var(--v-muted);
   font-size: 17px;
   line-height: 1.95;
-  margin: 25px 0 29px;
-  max-width: 440px;
+  margin: 26px 0 30px;
+  max-width: 470px;
 }
 .v-actions {
   display: flex;
@@ -291,9 +389,65 @@
   color: var(--v-burgundy);
   border-color: currentColor;
 }
+.v-intro-rail {
+  margin-top: 32px;
+  display: flex;
+  align-items: center;
+  gap: 8px 16px;
+  flex-wrap: wrap;
+}
+.v-intro-rail-label {
+  color: var(--v-muted);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+}
+.v-intro-rail ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.v-intro-rail a {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 7px 16px;
+  border: 1px solid var(--v-line);
+  border-radius: 100px;
+  background: #ffffffb8;
+  color: var(--v-ink);
+  font-size: 13px;
+  line-height: 1.6;
+  transition:
+    background 0.2s,
+    border-color 0.2s,
+    color 0.2s,
+    transform 0.2s;
+}
+.v-intro-rail a::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--v-burgundy);
+  opacity: 0.45;
+}
+.v-intro-rail a:hover {
+  background: var(--v-white);
+  border-color: #dcc4cd;
+  color: var(--v-burgundy);
+  transform: translateY(-2px);
+}
+.v-intro-rail a:hover::before {
+  opacity: 1;
+}
 .v-intro-signature {
   margin-top: auto;
-  padding-top: 42px;
+  padding-top: 40px;
   display: flex;
   align-items: flex-start;
   gap: 16px;
@@ -312,16 +466,40 @@
   font-size: 12px;
   margin-top: 4px;
 }
+
+/* Layered visual: arched frame, glass caption, typographic medallion. */
 .v-intro-visual {
-  width: 100%;
   position: relative;
+  display: flex;
   min-width: 0;
-  min-height: 540px;
+}
+.v-intro-frame {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  min-height: 560px;
   margin: 0;
-  border-radius: 120px 24px 24px;
+  border-radius: 190px 24px 24px;
   overflow: hidden;
   background: #d9cbbc;
   isolation: isolate;
+  box-shadow: 0 34px 64px -34px #3b2a2f80;
+}
+.v-intro-frame::before {
+  content: "";
+  position: absolute;
+  inset: 14px;
+  z-index: 2;
+  border: 1px solid #ffffff42;
+  border-radius: 178px 12px 12px;
+  pointer-events: none;
+}
+.v-intro-frame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(180deg, #211b1800 36%, #211b18a6 78%, #1b1513eb 100%);
 }
 .v-intro-image {
   position: absolute;
@@ -331,41 +509,187 @@
 .v-intro-image img {
   object-fit: cover;
   object-position: 60% center;
-}
-.v-intro-visual::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, #211b1812 50%, #211b18c9 100%);
-  z-index: -1;
-}
-.v-intro-visual figcaption {
-  position: absolute;
-  bottom: 29px;
-  left: 34px;
-  right: 30px;
-  color: white;
-}
-.v-intro-visual figcaption > span {
-  font-size: 22px;
-}
-.v-intro-visual figcaption small {
-  display: block;
-  margin-top: 5px;
-  font-size: 12px;
-  color: #eee6df;
+  animation: v-intro-pan 36s ease-in-out infinite alternate;
 }
 .v-intro-image-label {
   position: absolute;
-  top: 26px;
+  z-index: 3;
+  top: 28px;
   right: 26px;
-  padding: 7px 12px;
-  border: 1px solid #ffffff70;
+  padding: 8px 14px;
+  border: 1px solid #ffffff5c;
   border-radius: 100px;
   color: white;
-  background: #30231d66;
+  background: #30231d47;
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
   font-size: 9px;
+  letter-spacing: 0.14em;
+}
+.v-intro-frame figcaption {
+  position: absolute;
+  z-index: 3;
+  bottom: 26px;
+  left: 26px;
+  right: 26px;
+  padding: 17px 22px;
+  border: 1px solid #ffffff33;
+  border-radius: 18px;
+  background: #251a1f47;
+  -webkit-backdrop-filter: blur(14px) saturate(120%);
+  backdrop-filter: blur(14px) saturate(120%);
+  color: white;
+}
+.v-intro-frame figcaption > span {
+  font-size: 21px;
+  line-height: 1.5;
+}
+.v-intro-frame figcaption small {
+  display: block;
+  margin-top: 4px;
+  font-size: 12px;
+  color: #eee6df;
+}
+.v-intro-medallion {
+  position: absolute;
+  z-index: 4;
+  left: -32px;
+  bottom: 158px;
+  width: 124px;
+  height: 124px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--v-line);
+  border-radius: 50%;
+  background: var(--v-paper);
+  box-shadow: 0 20px 36px -20px #3b2a2f73;
+}
+.v-intro-medallion > svg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  animation: v-intro-spin 34s linear infinite;
+}
+.v-intro-medallion text {
+  fill: var(--v-burgundy);
+  font-size: 8.5px;
+  letter-spacing: 0.01em;
+}
+.v-intro-medallion-core {
+  width: 54px;
+  height: 54px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--v-burgundy);
+  color: white;
+}
+.v-intro-medallion-core .site-icon {
+  width: 20px;
+  height: 20px;
+}
+.v-intro-scroll {
+  max-width: 1600px;
+  margin: auto;
+  padding: 0 var(--v-gutter) 30px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  color: var(--v-muted);
+  font-size: 11px;
+  font-weight: 600;
   letter-spacing: 0.12em;
+}
+.v-intro-scroll-rule {
+  position: relative;
+  width: 58px;
+  height: 1px;
+  overflow: hidden;
+  background: linear-gradient(90deg, #c3b1b7, #c3b1b700);
+}
+.v-intro-scroll-rule::after {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 18px;
+  background: var(--v-burgundy);
+  animation: v-intro-trace 2.8s ease-in-out infinite;
+}
+
+/* One staggered entrance for the whole opening. The site-wide
+   prefers-reduced-motion reset drops every animation below, and each keyframe
+   set ends on the element's own resting style, so nothing stays hidden. */
+.v-intro-copy > *,
+.v-intro-visual,
+.v-intro-scroll {
+  animation: v-intro-rise 0.75s cubic-bezier(0.22, 0.68, 0.32, 1) backwards;
+}
+.v-intro-copy > :nth-child(2) {
+  animation-delay: 0.06s;
+}
+.v-intro-copy > :nth-child(3) {
+  animation-delay: 0.12s;
+}
+.v-intro-copy > :nth-child(4) {
+  animation-delay: 0.18s;
+}
+.v-intro-copy > :nth-child(5) {
+  animation-delay: 0.24s;
+}
+.v-intro-copy > :nth-child(6) {
+  animation-delay: 0.3s;
+}
+.v-intro-visual {
+  animation-delay: 0.1s;
+  animation-duration: 0.9s;
+}
+.v-intro-scroll {
+  animation-delay: 0.45s;
+}
+@keyframes v-intro-rise {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 22px, 0);
+  }
+}
+@keyframes v-intro-drift {
+  to {
+    transform: translate3d(6%, 8%, 0) scale(1.12);
+  }
+}
+@keyframes v-intro-pulse {
+  70% {
+    box-shadow: 0 0 0 9px #781c3b00;
+  }
+  100% {
+    box-shadow: 0 0 0 0 #781c3b00;
+  }
+}
+@keyframes v-intro-draw {
+  from {
+    stroke-dashoffset: 340;
+  }
+}
+@keyframes v-intro-pan {
+  from {
+    transform: scale(1.02);
+  }
+  to {
+    transform: scale(1.09) translate3d(-1.5%, 0, 0);
+  }
+}
+@keyframes v-intro-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes v-intro-trace {
+  from {
+    transform: translateX(-20px);
+  }
+  to {
+    transform: translateX(62px);
+  }
 }
 
 /* Quiet typographic ribbon */
@@ -1472,18 +1796,31 @@
   .v-header nav > a:last-child {
     padding-inline: 18px;
   }
-  .v-intro {
+  .v-intro-inner {
     gap: 28px;
   }
   .v-intro h1 {
-    font-size: clamp(40px, 4.8vw, 60px);
+    font-size: clamp(40px, 4.8vw, 62px);
   }
-  .v-intro-visual {
-    min-height: 530px;
-    border-top-left-radius: 90px;
+  .v-intro-frame {
+    min-height: 520px;
+    border-top-left-radius: 140px;
+  }
+  .v-intro-frame::before {
+    border-top-left-radius: 128px;
+  }
+  .v-intro-medallion {
+    left: -24px;
+    bottom: 150px;
+    width: 106px;
+    height: 106px;
+  }
+  .v-intro-medallion-core {
+    width: 48px;
+    height: 48px;
   }
   .v-intro-copy {
-    padding-top: 25px;
+    padding-top: 18px;
   }
   .v-actions {
     gap: 16px;
@@ -1571,11 +1908,14 @@
     box-shadow: none;
     font-size: 14px;
   }
-  .v-intro {
-    padding-top: 32px;
+  .v-intro-inner {
+    padding-top: 30px;
   }
-  .v-intro-visual {
-    min-height: 550px;
+  .v-intro-frame {
+    min-height: 520px;
+  }
+  .v-intro-rail {
+    margin-top: 24px;
   }
   .v-intro-signature {
     padding-top: 27px;
@@ -1583,12 +1923,16 @@
   .v-intro-signature > span {
     display: none;
   }
-  .v-intro-visual figcaption {
-    left: 25px;
-    right: 25px;
+  .v-intro-medallion {
+    display: none;
   }
-  .v-intro-visual figcaption > span {
-    font-size: 20px;
+  .v-intro-frame figcaption {
+    left: 20px;
+    right: 20px;
+    padding: 15px 18px;
+  }
+  .v-intro-frame figcaption > span {
+    font-size: 19px;
   }
   .v-section-heading {
     align-items: flex-start;
@@ -1659,14 +2003,25 @@
   .v-header nav {
     padding-inline: 24px;
   }
-  .v-intro {
+  .v-intro-inner {
     grid-template-columns: 1fr;
-    gap: 35px;
+    gap: 34px;
     padding-top: 16px;
-    padding-bottom: 35px;
+    padding-bottom: 28px;
   }
   .v-intro-copy {
-    padding-top: 24px;
+    padding-top: 22px;
+  }
+  .v-intro-badge {
+    margin-bottom: 20px;
+    padding: 7px 15px 7px 12px;
+    font-size: 12px;
+  }
+  .v-intro-grid {
+    background-size: 64px 64px;
+  }
+  .v-intro-scroll {
+    display: none;
   }
   .v-eyebrow {
     font-size: 10px;
@@ -1692,8 +2047,11 @@
   .v-text-link {
     font-size: 14px;
   }
+  .v-intro-rail {
+    margin-top: 22px;
+  }
   .v-intro-signature {
-    margin-top: 28px;
+    margin-top: 26px;
     padding-top: 21px;
     border-top: 1px solid var(--v-line);
     width: 100%;
@@ -1707,24 +2065,31 @@
   .v-intro-signature small {
     font-size: 11px;
   }
-  .v-intro-visual {
+  .v-intro-frame {
     min-height: 360px;
     aspect-ratio: 1.1;
-    border-radius: 70px 18px 18px;
+    border-radius: 100px 18px 18px;
+  }
+  .v-intro-frame::before {
+    inset: 10px;
+    border-radius: 92px 10px 10px;
   }
   .v-intro-image img {
     object-position: center 58%;
   }
-  .v-intro-visual figcaption {
-    left: 24px;
-    bottom: 24px;
+  .v-intro-frame figcaption {
+    left: 16px;
+    right: 16px;
+    bottom: 16px;
+    padding: 14px 17px;
   }
-  .v-intro-visual figcaption > span {
-    font-size: 20px;
+  .v-intro-frame figcaption > span {
+    font-size: 18px;
   }
   .v-intro-image-label {
-    top: 20px;
-    right: 18px;
+    top: 18px;
+    right: 16px;
+    padding: 6px 11px;
     font-size: 8px;
   }
   .v-marquees {
@@ -2072,8 +2437,12 @@
   .v-intro h1 {
     font-size: 37px;
   }
-  .v-intro-visual {
-    min-height: 330px;
+  .v-intro-frame {
+    min-height: 320px;
+    border-top-left-radius: 82px;
+  }
+  .v-intro-frame::before {
+    border-top-left-radius: 76px;
   }
   .v-bento-copy h3 {
     font-size: 24px;
