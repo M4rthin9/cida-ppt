@@ -6,5 +6,7 @@ export default async function Page({
   params: Promise<{ locale: string; slug: string }>;
 }) {
   const { locale, slug } = await params;
-  permanentRedirect(`${localePrefix(locale)}/products/category/${encodeURIComponent(slug)}`);
+  permanentRedirect(
+    `${localePrefix(locale)}/products/category/${encodeURIComponent(decodeURIComponent(slug))}`,
+  );
 }

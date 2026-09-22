@@ -14,7 +14,7 @@ export async function generateMetadata({
   params: Promise<{ locale: string; slug: string }>;
 }) {
   const { locale, slug } = await params,
-    n = (await listNews({ slug: slug })).items[0];
+    n = (await listNews({ slug: decodeURIComponent(slug) })).items[0];
   return n
     ? publicMetadata({
         locale,
@@ -33,7 +33,7 @@ export default async function Page({
   params: Promise<{ locale: string; slug: string }>;
 }) {
   const { locale, slug } = await params,
-    n = (await listNews({ slug: slug })).items[0];
+    n = (await listNews({ slug: decodeURIComponent(slug) })).items[0];
   if (!n) notFound();
   const [images, general] = await Promise.all([
     gallery(n.id, "news"),

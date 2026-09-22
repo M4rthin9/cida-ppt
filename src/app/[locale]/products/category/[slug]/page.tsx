@@ -12,7 +12,7 @@ export async function generateMetadata({
   params: Promise<{ locale: string; slug: string }>;
 }) {
   const { locale, slug } = await params,
-    c = (await listCategories()).find((c) => c.slug === slug);
+    c = (await listCategories()).find((c) => c.slug === decodeURIComponent(slug));
   if (!c) return {};
   return publicMetadata({
     locale,
@@ -30,7 +30,7 @@ export default async function Page({
   searchParams: Promise<PublicSearchParams>;
 }) {
   const { slug } = await params,
-    c = (await listCategories()).find((c) => c.slug === slug);
+    c = (await listCategories()).find((c) => c.slug === decodeURIComponent(slug));
   if (!c) notFound();
   return (
     <main id="content" className="v-page">
