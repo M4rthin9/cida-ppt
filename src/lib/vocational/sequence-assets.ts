@@ -1,34 +1,58 @@
 import "server-only";
 import { readdir, readFile, stat } from "node:fs/promises";
 import { join } from "node:path";
+import { frameName, isSequenceManifest, type SequenceManifest, type SequenceSet } from "./sequence";
 
-/** Decide before sending HTML, so loading frames never changes the page height. */
-export async function sequenceVersion(): Promise<string | undefined> {
-  const directory = join(process.cwd(), "public", "frames");
+/**
+ * Candidate directories per set, most specific first. `hero` still accepts the
+ * original flat `public/frames` import so an existing 150-frame sequence keeps
+ * driving the homepage without being re-imported.
+ */
+const LOCATIONS: Record<SequenceSet, string[]> = {
+  hero: ["frames/hero", "frames"],
+  reveal: ["frames/reveal"],
+};
+
+async function read(relative: string): Promise<SequenceManifest | undefined> {
+  const directory = join(process.cwd(), "public", relative);
   try {
     const [raw, entries, manifestStat] = await Promise.all([
       readFile(join(directory, "manifest.json"), "utf8"),
       readdir(directory, { withFileTypes: true }),
       stat(join(directory, "manifest.json")),
     ]);
-    const manifest: unknown = JSON.parse(raw);
-    if (
-      !manifest ||
-      typeof manifest !== "object" ||
-      !("count" in manifest) ||
-      manifest.count !== 150 ||
-      !("pattern" in manifest) ||
-      manifest.pattern !== "frame-%03d.png"
-    )
-      return undefined;
+    const parsed: unknown = JSON.parse(raw);
+    if (!isSequenceManifest(parsed)) return undefined;
     const files = new Set(entries.filter((entry) => entry.isFile()).map((entry) => entry.name));
-    for (let n = 1; n <= 150; n++) {
-      if (!files.has(`frame-${String(n).padStart(3, "0")}.png`)) return undefined;
+    for (let frame = 1; frame <= parsed.count; frame++) {
+      const name = frameName(parsed.pattern, frame);
+      if (!name || !files.has(name)) return undefined;
     }
-    return "version" in manifest && typeof manifest.version === "string"
-      ? manifest.version
-      : Math.trunc(manifestStat.mtimeMs).toString(36);
+    return {
+      base: `/${relative}`,
+      count: parsed.count,
+      pattern: parsed.pattern,
+      width: parsed.width,
+      height: parsed.height,
+      version:
+        typeof parsed.version === "string" && parsed.version
+          ? parsed.version
+          : Math.trunc(manifestStat.mtimeMs).toString(36),
+    };
   } catch {
     return undefined;
   }
+}
+
+/**
+ * Resolve a sequence before any HTML is sent, so a missing or half-imported set
+ * renders the static composition instead of collapsing the page height once the
+ * player gives up in the browser.
+ */
+export async function readSequence(set: SequenceSet): Promise<SequenceManifest | undefined> {
+  for (const relative of LOCATIONS[set]) {
+    const manifest = await read(relative);
+    if (manifest) return manifest;
+  }
+  return undefined;
 }

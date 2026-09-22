@@ -1,10 +1,12 @@
 import { Link } from "@/i18n/navigation";
 import { listCategories, listProducts, listNews } from "@/lib/vocational/data";
-import { VocationalHero } from "@/components/vocational/VocationalHero";
+import { CinematicHero } from "@/components/vocational/CinematicHero";
+import { ApertureSection } from "@/components/vocational/ApertureSection";
 import { CategoryBento } from "@/components/vocational/CategoryBento";
 import { StorySection } from "@/components/vocational/StorySection";
 import { ProductCard } from "@/components/vocational/ProductCard";
 import { NewsCard } from "@/components/vocational/NewsCard";
+import { readSequence } from "@/lib/vocational/sequence-assets";
 import { publicMetadata } from "@/lib/seo/metadata";
 export const dynamic = "force-dynamic";
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
@@ -18,15 +20,24 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   });
 }
 export default async function Home() {
-  const [categories, featured, news] = await Promise.all([
+  /**
+   * Both sequences are resolved on the server, before any HTML is sent: a set
+   * that is missing or half-imported simply renders the static composition,
+   * rather than reserving several viewports of scroll for a canvas that then
+   * never paints.
+   */
+  const [categories, featured, news, heroSequence, revealSequence] = await Promise.all([
     listCategories(),
     listProducts({ featured: "1", limit: 4 }),
     listNews({ limit: 3 }),
+    readSequence("hero"),
+    readSequence("reveal"),
   ]);
   const words = [...categories.map((c) => c.name_th), "งานฝึกวิชาชีพ", "CRAFTED WITH PURPOSE"];
   return (
     <main id="content">
-      <VocationalHero />
+      <CinematicHero sequence={heroSequence} />
+      <ApertureSection sequence={revealSequence} categories={categories} />
       <div className="v-marquees">
         {/* ARIA forbids naming a generic element, so an aria-label here was
             silently ignored and the marquee reached assistive tech as nothing

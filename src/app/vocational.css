@@ -8,23 +8,106 @@
   --v-burgundy: #781c3b;
   --v-coal: #30262c;
   --v-sand: #ebe3d7;
+
+  /* Cinematic ground, shared by the hero and the aperture section so the two
+     meet on the same tone rather than on a change of colour. */
+  --v-cine-ink: #0d0a0c;
+  --v-cine-paper: #f6f1ec;
+  --v-cine-glow: #d6a874;
+
+  /* The two dials over the footage. The frames play at 75% — a 25% reduction —
+     so the type and the bars keep their contrast, and the dark veil above them
+     carries 65% of its original weight, a 35% reduction, so the footage still
+     reads through it. Every overlay stop below multiplies by --v-veil, so both
+     dials are one edit each. */
+  --v-media-opacity: 0.75;
+  --v-veil: 0.65;
+
+  /* ------------------------------------------------------------------
+     Type scale.
+
+     Thai is the primary script and it sets the rules: tone marks stack
+     above and vowels below, so headings need more leading than a Latin
+     face of the same size, and tracking stays at or just above zero —
+     the tight negative tracking that flatters Latin display type closes
+     up Thai clusters and costs legibility.
+
+     --v-display is a Latin-first stack with Anuphan last on purpose: the
+     serif takes the Latin (the eyebrows, the indices, the cue), Thai
+     falls through to Anuphan, and a mixed line gets both without any
+     per-span markup.
+     ------------------------------------------------------------------ */
   --v-serif: Georgia, "Times New Roman", serif;
+  --v-display:
+    "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, "Anuphan", serif;
+
+  --v-t-display: clamp(2.6rem, 7vw, 6rem);
+  --v-t-section: clamp(1.8rem, 3.3vw, 2.9rem);
+  --v-t-heading: clamp(1.35rem, 2vw, 1.75rem);
+  --v-t-lede: clamp(1rem, 0.95rem + 0.4vw, 1.1875rem);
+  --v-t-body: 1.0625rem;
+  --v-t-control: 0.9375rem;
+  --v-t-fine: 0.8125rem;
+
+  --v-leading-display: 1.3;
+  --v-leading-heading: 1.42;
+  --v-leading-body: 1.9;
+  --v-tracking-display: 0.004em;
+  --v-tracking-heading: 0.006em;
+  --v-tracking-eyebrow: 0.18em;
+
   --v-gutter: clamp(24px, 5vw, 80px);
   --v-radius: 20px;
+  --v-header-h: 84px;
+
   background: var(--v-paper);
   color: var(--v-ink);
-  font-size: 16px;
-  line-height: 1.8;
+  font-family: var(--font-sans);
+  font-size: var(--v-t-body);
+  line-height: var(--v-leading-body);
+  font-optical-sizing: auto;
+  font-synthesis-weight: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   overflow-x: clip;
 }
+
+/* Headings: one weight lighter and one notch more open than the browser
+   default, which is what reads as considered rather than loud. `balance`
+   keeps a two-line heading from leaving one orphaned word. */
 .v-site h1,
 .v-site h2,
-.v-site h3 {
-  font-weight: 500;
-  letter-spacing: 0;
-  line-height: 1.45;
+.v-site h3,
+.v-site h4 {
+  font-weight: 400;
+  line-height: var(--v-leading-heading);
+  letter-spacing: var(--v-tracking-heading);
+  text-wrap: balance;
   color: inherit;
 }
+
+.v-site h2 {
+  font-size: var(--v-t-section);
+}
+
+.v-site h3 {
+  font-size: var(--v-t-heading);
+}
+
+.v-site p {
+  text-wrap: pretty;
+}
+
+/* Latin runs inside Thai copy — codes, counts, dates — should not shift
+   baseline or width mid-sentence. */
+.v-site .lat,
+.v-site time,
+.v-site data {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.01em;
+}
+
 .v-site a {
   text-decoration: none;
 }
@@ -46,163 +129,227 @@
   color: #401127;
 }
 
-/* Navigation */
+/* ============================================================
+   Navigation — a floating pill over the opening
+   ------------------------------------------------------------
+   Fixed rather than sticky, so the hero runs to the top of the window and the
+   bar rides over it. Every page that does not open on the cinematic stage gets
+   the height back as padding on <main>.
+   ============================================================ */
 .v-header {
-  min-height: 100px;
-  padding: 18px var(--v-gutter);
+  position: fixed;
+  inset-inline: 0;
+  top: 0;
+  z-index: 40;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 28px;
-  background: var(--v-paper);
-  border-bottom: 1px solid var(--v-line);
-  position: relative;
-  z-index: 40;
+  gap: clamp(16px, 2vw, 32px);
+  width: min(1180px, calc(100% - var(--v-gutter)));
+  margin: 16px auto 0;
+  padding: 10px 12px 10px 14px;
+  border: 1px solid rgb(255 255 255 / 0.14);
+  border-radius: 100px;
+  /* Solid by default: over the light pages that make up most of the site, a
+     translucent dark bar turns to grey mud and takes the link contrast with
+     it. Only the cinematic opening gets the glass. */
+  background: rgb(17 13 15 / 0.92);
+  backdrop-filter: blur(20px) saturate(1.4);
+  color: var(--v-cine-paper);
+  box-shadow: 0 14px 40px rgb(8 6 7 / 0.28);
+  transition:
+    background 0.25s,
+    padding 0.25s,
+    box-shadow 0.25s;
 }
+
+/* Asking the page what it opens with, rather than asking the router what it is:
+   any page that starts on the cinematic stage gets the glass bar, and a browser
+   without :has() simply keeps the solid one. */
+.v-site:has(main > .v-cine:first-child) .v-header {
+  background: rgb(18 14 16 / 0.5);
+}
+
+/* Past the opening the bar tightens and gains weight, so it stays readable
+   over whatever scrolls underneath. */
+.v-header[data-scrolled="true"],
+.v-site:has(main > .v-cine:first-child) .v-header[data-scrolled="true"] {
+  background: rgb(14 11 13 / 0.86);
+  padding-block: 7px;
+  box-shadow: 0 10px 30px rgb(8 6 7 / 0.34);
+}
+
+/* The hero owns the top of the window; every other page reserves the space. */
+.v-site main {
+  padding-top: calc(var(--v-header-h) + 20px);
+}
+
+.v-site main:has(> .v-cine:first-child) {
+  padding-top: 0;
+}
+
 .v-brand {
   display: flex;
   align-items: center;
-  gap: 14px;
-  color: var(--v-ink);
+  gap: 12px;
+  color: inherit;
   flex-shrink: 0;
 }
+
+/* The emblem is used exactly as supplied; the light chip is what gives it
+   contrast on the dark bar, rather than any change to the artwork. */
 .v-brand img {
   object-fit: contain;
   flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  padding: 3px;
+  border-radius: 50%;
+  background: rgb(255 255 255 / 0.94);
 }
+
 .v-brand strong {
   display: block;
-  font-size: 16px;
-  line-height: 1.6;
+  font-size: var(--v-t-control);
+  line-height: 1.4;
   font-weight: 600;
+  letter-spacing: 0.005em;
 }
+
 .v-brand small {
   display: block;
-  font-size: 12px;
-  color: var(--v-muted);
-  margin-top: 2px;
+  font-size: 11.5px;
+  line-height: 1.4;
+  color: rgb(246 241 236 / 0.6);
 }
+
 .v-header nav {
   display: flex;
   align-items: center;
-  gap: clamp(16px, 1.9vw, 30px);
-  font-size: 14px;
+  gap: clamp(4px, 1vw, 14px);
+  font-size: var(--v-t-control);
 }
+
 .v-header nav > a,
 .v-products-nav > a {
-  padding: 10px 0;
+  padding: 9px 14px;
+  border-radius: 100px;
   white-space: nowrap;
   position: relative;
+  color: rgb(246 241 236 / 0.78);
 }
+
 .v-header nav a {
   transition:
     color 0.18s,
     background 0.18s;
 }
+
 .v-header nav a:hover,
 .v-header nav a[aria-current="page"] {
-  color: var(--v-burgundy);
+  color: #fff;
+  background: rgb(255 255 255 / 0.1);
 }
-.v-header nav > a[aria-current="page"]::after,
-.v-products-nav > a[aria-current="page"]::after {
-  content: "";
-  position: absolute;
-  bottom: 3px;
-  left: 0;
-  width: 20px;
-  height: 2px;
-  background: currentColor;
-}
+
+/* The last link is the standing call to action, the way the reference bar
+   carries one filled pill at its end. */
 .v-header nav > a:last-child {
-  border: 1px solid var(--v-line);
-  border-radius: 100px;
-  padding: 9px 23px;
+  margin-inline-start: 6px;
+  padding: 10px 22px;
+  background: var(--v-cine-paper);
+  color: var(--v-cine-ink);
+  font-weight: 500;
 }
+
 .v-header nav > a:last-child:hover,
 .v-header nav > a:last-child[aria-current="page"] {
-  background: var(--v-burgundy);
-  border-color: var(--v-burgundy);
-  color: white;
+  background: #fff;
+  color: var(--v-cine-ink);
 }
-.v-header nav > a:last-child::after {
-  display: none;
-}
+
 .v-products-nav {
   display: flex;
   align-items: center;
-  gap: 3px;
+  gap: 0;
 }
+
 .v-products-nav details {
   position: relative;
 }
+
 .v-products-nav summary {
   cursor: pointer;
   list-style: none;
   padding: 8px;
   min-height: 44px;
   min-width: 32px;
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 100px;
+  color: rgb(246 241 236 / 0.7);
 }
+
 .v-products-nav summary::-webkit-details-marker {
   display: none;
 }
+
+.v-products-nav summary:hover,
 .v-products-nav details[open] summary {
-  color: var(--v-burgundy);
+  color: #fff;
+  background: rgb(255 255 255 / 0.1);
 }
+
 .v-megamenu {
   position: absolute;
   right: -50px;
   top: 52px;
-  padding: 12px;
+  padding: 10px;
   width: 280px;
-  background: white;
-  border: 1px solid var(--v-line);
-  border-radius: 16px;
-  box-shadow: 0 18px 50px #30262c15;
+  background: rgb(17 13 15 / 0.98);
+  border: 1px solid rgb(255 255 255 / 0.14);
+  border-radius: 20px;
+  box-shadow: 0 22px 60px rgb(8 6 7 / 0.45);
   display: grid;
-  gap: 4px;
+  gap: 2px;
 }
+
 .v-megamenu a {
-  padding: 12px 14px;
-  border-radius: 9px;
+  padding: 11px 14px;
+  border-radius: 12px;
+  color: rgb(246 241 236 / 0.82);
 }
+
 .v-megamenu a:hover {
-  background: #f7eff2;
+  background: rgb(255 255 255 / 0.1);
+  color: #fff;
 }
+
 .v-menu-toggle {
   display: none;
   align-items: center;
   justify-content: center;
   gap: 9px;
-  background: transparent;
-  border: 1px solid var(--v-line);
+  background: rgb(255 255 255 / 0.08);
+  border: 1px solid rgb(255 255 255 / 0.2);
+  color: inherit;
   min-height: 44px;
-  padding: 8px 16px;
+  padding: 8px 18px;
   border-radius: 100px;
+  font-size: var(--v-t-control);
   cursor: pointer;
 }
 
-/* Static introduction. The frame sequence remains deferred. */
-.v-intro {
-  max-width: 1600px;
-  margin: auto;
-  padding: 44px var(--v-gutter) 58px;
-  display: grid;
-  grid-template-columns: 1.05fr 1fr;
-  align-items: stretch;
-  gap: clamp(28px, 4vw, 70px);
-}
-.v-intro-copy {
-  padding: 35px 0 8px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
+/* Eyebrows are the one place the site sets Latin in caps, so they carry the
+   wide tracking that makes caps readable and the tabular figures that keep a
+   numbered one from shifting. */
 .v-eyebrow {
   color: var(--v-burgundy);
-  font-size: 11px;
+  font-size: var(--v-t-fine);
   font-weight: 600;
-  letter-spacing: 0.14em;
+  letter-spacing: var(--v-tracking-eyebrow);
+  font-variant-numeric: tabular-nums;
+  text-transform: uppercase;
   margin-bottom: 22px;
   display: flex;
   align-items: center;
@@ -214,21 +361,6 @@
   height: 1px;
   background: currentColor;
   flex-shrink: 0;
-}
-.v-intro h1 {
-  font-size: clamp(44px, 4.7vw, 73px);
-  line-height: 1.5;
-  font-weight: 500;
-}
-.v-intro h1 span {
-  color: var(--v-burgundy);
-}
-.v-intro-description {
-  color: var(--v-muted);
-  font-size: 17px;
-  line-height: 1.95;
-  margin: 25px 0 29px;
-  max-width: 440px;
 }
 .v-actions {
   display: flex;
@@ -291,81 +423,492 @@
   color: var(--v-burgundy);
   border-color: currentColor;
 }
-.v-intro-signature {
-  margin-top: auto;
-  padding-top: 42px;
-  display: flex;
-  align-items: flex-start;
-  gap: 16px;
-}
-.v-intro-signature > span {
-  color: var(--v-burgundy);
-  font-size: 12px;
-  padding-top: 3px;
-}
-.v-intro-signature p {
-  font-size: 14px;
-}
-.v-intro-signature small {
-  display: block;
-  color: var(--v-muted);
-  font-size: 12px;
-  margin-top: 4px;
-}
-.v-intro-visual {
-  width: 100%;
+
+/* ============================================================
+   Cinematic opening
+   ------------------------------------------------------------
+   Two pinned stages run the top of the homepage. Each publishes its own
+   scroll position onto itself as custom properties (see CinematicHero.tsx and
+   ApertureSection.tsx) and everything below is a pure function of those
+   numbers — no keyframes, so the reduced-motion reset has nothing to fight and
+   each stage can rest in the state that makes sense for it.
+
+   Two dials govern how much of the footage reaches the reader, set once on
+   .v-site: the frames play at 75% opacity (down 25%) so the type and the bars
+   keep their contrast, and the dark veil over them carries 65% of its original
+   weight (down 35%) so the footage is not buried under it.
+   ============================================================ */
+
+.v-cine {
   position: relative;
-  min-width: 0;
-  min-height: 540px;
-  margin: 0;
-  border-radius: 120px 24px 24px;
-  overflow: hidden;
-  background: #d9cbbc;
   isolation: isolate;
+  /* The scrub range SPEC.md §20 asks for. Longer means a slower, more filmic
+     read of the same frames; the stage inside stays exactly one viewport tall. */
+  min-height: 400svh;
+  background: var(--v-cine-ink);
+  color: var(--v-cine-paper);
 }
-.v-intro-image {
+
+.v-cine[data-sequence="off"] {
+  min-height: 100svh;
+}
+
+.v-cine-stage {
+  --v-progress: 0;
+  --v-exit: 0;
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  place-items: center;
+  overflow: clip;
+  padding: calc(var(--v-header-h) + 24px) var(--v-gutter) 0;
+}
+
+.v-cine-media {
   position: absolute;
   inset: 0;
-  z-index: -2;
+  z-index: 0;
+  opacity: var(--v-media-opacity);
+  /* The hand-off. Over the last fifth of the scroll the footage softens,
+     drifts forward and loses a little colour, so the final frame dissolves
+     into the section below instead of ending on a cut. */
+  filter: blur(calc(var(--v-exit) * 12px)) saturate(calc(1 - var(--v-exit) * 0.3));
+  transform: scale(calc(1 + var(--v-exit) * 0.05));
+  transform-origin: 50% 46%;
 }
-.v-intro-image img {
+
+.v-cine-canvas,
+.v-cine-still {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-  object-position: 60% center;
 }
-.v-intro-visual::after {
+
+.v-cine-canvas {
+  opacity: 0;
+  transition: opacity 0.9s ease;
+}
+
+.v-cine-canvas[data-ready="true"] {
+  opacity: 1;
+}
+
+.v-cine-veil {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgb(8 6 7 / calc(0.74 * var(--v-veil))) 0%,
+    rgb(8 6 7 / calc(0.3 * var(--v-veil))) 34%,
+    rgb(8 6 7 / calc(0.52 * var(--v-veil))) 68%,
+    rgb(8 6 7 / calc(0.94 * var(--v-veil))) 100%
+  );
+}
+
+.v-cine-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    118% 86% at 50% 42%,
+    transparent 34%,
+    rgb(6 4 5 / calc(0.78 * var(--v-veil))) 100%
+  );
+}
+
+.v-cine-inner {
+  position: relative;
+  z-index: 2;
+  align-self: center;
+  width: min(60rem, 100%);
+  display: grid;
+  justify-items: center;
+  text-align: center;
+  gap: clamp(18px, 2.4vw, 30px);
+  /* The copy leaves before the footage does, so the two never fight. */
+  transform: translateY(calc(var(--v-progress) * -3.5rem));
+  opacity: calc(1 - var(--v-exit));
+}
+
+.v-cine-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 18px 8px 14px;
+  border: 1px solid rgb(255 255 255 / 0.22);
+  border-radius: 100px;
+  background: rgb(255 255 255 / 0.07);
+  backdrop-filter: blur(14px);
+  font-size: var(--v-t-fine);
+  letter-spacing: 0.02em;
+  color: rgb(255 255 255 / 0.88);
+}
+
+.v-cine-badge small {
+  color: rgb(255 255 255 / 0.58);
+  font-size: inherit;
+}
+
+.v-cine-badge small::before {
+  content: "·";
+  margin-inline-end: 8px;
+}
+
+.v-cine-badge-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--v-cine-glow);
+  box-shadow: 0 0 0 4px rgb(214 168 116 / 0.16);
+  flex-shrink: 0;
+}
+
+.v-cine-title {
+  margin: 0;
+  font-size: var(--v-t-display);
+  font-weight: 300;
+  line-height: var(--v-leading-display);
+  letter-spacing: var(--v-tracking-display);
+  text-wrap: balance;
+  color: #fff;
+  text-shadow: 0 2px 40px rgb(0 0 0 / 0.45);
+}
+
+.v-cine-title span {
+  display: block;
+  font-weight: 400;
+  background: linear-gradient(92deg, #fff 18%, var(--v-cine-glow) 96%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.v-cine-lede {
+  max-width: 48ch;
+  margin: 0;
+  font-size: var(--v-t-lede);
+  line-height: 1.95;
+  color: rgb(246 241 236 / 0.82);
+  text-wrap: pretty;
+}
+
+.v-cine-action {
+  margin-top: clamp(6px, 1.2vw, 16px);
+}
+
+.v-cine-cue {
+  position: relative;
+  z-index: 2;
+  align-self: end;
+  margin: 0 0 clamp(22px, 4vh, 44px);
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+  font-family: var(--v-display);
+  font-size: var(--v-t-fine);
+  font-style: italic;
+  letter-spacing: 0.06em;
+  color: rgb(255 255 255 / 0.62);
+  opacity: calc(1 - var(--v-progress) * 2.6);
+}
+
+.v-cine-cue-rule {
+  width: 1px;
+  height: clamp(30px, 6vh, 54px);
+  background: linear-gradient(180deg, transparent, rgb(255 255 255 / 0.65));
+}
+
+/* The feathered seam. This band belongs to the section, not to the pinned
+   stage, so it rises over the last frame as the reader reaches the end of the
+   scrub — blurring what is behind it and settling on the tone the next section
+   opens in. */
+.v-cine-seam {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  z-index: 3;
+  height: 34svh;
+  pointer-events: none;
+  backdrop-filter: blur(16px) saturate(0.9);
+  background: linear-gradient(
+    180deg,
+    rgb(13 10 12 / 0) 0%,
+    rgb(13 10 12 / 0.3) 55%,
+    rgb(13 10 12 / 0.72) 100%
+  );
+  -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 62%, #000 100%);
+  mask-image: linear-gradient(180deg, transparent 0%, #000 62%, #000 100%);
+}
+
+/* ============================================================
+   Aperture reveal
+   ============================================================ */
+
+.v-aperture {
+  position: relative;
+  isolation: isolate;
+  min-height: 300svh;
+  background: var(--v-cine-ink);
+  color: var(--v-cine-paper);
+}
+
+.v-aperture[data-sequence="off"] {
+  min-height: 240svh;
+}
+
+.v-aperture-stage::before {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, #211b1812 50%, #211b18c9 100%);
-  z-index: -1;
+  z-index: 0;
+  background: radial-gradient(
+    64% 38% at 50% 50%,
+    rgb(214 168 116 / calc(0.2 * (1 - var(--v-open)))),
+    transparent 72%
+  );
 }
-.v-intro-visual figcaption {
+
+.v-aperture-stage {
+  --v-progress: 0;
+  --v-open: 0;
+  --v-focus: 0;
+  --v-copy: 0;
+  --v-copy-in: 0;
+  --v-close: 0;
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: clip;
+}
+
+/* The screen opens from the middle: a centre seam that grows to full bleed. */
+.v-aperture-shutter {
   position: absolute;
-  bottom: 29px;
-  left: 34px;
-  right: 30px;
-  color: white;
+  inset: 0;
+  z-index: 0;
+  clip-path: inset(
+    calc((1 - var(--v-open)) * 50%) calc((1 - var(--v-open)) * 4%) calc((1 - var(--v-open)) * 50%)
+      calc((1 - var(--v-open)) * 4%)
+  );
 }
-.v-intro-visual figcaption > span {
-  font-size: 22px;
+
+.v-aperture-media {
+  position: absolute;
+  inset: 0;
+  opacity: var(--v-media-opacity);
+  /* Carries the hero's softness across the join and resolves it as the
+     aperture widens, so the two sections meet out of focus rather than
+     edge to edge. */
+  filter: blur(calc((1 - var(--v-focus)) * 22px));
+  transform: scale(calc(1.09 - var(--v-focus) * 0.09));
 }
-.v-intro-visual figcaption small {
+
+.v-aperture-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 0.9s ease;
+}
+
+.v-aperture-canvas[data-ready="true"] {
+  opacity: 1;
+}
+
+/* Shown until a clip is imported: the aperture opens onto type, never onto
+   stock photography standing in for real work. */
+.v-aperture-panel {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: clamp(4px, 1vh, 14px);
+  background:
+    radial-gradient(90% 70% at 30% 20%, rgb(120 28 59 / 0.5), transparent 70%),
+    radial-gradient(80% 80% at 78% 84%, rgb(214 168 116 / 0.22), transparent 72%),
+    linear-gradient(160deg, #1a1215, #0d0a0c 70%);
+  font-size: clamp(2.4rem, 8vw, 6.5rem);
+  font-weight: 300;
+  line-height: 1.3;
+  letter-spacing: var(--v-tracking-display);
+  color: rgb(255 255 255 / 0.11);
+}
+
+.v-aperture-veil {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      270deg,
+      rgb(8 6 7 / 0.82) 0%,
+      rgb(8 6 7 / calc(0.55 * var(--v-veil))) 34%,
+      rgb(8 6 7 / calc(0.26 * var(--v-veil))) 62%,
+      rgb(8 6 7 / calc(0.5 * var(--v-veil))) 100%
+    ),
+    linear-gradient(180deg, rgb(8 6 7 / calc(0.55 * var(--v-veil))) 0%, transparent 30%);
+}
+
+/* The hairline the screen parts along; it glows before the opening and
+   blurs away as the aperture takes over. */
+.v-aperture-seam {
+  position: absolute;
+  z-index: 1;
+  inset-inline: var(--v-gutter);
+  top: 50%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgb(255 255 255 / 0.28) 18%,
+    var(--v-cine-glow) 50%,
+    rgb(255 255 255 / 0.28) 82%,
+    transparent
+  );
+  opacity: calc(1 - var(--v-open));
+  filter: blur(calc(var(--v-open) * 4px));
+}
+
+/* The closing feather, mirroring the one at the end of the hero. It is a layer
+   of the stage rather than a band of the section: a sticky element is its own
+   stacking context, so a band on the section would paint over the copy inside
+   the stage and no z-index on the copy could lift it back out. */
+.v-aperture-close {
+  position: absolute;
+  z-index: 1;
+  inset-inline: 0;
+  bottom: 0;
+  height: 40svh;
+  pointer-events: none;
+  opacity: var(--v-close);
+  background: linear-gradient(180deg, rgb(13 10 12 / 0) 0%, rgb(13 10 12 / 0.55) 42%, #f1ece8 100%);
+}
+
+.v-aperture-copy {
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  inset-inline-end: var(--v-gutter);
+  width: min(30rem, 44vw);
+  transform: translateY(-50%) translateX(calc((1 - var(--v-copy-in)) * 2.5rem));
+  opacity: var(--v-copy);
+}
+
+.v-aperture-copy .v-eyebrow {
+  color: var(--v-cine-glow);
+  margin-bottom: 18px;
+}
+
+.v-aperture-copy h2 {
+  margin: 0 0 clamp(14px, 2vw, 22px);
+  font-size: var(--v-t-section);
+  font-weight: 300;
+  line-height: var(--v-leading-heading);
+  letter-spacing: var(--v-tracking-heading);
+  color: #fff;
+  text-wrap: balance;
+}
+
+.v-aperture-copy h2 span {
   display: block;
-  margin-top: 5px;
-  font-size: 12px;
-  color: #eee6df;
+  color: rgb(246 241 236 / 0.74);
 }
-.v-intro-image-label {
-  position: absolute;
-  top: 26px;
-  right: 26px;
-  padding: 7px 12px;
-  border: 1px solid #ffffff70;
+
+.v-aperture-lede {
+  margin: 0 0 clamp(20px, 2.6vw, 30px);
+  font-size: var(--v-t-body);
+  line-height: 1.95;
+  color: rgb(246 241 236 / 0.76);
+  text-wrap: pretty;
+}
+
+.v-aperture-rail ul {
+  list-style: none;
+  margin: 0 0 clamp(22px, 3vw, 34px);
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.v-aperture-rail a {
+  display: inline-block;
+  padding: 7px 15px;
+  border: 1px solid rgb(255 255 255 / 0.2);
   border-radius: 100px;
-  color: white;
-  background: #30231d66;
-  font-size: 9px;
-  letter-spacing: 0.12em;
+  background: rgb(255 255 255 / 0.05);
+  font-size: var(--v-t-fine);
+  color: rgb(246 241 236 / 0.86);
+  transition:
+    background 0.2s,
+    border-color 0.2s,
+    color 0.2s;
+}
+
+.v-aperture-rail a:hover {
+  background: rgb(255 255 255 / 0.14);
+  border-color: rgb(255 255 255 / 0.5);
+  color: #fff;
+}
+
+/* ============================================================
+   Pill controls, shared by both stages
+   ============================================================ */
+
+.v-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 52px;
+  padding: 13px 28px;
+  border-radius: 100px;
+  border: 1px solid transparent;
+  font-size: var(--v-t-control);
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  transition:
+    background 0.22s,
+    border-color 0.22s,
+    color 0.22s,
+    transform 0.22s;
+}
+
+.v-pill:hover {
+  transform: translateY(-2px);
+}
+
+.v-pill .site-icon {
+  transition: transform 0.22s;
+}
+
+.v-pill:hover .site-icon {
+  transform: translateX(4px);
+}
+
+.v-pill-ghost {
+  border-color: rgb(255 255 255 / 0.38);
+  background: rgb(255 255 255 / 0.07);
+  backdrop-filter: blur(14px);
+  color: #fff;
+}
+
+.v-pill-ghost:hover {
+  background: rgb(255 255 255 / 0.16);
+  border-color: #fff;
+}
+
+.v-pill-solid {
+  background: var(--v-cine-paper);
+  color: var(--v-cine-ink);
+}
+
+.v-pill-solid:hover {
+  background: #fff;
 }
 
 /* Quiet typographic ribbon */
@@ -1448,48 +1991,30 @@
   background: #59122b;
 }
 
-@media (min-width: 1600px) {
-  .v-header {
-    padding-inline: max(var(--v-gutter), calc((100vw - 1440px) / 2));
-  }
-}
 @media (max-width: 1180px) {
   .v-header {
-    padding-inline: 28px;
-    gap: 20px;
+    gap: 16px;
   }
   .v-header nav {
-    gap: 17px;
-    font-size: 13px;
+    gap: 2px;
+    font-size: 13.5px;
+  }
+  .v-header nav > a,
+  .v-products-nav > a {
+    padding-inline: 11px;
   }
   .v-brand strong {
-    font-size: 14px;
+    font-size: 13.5px;
   }
   .v-brand img {
-    width: 46px;
-    height: 46px;
+    width: 36px;
+    height: 36px;
   }
   .v-header nav > a:last-child {
     padding-inline: 18px;
   }
-  .v-intro {
-    gap: 28px;
-  }
-  .v-intro h1 {
-    font-size: clamp(40px, 4.8vw, 60px);
-  }
-  .v-intro-visual {
-    min-height: 530px;
-    border-top-left-radius: 90px;
-  }
-  .v-intro-copy {
-    padding-top: 25px;
-  }
   .v-actions {
     gap: 16px;
-  }
-  .v-intro-description {
-    font-size: 16px;
   }
   .v-bento-copy {
     max-width: 95%;
@@ -1506,43 +2031,40 @@
 }
 @media (max-width: 1000px) {
   .v-header {
-    min-height: 86px;
-    padding-block: 16px;
+    padding-block: 9px;
   }
   .v-menu-toggle {
     display: inline-flex;
-    font-size: 14px;
   }
+  /* The drawer hangs off the pill as its own panel, in the same glass. */
   .v-header nav {
     display: none;
     position: absolute;
-    top: 100%;
+    top: calc(100% + 10px);
     left: 0;
     right: 0;
-    padding: 18px 28px 25px;
-    background: var(--v-paper);
-    border-bottom: 1px solid var(--v-line);
-    box-shadow: 0 16px 25px #30262c10;
+    padding: 14px;
+    border: 1px solid rgb(255 255 255 / 0.14);
+    border-radius: 26px;
+    background: rgb(17 13 15 / 0.98);
+    box-shadow: 0 22px 60px rgb(8 6 7 / 0.45);
     flex-direction: column;
     align-items: stretch;
-    gap: 0;
-    font-size: 16px;
+    gap: 2px;
+    font-size: var(--v-t-body);
   }
   .v-header nav.open {
     display: flex;
   }
   .v-header nav > a,
   .v-products-nav > a {
-    padding: 12px 4px;
+    padding: 12px 16px;
+    border-radius: 14px;
   }
   .v-header nav > a:last-child {
-    margin-top: 12px;
+    margin: 10px 0 0;
     text-align: center;
-  }
-  .v-header nav > a[aria-current="page"]::after,
-  .v-products-nav > a[aria-current="page"]::after {
-    bottom: 7px;
-    left: 4px;
+    justify-content: center;
   }
   .v-products-nav {
     flex-wrap: wrap;
@@ -1566,29 +2088,12 @@
   .v-megamenu {
     position: static;
     width: 100%;
-    margin-bottom: 12px;
-    border-radius: 12px;
+    margin-bottom: 8px;
+    border: none;
+    border-radius: 16px;
+    background: rgb(255 255 255 / 0.05);
     box-shadow: none;
-    font-size: 14px;
-  }
-  .v-intro {
-    padding-top: 32px;
-  }
-  .v-intro-visual {
-    min-height: 550px;
-  }
-  .v-intro-signature {
-    padding-top: 27px;
-  }
-  .v-intro-signature > span {
-    display: none;
-  }
-  .v-intro-visual figcaption {
-    left: 25px;
-    right: 25px;
-  }
-  .v-intro-visual figcaption > span {
-    font-size: 20px;
+    font-size: var(--v-t-control);
   }
   .v-section-heading {
     align-items: flex-start;
@@ -1630,9 +2135,8 @@
     --v-radius: 16px;
   }
   .v-header {
-    min-height: 82px;
-    padding: 15px 20px;
-    gap: 12px;
+    padding: 8px 10px 8px 12px;
+    gap: 10px;
   }
   .v-brand {
     gap: 10px;
@@ -1641,11 +2145,11 @@
     font-size: 13px;
   }
   .v-brand small {
-    font-size: 11px;
+    font-size: 10.5px;
   }
   .v-brand img {
-    width: 42px;
-    height: 42px;
+    width: 34px;
+    height: 34px;
   }
   .v-menu-toggle {
     font-size: 13px;
@@ -1659,27 +2163,10 @@
   .v-header nav {
     padding-inline: 24px;
   }
-  .v-intro {
-    grid-template-columns: 1fr;
-    gap: 35px;
-    padding-top: 16px;
-    padding-bottom: 35px;
-  }
-  .v-intro-copy {
-    padding-top: 24px;
-  }
   .v-eyebrow {
     font-size: 10px;
     margin-bottom: 18px;
     gap: 11px;
-  }
-  .v-intro h1 {
-    font-size: clamp(38px, 8.5vw, 60px);
-    line-height: 1.5;
-  }
-  .v-intro-description {
-    margin-block: 19px 24px;
-    font-size: 16px;
   }
   .v-actions {
     gap: 15px 22px;
@@ -1691,41 +2178,6 @@
   }
   .v-text-link {
     font-size: 14px;
-  }
-  .v-intro-signature {
-    margin-top: 28px;
-    padding-top: 21px;
-    border-top: 1px solid var(--v-line);
-    width: 100%;
-  }
-  .v-intro-signature > span {
-    display: block;
-  }
-  .v-intro-signature p {
-    font-size: 13px;
-  }
-  .v-intro-signature small {
-    font-size: 11px;
-  }
-  .v-intro-visual {
-    min-height: 360px;
-    aspect-ratio: 1.1;
-    border-radius: 70px 18px 18px;
-  }
-  .v-intro-image img {
-    object-position: center 58%;
-  }
-  .v-intro-visual figcaption {
-    left: 24px;
-    bottom: 24px;
-  }
-  .v-intro-visual figcaption > span {
-    font-size: 20px;
-  }
-  .v-intro-image-label {
-    top: 20px;
-    right: 18px;
-    font-size: 8px;
   }
   .v-marquees {
     padding: 14px 0;
@@ -2058,7 +2510,7 @@
     --v-gutter: 20px;
   }
   .v-header {
-    padding-inline: 14px;
+    padding-inline: 10px;
   }
   .v-brand strong {
     font-size: 12px;
@@ -2067,13 +2519,7 @@
     font-size: 10px;
   }
   .v-menu-toggle {
-    padding-inline: 10px;
-  }
-  .v-intro h1 {
-    font-size: 37px;
-  }
-  .v-intro-visual {
-    min-height: 330px;
+    padding-inline: 12px;
   }
   .v-bento-copy h3 {
     font-size: 24px;
@@ -2094,6 +2540,127 @@
     padding: 21px;
   }
 }
+/* ============================================================
+   Cinematic stages — narrow screens and reduced motion
+   ============================================================ */
+
+@media (max-width: 1000px) {
+  .v-site {
+    --v-header-h: 76px;
+  }
+  /* Portrait has no room for a column beside the frame, so the copy moves
+     under the opening and the aperture parts across the full width. */
+  .v-aperture-stage {
+    display: grid;
+    grid-template-rows: 1fr auto;
+  }
+  .v-aperture-shutter {
+    clip-path: inset(calc((1 - var(--v-open)) * 46.5%) 0 calc((1 - var(--v-open)) * 46.5%) 0);
+  }
+  .v-aperture-veil {
+    background: linear-gradient(
+      180deg,
+      rgb(8 6 7 / calc(0.5 * var(--v-veil))) 0%,
+      rgb(8 6 7 / calc(0.25 * var(--v-veil))) 34%,
+      rgb(8 6 7 / calc(0.92 * var(--v-veil))) 100%
+    );
+  }
+  .v-aperture-copy {
+    position: relative;
+    top: auto;
+    inset-inline-end: auto;
+    grid-row: 2;
+    width: 100%;
+    padding: 0 var(--v-gutter) clamp(36px, 7vh, 72px);
+    transform: translateY(calc((1 - var(--v-copy-in)) * 1.5rem));
+  }
+  .v-cine-seam {
+    height: 38svh;
+  }
+}
+
+@media (max-width: 760px) {
+  .v-site {
+    --v-header-h: 68px;
+  }
+  .v-cine {
+    min-height: 340svh;
+  }
+  .v-aperture {
+    min-height: 260svh;
+  }
+  .v-cine-lede br.v-break-wide {
+    display: none;
+  }
+  .v-cine-badge {
+    flex-wrap: wrap;
+    justify-content: center;
+    text-align: center;
+    row-gap: 2px;
+  }
+  .v-cine-badge small::before {
+    content: none;
+  }
+}
+
+/* Short windows, landscape phones most of all: the pinned stage is only as
+   tall as the viewport, so the opening has to be sized against the height as
+   well as the width or the button falls out of the bottom of it. */
+@media (max-height: 620px) {
+  .v-site {
+    --v-t-display: clamp(1.9rem, 6.2vh, 3rem);
+    --v-t-lede: 0.95rem;
+  }
+  .v-cine-stage {
+    padding-top: calc(var(--v-header-h) + 10px);
+  }
+  .v-cine-inner {
+    gap: 10px;
+  }
+  .v-cine-badge {
+    padding-block: 6px;
+  }
+  .v-cine-cue {
+    display: none;
+  }
+  .v-aperture-copy h2 {
+    font-size: clamp(1.5rem, 5vh, 2.2rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* No scrub range, no pinning, and each stage rests where its content is
+     readable: the hero on its opening frame, the aperture fully open. The
+     resting values are also written inline by the components, because an
+     inline custom property set from JavaScript outranks this block. */
+  .v-cine,
+  .v-aperture,
+  .v-cine[data-sequence="off"],
+  .v-aperture[data-sequence="off"] {
+    min-height: 0;
+  }
+  .v-cine-stage,
+  .v-aperture-stage {
+    position: relative;
+    height: auto;
+    min-height: 100svh;
+  }
+  .v-cine-stage {
+    --v-progress: 0;
+    --v-exit: 0;
+  }
+  .v-aperture-stage {
+    --v-open: 1;
+    --v-focus: 1;
+    --v-copy: 1;
+    --v-copy-in: 1;
+    --v-close: 0;
+  }
+  .v-cine-seam {
+    display: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .v-site *,
   .v-site *::before,

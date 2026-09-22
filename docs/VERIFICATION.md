@@ -2,6 +2,21 @@
 
 Implementation verified in isolated test environments, September 2026. Test accounts, products, news and generated frame fixtures are not seeded or committed.
 
+## Cinematic opening — 22 September 2026
+
+The homepage now opens on two scroll-driven stages: `CinematicHero`, whose frame sequence is scrubbed frame by frame, and `ApertureSection`, which opens from its centre line onto a second sequence with the copy set on the right. The retired `VocationalHero` and `ScrollSequence` are removed, along with their CSS.
+
+- **No real footage reached this environment.** Every browser check below used temporary synthetic frames, generated locally and deleted afterwards; `public/frames` is empty in the commit. Visual continuity, decode cost and image quality of the intended clips are therefore **not** verified, and remain to be reviewed against the real sequences after import.
+- With no sequence imported — the committed state — both sections render their static composition: zero canvases in the document, the hero exactly one viewport tall, and no frame requests. Confirmed in the browser.
+- With synthetic 60-frame sets imported into both `hero` and `reveal`, reviewed at 1440×900 and 390×844 across the hero's start, middle and exit, the hand-off band, and the aperture's slit, opening, open and closing states. The hero's last frame blurs and desaturates into a feathered seam; the aperture rests on a lit slit rather than on a black screen, and resolves its blur as it widens.
+- `node scripts/verify-scroll-sequence.mjs` passes against the rebuilt fixture, which now loads the real player, stage tracker and manifest modules and wires them exactly as the component does: frames 001/038/076/113/150 by pixel value at their scroll positions, backwards scrolling, rapid jumps converging, idle frames not advancing, DPR 2 backing size, resize, cleanup and restart, a deliberately slow frame converging without another scroll event, a 404 frame retaining the nearest loaded image without blanking the canvas, and 390×844 / 320×568 / 844×390 with no clipped hero content or horizontal overflow.
+- Reduced motion is verified end to end: each stage rests where its content is readable — the hero on its opening frame, the aperture fully open — and only frame 001 is ever requested. Toggling the preference at runtime starts and stops playback in both directions.
+- The importer accepts a folder as well as a ZIP, PNG or JPEG, any source length, and samples down to exactly 150 frames by default (8–600 via `--max`) into a named set. Exercised against a 37-frame folder, a 12-frame JPEG ZIP and a 60-frame set per stage; a rejected import leaves the previous sequence and its manifest intact.
+- The navigation is a floating pill bar. It is solid over ordinary pages and glass only over the cinematic opening, selected with `:has()` so a browser without it keeps the solid, legible bar. Panels inside the bar carry their own ground, because a parent with `backdrop-filter` is a backdrop root and a blur on a child of it never lands.
+- Short viewports are sized against height as well as width: at 844×390 the opening previously pushed its button out of the pinned stage, which the browser check now covers.
+- All **249 tests across 30 files** pass, including 17 new ones over the manifest contract, frame naming and URL construction, stage progress, range remapping and preload anchors. TypeScript, ESLint and Prettier checks pass. The production build passes with `NEXT_STANDALONE=false`.
+- The database was not touched. No product, event or photograph is invented: the hero's no-footage fallback is the existing labeled conceptual illustration, and the aperture falls back to a typographic panel. The supplied emblem is used unmodified, on a light chip for contrast on the dark bar.
+
 ## Visual redesign — 22 September 2026
 
 - Reworked public typography, navigation, collection cards, story sections, catalog filters, empty states, contact panels and footer. The static introduction uses the original labeled conceptual image; cinematic activation remains deferred.
@@ -43,7 +58,7 @@ The earlier baseline checks below describe the previous implementation verificat
 
 ## Deployment limits
 
-Work on `frames_150.zip` is deferred by request. Actual visual continuity, decoding cost and image quality of the intended 150-frame sequence will be reviewed in the later hero phase. The current introduction is a labeled static conceptual illustration from the original project; importing frames does not activate the player automatically.
+No real footage has been imported. The scroll-driven opening is verified with synthetic frames only, so the visual continuity, decoding cost and image quality of the intended sequences still need a review against the real clips after `pnpm frames:import`. Until then the homepage renders its static composition, whose hero image is a labeled conceptual illustration from the original project.
 
 No real products, product photos or vocational news have been invented. Administrators must populate the live catalog. No production host, DNS, TLS, SMTP or external backup restoration has been deployed or verified. Local integration checks use PGlite; the included GitHub CI workflow separately targets PostgreSQL 16.
 
