@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   MAX_SLUG_LENGTH,
   categoryPath,
+  decodeSlugParam,
   productPath,
   slugify,
   slugifyWithFallback,
@@ -94,5 +95,26 @@ describe("paths", () => {
 
   it("prefixes every other locale", () => {
     expect(productPath("en", "paper-wreath")).toBe("/en/product/paper-wreath");
+  });
+});
+
+describe("decodeSlugParam", () => {
+  it("decodes the percent-encoded Thai a browser actually sends", () => {
+    expect(decodeSlugParam(encodeURIComponent("พวงหรีดกระดาษ"))).toBe("พวงหรีดกระดาษ");
+  });
+
+  it("round-trips a slugified Thai title", () => {
+    const slug = slugify("พวงหรีด ดอกไม้ประดิษฐ์");
+    expect(decodeSlugParam(encodeURIComponent(slug))).toBe(slug);
+  });
+
+  it("leaves an already-decoded slug untouched", () => {
+    expect(decodeSlugParam("พวงหรีดกระดาษ")).toBe("พวงหรีดกระดาษ");
+    expect(decodeSlugParam("fiberglass-bench-2026")).toBe("fiberglass-bench-2026");
+  });
+
+  it("returns the raw value for a malformed sequence rather than throwing", () => {
+    expect(decodeSlugParam("%zz")).toBe("%zz");
+    expect(decodeSlugParam("%E0%A4%A")).toBe("%E0%A4%A");
   });
 });

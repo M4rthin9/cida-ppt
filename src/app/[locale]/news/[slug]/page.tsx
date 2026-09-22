@@ -7,6 +7,7 @@ import { publicMetadata } from "@/lib/seo/metadata";
 import { JsonLd, articleJsonLd, breadcrumbJsonLd } from "@/lib/seo/jsonld";
 import { assertEnv } from "@/lib/env";
 import { getCachedSetting } from "@/lib/settings/cached";
+import { decodeSlugParam } from "@/lib/slug";
 export const dynamic = "force-dynamic";
 export async function generateMetadata({
   params,
@@ -14,7 +15,7 @@ export async function generateMetadata({
   params: Promise<{ locale: string; slug: string }>;
 }) {
   const { locale, slug } = await params,
-    n = (await listNews({ slug: slug })).items[0];
+    n = (await listNews({ slug: decodeSlugParam(slug) })).items[0];
   return n
     ? publicMetadata({
         locale,
@@ -33,7 +34,7 @@ export default async function Page({
   params: Promise<{ locale: string; slug: string }>;
 }) {
   const { locale, slug } = await params,
-    n = (await listNews({ slug: slug })).items[0];
+    n = (await listNews({ slug: decodeSlugParam(slug) })).items[0];
   if (!n) notFound();
   const [images, general] = await Promise.all([
     gallery(n.id, "news"),

@@ -8,6 +8,7 @@ import { goLinePath } from "@/lib/line";
 import { publicMetadata } from "@/lib/seo/metadata";
 import { JsonLd, breadcrumbJsonLd, productJsonLd } from "@/lib/seo/jsonld";
 import { assertEnv } from "@/lib/env";
+import { decodeSlugParam } from "@/lib/slug";
 export const dynamic = "force-dynamic";
 export async function generateMetadata({
   params,
@@ -15,7 +16,7 @@ export async function generateMetadata({
   params: Promise<{ locale: string; slug: string }>;
 }) {
   const { locale, slug } = await params,
-    p = (await listProducts({ slug: slug, limit: 1 })).items[0];
+    p = (await listProducts({ slug: decodeSlugParam(slug), limit: 1 })).items[0];
   if (!p) return {};
   return publicMetadata({
     locale,
@@ -31,7 +32,7 @@ export default async function Page({
   params: Promise<{ locale: string; slug: string }>;
 }) {
   const { locale, slug } = await params,
-    p = (await listProducts({ slug: slug, limit: 1 })).items[0];
+    p = (await listProducts({ slug: decodeSlugParam(slug), limit: 1 })).items[0];
   if (!p) notFound();
   const [images, related] = await Promise.all([
     gallery(p.id),

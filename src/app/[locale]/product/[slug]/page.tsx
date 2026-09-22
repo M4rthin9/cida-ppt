@@ -1,10 +1,12 @@
 import { permanentRedirect } from "next/navigation";
-import { localePrefix } from "@/lib/slug";
+import { decodeSlugParam, localePrefix } from "@/lib/slug";
 export default async function Page({
   params,
 }: {
   params: Promise<{ locale: string; slug: string }>;
 }) {
   const { locale, slug } = await params;
-  permanentRedirect(`${localePrefix(locale)}/products/${encodeURIComponent(slug)}`);
+  permanentRedirect(
+    `${localePrefix(locale)}/products/${encodeURIComponent(decodeSlugParam(slug))}`,
+  );
 }

@@ -10,6 +10,7 @@ import { JsonLd, breadcrumbJsonLd } from "@/lib/seo/jsonld";
 import { assertEnv } from "@/lib/env";
 import { Sections } from "@/components/sections/render";
 import { Breadcrumbs } from "@/components/site/breadcrumbs";
+import { decodeSlugParam } from "@/lib/slug";
 
 /**
  * CMS-managed static pages — §5's `/about`, `/how-to-order`, `/privacy-policy`,
@@ -26,7 +27,7 @@ type Props = { params: Promise<{ locale: string; slug: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale, slug } = await params;
-  const page = await getPageBySlug(decodeURIComponent(slug), locale);
+  const page = await getPageBySlug(decodeSlugParam(slug), locale);
   if (!page) return {};
   return publicMetadata({
     locale,
@@ -40,7 +41,7 @@ export default async function CmsPage({ params }: Props) {
   const { locale, slug } = await params;
   setRequestLocale(locale);
 
-  const page = await getPageBySlug(decodeURIComponent(slug), locale);
+  const page = await getPageBySlug(decodeSlugParam(slug), locale);
   // The homepage has its own route; serving it here too would be a duplicate URL.
   if (!page || page.key === HOME_PAGE_KEY) notFound();
 
