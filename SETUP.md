@@ -27,6 +27,8 @@ Use `postgres://cida:cida@localhost:5432/cida` for this local database; the `db`
 
 On PowerShell use `pnpm.cmd` if the PowerShell shim is blocked. Supply `ADMIN_PASSWORD` via a secure prompt or your secret manager; do not commit it or put a real password in a command argument.
 
+For a local production build on Windows without symbolic-link permissions, set `$env:NEXT_STANDALONE = 'false'` before `pnpm.cmd build` and keep that value for `pnpm.cmd start`. This builds the normal Next.js server output without the deployment bundle. Leave this variable unset for Linux, Docker and CI, which keep the existing standalone deployment output. No operating-system permission changes are needed for local review.
+
 ## Production configuration
 
 Set these before building and running:
@@ -75,7 +77,9 @@ Editors can manage products, categories, media, news and inquiries. Owners also 
 
 ## Cinematic assets
 
-The requested `frames_150.zip` has not been supplied. After placing it in `public/`, run `pnpm frames:import` before the production build. It validates all 150 original PNGs and writes the manifest last, so incomplete sequences never activate. Large frame delivery/storage can later be moved to a CDN while keeping the player manifest contract.
+The cinematic hero is intentionally deferred until the public and CMS structure is finished. The homepage uses the server-rendered `VocationalHero` static introduction, which requires no archive, canvas, frame requests or scroll player JavaScript. Continue building and reviewing the rest of the application without `frames_150.zip`.
+
+For the later hero phase, retain `ScrollSequence` and the frame importer. Place `frames_150.zip` in `public/` and run `pnpm frames:import`; it validates all 150 original PNGs and writes the manifest last. Importing does not activate the animation. Reconnect the player to the homepage only when ready to review the real sequence, including responsive crops, loading, scroll performance and reduced motion. Large frame delivery/storage can later move to a CDN while keeping the player manifest contract.
 
 No real product photos, product inventory or vocational news are invented by the seed. Populate these through the CMS before launch. The hero fallback is explicitly labeled as a conceptual illustration.
 

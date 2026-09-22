@@ -75,6 +75,12 @@ describe("vocational publishing boundaries", () => {
       expect(priceLabel({ price_mode: mode, price: null, sale_price: null })).not.toMatch(/0/);
     }
   });
+  it("preserves only weights that fit the database precision and scale", () => {
+    for (const weight of [null, "", "1.125", "999999999.999"])
+      expect(productInput.safeParse({ ...product, weight }).success).toBe(true);
+    for (const weight of [-1, "1.0001", "1000000000"])
+      expect(productInput.safeParse({ ...product, weight }).success).toBe(false);
+  });
   it("rejects duplicate gallery references and unsupported publishing states", () => {
     expect(
       productInput.safeParse({ ...product, media_ids: [product.category_id, product.category_id] })
@@ -102,6 +108,9 @@ describe("vocational publishing boundaries", () => {
       type: "event",
     };
     expect(newsInput.safeParse(news).success).toBe(true);
-    expect(newsInput.safeParse({ ...news, published_at: "not a date" }).success).toBe(false);
+    for (const published_at of ["", "2026-01-01T09:30", "2026-01-01T09:30:00+07:00"])
+      expect(newsInput.safeParse({ ...news, published_at }).success).toBe(true);
+    for (const published_at of ["not a date", "2026-02-30T09:30", "2026-13-01T09:30", "1"])
+      expect(newsInput.safeParse({ ...news, published_at }).success).toBe(false);
   });
 });

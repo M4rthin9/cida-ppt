@@ -25,7 +25,15 @@ function SubmitButton() {
   );
 }
 
-export function ContactForm({ privacyNote }: { privacyNote: string }) {
+export function ContactForm({
+  privacyNote,
+  initialSubject,
+  initialBody,
+}: {
+  privacyNote: string;
+  initialSubject?: string;
+  initialBody?: string;
+}) {
   const t = useTranslations("contact");
   const [state, formAction] = useActionState(submitContactAction, INITIAL);
 
@@ -85,7 +93,7 @@ export function ContactForm({ privacyNote }: { privacyNote: string }) {
         name="subject"
         label={t("subject")}
         error={state.errors?.subject}
-        defaultValue={state.values?.subject}
+        defaultValue={state.values?.subject ?? initialSubject}
       >
         {(props) => <input type="text" {...props} />}
       </Field>
@@ -94,7 +102,7 @@ export function ContactForm({ privacyNote }: { privacyNote: string }) {
         name="body"
         label={t("message")}
         error={state.errors?.body}
-        defaultValue={state.values?.body}
+        defaultValue={state.values?.body ?? initialBody}
         required
       >
         {(props) => <textarea rows={6} {...props} />}

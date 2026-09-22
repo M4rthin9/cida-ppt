@@ -13,6 +13,12 @@ const money = amount.refine(
   (v) => v === null || Math.abs(v * 100 - Math.round(v * 100)) < 0.0001,
   "ราคาใช้ทศนิยมได้ไม่เกิน 2 ตำแหน่ง",
 );
+const weight = amount
+  .refine((v) => v === null || v <= 999999999.999, "น้ำหนักมากเกินไป")
+  .refine(
+    (v) => v === null || Math.abs(v * 1000 - Math.round(v * 1000)) < 0.0001,
+    "น้ำหนักใช้ทศนิยมได้ไม่เกิน 3 ตำแหน่ง",
+  );
 const integer = z.coerce
   .number()
   .int("ต้องเป็นจำนวนเต็ม")
@@ -63,7 +69,7 @@ export const productInput = z
       .refine((v) => new Set(v).size === v.length, "รูปภาพซ้ำกัน"),
     materials: text(),
     dimensions: text(500),
-    weight: amount,
+    weight,
     quantity: z.preprocess(
       (v) => (v === "" || v === null || v === undefined ? null : v),
       integer.nullable(),
@@ -99,7 +105,10 @@ export const newsInput = z
       .max(20)
       .refine((v) => new Set(v).size === v.length, "รูปภาพซ้ำกัน"),
     is_published: z.boolean(),
-    published_at: text(40).refine((v) => !v || !Number.isNaN(Date.parse(v)), "วันเวลาไม่ถูกต้อง"),
+    published_at: z.union([
+      z.literal(""),
+      z.iso.datetime({ local: true, offset: true, message: "วันเวลาไม่ถูกต้อง" }),
+    ]),
     seo_title: text(255),
     seo_description: text(1000),
     type: z.enum(["news", "event"]),

@@ -1,12 +1,17 @@
 import { listCategories } from "@/lib/vocational/data";
 import { CategoryBento } from "@/components/vocational/CategoryBento";
 import { StorySection } from "@/components/vocational/StorySection";
+import { publicMetadata } from "@/lib/seo/metadata";
 export const dynamic = "force-dynamic";
-export const metadata = {
-  title: "งานฝึกวิชาชีพผู้ต้องขัง",
-  description: "ฝึกอาชีพ สร้างทักษะ และเตรียมความพร้อมสู่การประกอบอาชีพ",
-  alternates: { canonical: "/vocational" },
-};
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  return publicMetadata({
+    locale,
+    paths: "/vocational",
+    title: "งานฝึกวิชาชีพผู้ต้องขัง",
+    description: "ฝึกอาชีพ สร้างทักษะ และเตรียมความพร้อมสู่การประกอบอาชีพ",
+  });
+}
 export default async function Page() {
   return (
     <main id="content">

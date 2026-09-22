@@ -1,31 +1,45 @@
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { listNews, gallery } from "@/lib/vocational/data";
 import { ProductGallery } from "@/components/vocational/ProductGallery";
+import { publicMetadata } from "@/lib/seo/metadata";
+import { JsonLd, articleJsonLd, breadcrumbJsonLd } from "@/lib/seo/jsonld";
+import { assertEnv } from "@/lib/env";
+import { getCachedSetting } from "@/lib/settings/cached";
 export const dynamic = "force-dynamic";
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params,
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string; slug: string }>;
+}) {
+  const { locale, slug } = await params,
     n = (await listNews({ slug: slug })).items[0];
   return n
-    ? {
+    ? publicMetadata({
+        locale,
+        paths: `/news/${n.slug}`,
         title: n.seo_title || n.title,
         description: n.seo_description || n.excerpt,
-        alternates: { canonical: `/news/${n.slug}` },
-        openGraph: {
-          type: "article",
-          title: n.title,
-          description: n.excerpt,
-          images: n.image_url ? [n.image_url] : undefined,
-        },
-      }
+        type: "article",
+        image: n.image_url || undefined,
+        publishedTime: n.published_at ? new Date(n.published_at) : undefined,
+      })
     : {};
 }
-export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params,
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ locale: string; slug: string }>;
+}) {
+  const { locale, slug } = await params,
     n = (await listNews({ slug: slug })).items[0];
   if (!n) notFound();
-  const images = await gallery(n.id, "news");
+  const [images, general] = await Promise.all([
+    gallery(n.id, "news"),
+    getCachedSetting("general", locale),
+  ]);
+  const base = assertEnv().NEXT_PUBLIC_SITE_URL;
   return (
     <main id="content" className="v-page v-article">
       <Link className="v-back" href="/news">
@@ -50,6 +64,25 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
       )}
       <div className="v-article-body">{n.description}</div>
       {images.length > 0 && <ProductGallery name={n.title} items={images} />}
+      <JsonLd
+        data={[
+          articleJsonLd({
+            base,
+            locale,
+            headline: n.title,
+            description: n.excerpt,
+            path: `/news/${n.slug}`,
+            image: n.image_url || undefined,
+            publishedAt: n.published_at ? new Date(n.published_at) : undefined,
+            siteName: general.siteName,
+          }),
+          breadcrumbJsonLd(base, locale, [
+            { name: "หน้าแรก", path: "/" },
+            { name: "ข่าวและกิจกรรม", path: "/news" },
+            { name: n.title, path: `/news/${n.slug}` },
+          ]),
+        ]}
+      />
     </main>
   );
 }

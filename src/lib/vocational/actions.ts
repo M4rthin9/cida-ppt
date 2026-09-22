@@ -12,6 +12,7 @@ import {
   readFields,
 } from "./validation";
 import type { ActionState } from "./types";
+import { duplicateProductName } from "./duplicate";
 import { z } from "zod";
 
 type Tx = import("postgres").TransactionSql;
@@ -293,7 +294,7 @@ export async function productCommand(
           await tx`insert into products ${tx(copy)}`;
           const translations = await tx`select * from product_i18n where product_id=${row.id}`;
           for (const t of translations)
-            await tx`insert into product_i18n ${tx({ ...t, product_id: newId, name: t.name ? `${t.name} (สำเนา)` : "", slug: `${String(t.slug).slice(0, 210)}-${newId}`, body: JSON.stringify(t.body), created_at: new Date().toISOString(), updated_at: new Date().toISOString() })}`;
+            await tx`insert into product_i18n ${tx({ ...t, product_id: newId, name: duplicateProductName(String(t.name ?? "")), slug: `${String(t.slug).slice(0, 210)}-${newId}`, body: JSON.stringify(t.body), created_at: new Date().toISOString(), updated_at: new Date().toISOString() })}`;
           await tx`insert into product_media(product_id,media_id,sort_order,is_primary) select ${newId},media_id,sort_order,is_primary from product_media where product_id=${row.id}`;
         } else if (command === "delete") {
           if (!row.deleted_at || extra !== "ลบถาวร")

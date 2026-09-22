@@ -1,14 +1,20 @@
 import { Catalog } from "@/components/vocational/Catalog";
+import type { PublicSearchParams } from "@/components/vocational/catalog-query";
+import { publicMetadata } from "@/lib/seo/metadata";
 export const dynamic = "force-dynamic";
-export const metadata = {
-  title: "ผลิตภัณฑ์งานฝึกวิชาชีพ",
-  description: "สำรวจงานฝีมือและผลิตภัณฑ์จากฝ่ายฝึกวิชาชีพผู้ต้องขัง ทัณฑสถานบำบัดพิเศษกลาง",
-  alternates: { canonical: "/products" },
-};
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  return publicMetadata({
+    locale,
+    paths: "/products",
+    title: "ผลิตภัณฑ์งานฝึกวิชาชีพ",
+    description: "สำรวจงานฝีมือและผลิตภัณฑ์จากฝ่ายฝึกวิชาชีพผู้ต้องขัง ทัณฑสถานบำบัดพิเศษกลาง",
+  });
+}
 export default async function Page({
   searchParams,
 }: {
-  searchParams: Promise<Record<string, string | undefined>>;
+  searchParams: Promise<PublicSearchParams>;
 }) {
   return (
     <main id="content" className="v-page">

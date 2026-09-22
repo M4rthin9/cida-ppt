@@ -1,4 +1,5 @@
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
+import NextLink from "next/link";
 import Image from "next/image";
 import { listCategories } from "@/lib/vocational/data";
 import { getCachedSetting } from "@/lib/settings/cached";
@@ -46,7 +47,7 @@ export async function SiteFooter() {
       </div>
       <div className="v-footer-bottom">
         <span>ทัณฑสถานบำบัดพิเศษกลาง · กรมราชทัณฑ์ กระทรวงยุติธรรม</span>
-        <Link href="/admin">สำหรับเจ้าหน้าที่ ↗</Link>
+        <NextLink href="/admin">สำหรับเจ้าหน้าที่ ↗</NextLink>
       </div>
     </footer>
   );

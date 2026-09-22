@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import Image from "next/image";
 import { priceLabel, type Product } from "@/lib/vocational/types";
 export function ProductCard({ product: p }: { product: Product }) {
@@ -26,7 +26,9 @@ export function ProductCard({ product: p }: { product: Product }) {
         {p.name_en && <p lang="en">{p.name_en}</p>}
         <div className="v-product-price">
           <span>{priceLabel(p)}</span>
-          {p.sale_price && p.price && <del>{Number(p.price).toLocaleString("th-TH")} บาท</del>}
+          {(p.price_mode === "exact" || p.price_mode === "from") &&
+            p.sale_price !== null &&
+            p.price !== null && <del>{Number(p.price).toLocaleString("th-TH")} บาท</del>}
         </div>
         {p.stock_status === "out_of_stock" && <small>สินค้าหมดชั่วคราว</small>}
       </div>

@@ -1,8 +1,7 @@
 "use client";
-import Link from "next/link";
+import { Link, usePathname } from "@/i18n/navigation";
 import Image from "next/image";
-import { useState } from "react";
-import { usePathname } from "next/navigation";
+import { useRef, useState } from "react";
 const links = [
   ["/", "หน้าแรก"],
   ["/products", "ผลิตภัณฑ์"],
@@ -14,9 +13,35 @@ const links = [
 export function Navigation({ categories }: { categories: { name_th: string; slug: string }[] }) {
   const [open, setOpen] = useState(false),
     path = usePathname();
+  const productMenu = useRef<HTMLDetailsElement>(null);
+  const menuToggle = useRef<HTMLButtonElement>(null);
+  function closeMenus() {
+    setOpen(false);
+    if (productMenu.current) productMenu.current.open = false;
+  }
+  function active(href: string) {
+    return path === href || (href !== "/" && path.startsWith(`${href}/`));
+  }
   return (
-    <header className="v-header">
-      <Link href="/" className="v-brand" aria-label="ฝ่ายฝึกวิชาชีพผู้ต้องขัง หน้าแรก">
+    <header
+      className="v-header"
+      onKeyDown={(event) => {
+        if (event.key !== "Escape") return;
+        if (productMenu.current?.open) {
+          productMenu.current.open = false;
+          productMenu.current.querySelector("summary")?.focus();
+        } else if (open) {
+          setOpen(false);
+          menuToggle.current?.focus();
+        }
+      }}
+    >
+      <Link
+        href="/"
+        className="v-brand"
+        aria-label="ฝ่ายฝึกวิชาชีพผู้ต้องขัง หน้าแรก"
+        onClick={closeMenus}
+      >
         <Image src="/brand/cida-logo.png" width={52} height={52} alt="ตราทัณฑสถานบำบัดพิเศษกลาง" />
         <span>
           <strong>ฝ่ายฝึกวิชาชีพผู้ต้องขัง</strong>
@@ -24,10 +49,15 @@ export function Navigation({ categories }: { categories: { name_th: string; slug
         </span>
       </Link>
       <button
+        ref={menuToggle}
+        type="button"
         className="v-menu-toggle"
         aria-expanded={open}
         aria-controls="public-navigation"
-        onClick={() => setOpen(!open)}
+        onClick={() => {
+          if (open) closeMenus();
+          else setOpen(true);
+        }}
       >
         {open ? "ปิดเมนู ✕" : "เมนู ☰"}
       </button>
@@ -37,23 +67,19 @@ export function Navigation({ categories }: { categories: { name_th: string; slug
             <div className="v-products-nav" key={href}>
               <Link
                 href={href}
-                onClick={() => setOpen(false)}
-                aria-current={path.startsWith("/products") ? "page" : undefined}
+                onClick={closeMenus}
+                aria-current={active(href) ? "page" : undefined}
               >
                 {label}
               </Link>
-              <details>
+              <details ref={productMenu}>
                 <summary aria-label="หมวดหมู่ผลิตภัณฑ์">⌄</summary>
                 <div className="v-megamenu">
-                  <Link href="/products" onClick={() => setOpen(false)}>
+                  <Link href="/products" onClick={closeMenus}>
                     สินค้าทั้งหมด
                   </Link>
                   {categories.map((c) => (
-                    <Link
-                      href={`/products/category/${c.slug}`}
-                      key={c.slug}
-                      onClick={() => setOpen(false)}
-                    >
+                    <Link href={`/products/category/${c.slug}`} key={c.slug} onClick={closeMenus}>
                       {c.name_th}
                     </Link>
                   ))}
@@ -64,8 +90,8 @@ export function Navigation({ categories }: { categories: { name_th: string; slug
             <Link
               key={href}
               href={href ?? "/"}
-              aria-current={path === href ? "page" : undefined}
-              onClick={() => setOpen(false)}
+              aria-current={active(href ?? "/") ? "page" : undefined}
+              onClick={closeMenus}
             >
               {label}
             </Link>

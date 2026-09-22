@@ -1,10 +1,15 @@
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { StorySection } from "@/components/vocational/StorySection";
-export const metadata = {
-  title: "เรื่องราวของเรา",
-  description: "จากการฝึกฝน สู่ผลงานที่มีคุณค่า และโอกาสใหม่",
-  alternates: { canonical: "/story" },
-};
+import { publicMetadata } from "@/lib/seo/metadata";
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  return publicMetadata({
+    locale,
+    paths: "/story",
+    title: "เรื่องราวของเรา",
+    description: "จากการฝึกฝน สู่ผลงานที่มีคุณค่า และโอกาสใหม่",
+  });
+}
 export default function Page() {
   return (
     <main id="content">

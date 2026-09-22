@@ -1,19 +1,22 @@
-import Link from "next/link";
-import { existsSync } from "node:fs";
-import path from "node:path";
+import { Link } from "@/i18n/navigation";
 import { listCategories, listProducts, listNews } from "@/lib/vocational/data";
-import { ScrollSequence } from "@/components/vocational/ScrollSequence";
+import { VocationalHero } from "@/components/vocational/VocationalHero";
 import { CategoryBento } from "@/components/vocational/CategoryBento";
 import { StorySection } from "@/components/vocational/StorySection";
 import { ProductCard } from "@/components/vocational/ProductCard";
 import { NewsCard } from "@/components/vocational/NewsCard";
+import { publicMetadata } from "@/lib/seo/metadata";
 export const dynamic = "force-dynamic";
-export const metadata = {
-  title: "ฝึกอาชีพ สร้างโอกาสใหม่ | ฝ่ายฝึกวิชาชีพผู้ต้องขัง",
-  description:
-    "ฝึกอาชีพ สร้างทักษะ สร้างคุณค่า สร้างโอกาสใหม่ ผ่านผลงานฝีมือจากฝ่ายฝึกวิชาชีพผู้ต้องขัง ทัณฑสถานบำบัดพิเศษกลาง",
-  alternates: { canonical: "/" },
-};
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  return publicMetadata({
+    locale,
+    paths: "/",
+    title: "ฝึกอาชีพ สร้างโอกาสใหม่ | ฝ่ายฝึกวิชาชีพผู้ต้องขัง",
+    description:
+      "ฝึกอาชีพ สร้างทักษะ สร้างคุณค่า สร้างโอกาสใหม่ ผ่านผลงานฝีมือจากฝ่ายฝึกวิชาชีพผู้ต้องขัง ทัณฑสถานบำบัดพิเศษกลาง",
+  });
+}
 export default async function Home() {
   const [categories, featured, news] = await Promise.all([
     listCategories(),
@@ -23,9 +26,7 @@ export default async function Home() {
   const words = [...categories.map((c) => c.name_th), "งานฝึกวิชาชีพ", "CRAFTED WITH PURPOSE"];
   return (
     <main id="content">
-      <ScrollSequence
-        enabled={existsSync(path.join(process.cwd(), "public/frames/manifest.json"))}
-      />
+      <VocationalHero />
       <div className="v-marquees" aria-label={words.join(" · ")}>
         {[false, true].map((reverse, index) => (
           <div key={index} className={`v-marquee ${reverse ? "reverse" : ""}`} aria-hidden="true">

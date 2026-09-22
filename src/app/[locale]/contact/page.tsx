@@ -7,6 +7,10 @@ import { Breadcrumbs } from "@/components/site/breadcrumbs";
 import { LineLink } from "@/components/site/line-link";
 import { SectionHeading } from "@/components/site/section-heading";
 import { ContactForm } from "./contact-form";
+import { Link } from "@/i18n/navigation";
+import { listProducts } from "@/lib/vocational/data";
+import { absoluteUrl, encodePath } from "@/lib/seo/urls";
+import { assertEnv } from "@/lib/env";
 
 export const revalidate = 60;
 
@@ -25,13 +29,38 @@ export async function generateMetadata({
   });
 }
 
-export default async function ContactPage({ params }: { params: Promise<{ locale: string }> }) {
+export default async function ContactPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ locale: string }>;
+  searchParams: Promise<{ product?: string | string[] }>;
+}) {
   const { locale } = await params;
   setRequestLocale(locale);
 
   const t = await getTranslations("contact");
   const tNav = await getTranslations("nav");
   const tLine = await getTranslations("line");
+  const query = await searchParams;
+  const slug = typeof query.product === "string" ? query.product.trim().slice(0, 255) : undefined;
+  // Product context is looked up from published records; arbitrary query text
+  // never becomes a product name, SKU or destination in the inquiry.
+  const product = slug ? (await listProducts({ slug, limit: 1 })).items[0] : undefined;
+  const productUrl = product
+    ? absoluteUrl(assertEnv().NEXT_PUBLIC_SITE_URL, locale, encodePath(`/products/${product.slug}`))
+    : undefined;
+  const inquiryBody = product
+    ? [
+        `สนใจสอบถามเกี่ยวกับ ${product.name_th}`,
+        product.sku ? `รหัสสินค้า: ${product.sku}` : undefined,
+        `รายละเอียดสินค้า: ${productUrl}`,
+        "",
+        "รายละเอียดที่ต้องการสอบถาม: ",
+      ]
+        .filter((line) => line !== undefined)
+        .join("\n")
+    : undefined;
 
   const [general, contact, line] = await Promise.all([
     getCachedSetting("general", locale),
@@ -40,15 +69,14 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
   ]);
 
   return (
-    <main
-      id="content"
-      className="storefront-page mx-auto max-w-(--container-site) px-4 py-12 md:px-6"
-    >
+    <main id="content" className="v-page v-contact">
       <Breadcrumbs items={[{ href: "/", label: tNav("home") }, { label: t("title") }]} />
 
-      <h1 className="text-3xl font-semibold md:text-[40px]">{t("title")}</h1>
-      <div className="mt-3 h-0.5 w-12 rounded-full bg-(--color-brand)" aria-hidden="true" />
-      <p className="mt-6 max-w-prose text-(--color-text)">{t("intro")}</p>
+      <header className="v-page-title">
+        <p className="v-eyebrow">LET’S START A CONVERSATION</p>
+        <h1>{t("title")}</h1>
+        <p>{t("intro")}</p>
+      </header>
 
       <div className="mt-12 grid gap-12 lg:grid-cols-2">
         {/*
@@ -130,8 +158,28 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
 
         <section aria-labelledby="contact-form">
           <SectionHeading id="contact-form">{t("formTitle")}</SectionHeading>
+          {product && (
+            <aside
+              className="mt-6 rounded-(--radius-card) border border-(--color-border) p-5"
+              aria-label="ผลงานที่ต้องการสอบถาม"
+            >
+              <p className="v-eyebrow">สอบถามเกี่ยวกับผลงาน</p>
+              <Link className="v-text-link" href={`/products/${product.slug}`}>
+                {product.name_th} ↗
+              </Link>
+              {product.sku && <p className="mt-2 text-sm">รหัสสินค้า: {product.sku}</p>}
+              <Link className="mt-3 inline-block text-sm underline" href="/contact#contact-form">
+                สอบถามเรื่องทั่วไป
+              </Link>
+            </aside>
+          )}
           <div className="mt-8">
-            <ContactForm privacyNote={contact.privacyNote ?? t("privacyDefault")} />
+            <ContactForm
+              key={product?.id ?? "general"}
+              privacyNote={contact.privacyNote ?? t("privacyDefault")}
+              initialSubject={product ? `สอบถามผลงาน: ${product.name_th}`.slice(0, 255) : undefined}
+              initialBody={inquiryBody}
+            />
           </div>
         </section>
       </div>

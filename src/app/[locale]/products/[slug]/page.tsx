@@ -1,66 +1,65 @@
 import { notFound } from "next/navigation";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { listProducts, gallery } from "@/lib/vocational/data";
 import { ProductGallery } from "@/components/vocational/ProductGallery";
 import { ProductCard } from "@/components/vocational/ProductCard";
 import { priceLabel, STOCK_STATUSES } from "@/lib/vocational/types";
 import { goLinePath } from "@/lib/line";
+import { publicMetadata } from "@/lib/seo/metadata";
+import { JsonLd, breadcrumbJsonLd, productJsonLd } from "@/lib/seo/jsonld";
+import { assertEnv } from "@/lib/env";
 export const dynamic = "force-dynamic";
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params,
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string; slug: string }>;
+}) {
+  const { locale, slug } = await params,
     p = (await listProducts({ slug: slug, limit: 1 })).items[0];
   if (!p) return {};
-  return {
+  return publicMetadata({
+    locale,
+    paths: `/products/${p.slug}`,
     title: p.seo_title || p.name_th,
-    description: p.seo_description || p.short_description_th,
-    alternates: { canonical: `/products/${p.slug}` },
-    openGraph: {
-      title: p.name_th,
-      description: p.short_description_th,
-      url: `/products/${p.slug}`,
-      images: p.image_url ? [p.image_url] : undefined,
-    },
-  };
+    description: p.seo_description || p.short_description_th || p.description_th,
+    image: p.image_url || undefined,
+  });
 }
-export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params,
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ locale: string; slug: string }>;
+}) {
+  const { locale, slug } = await params,
     p = (await listProducts({ slug: slug, limit: 1 })).items[0];
   if (!p) notFound();
   const [images, related] = await Promise.all([
     gallery(p.id),
     listProducts({ category: p.category_id, limit: 4 }),
   ]);
-  const base = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
-  const structured = {
-    "@context": "https://schema.org",
-    "@type": "Product",
+  const base = assertEnv().NEXT_PUBLIC_SITE_URL;
+  const structured = productJsonLd({
+    base,
+    locale,
     name: p.name_th,
     description: p.short_description_th || p.description_th,
     sku: p.sku || undefined,
-    category: p.category_name,
-    image: images.map((i) => `${base}/media/${i.storage_key}/master.webp`),
-    url: `${base}/products/${p.slug}`,
-    ...(p.price_mode === "exact" && p.price !== null
-      ? {
-          offers: {
-            "@type": "Offer",
-            priceCurrency: "THB",
-            price: p.sale_price ?? p.price,
-            availability:
-              p.stock_status === "out_of_stock"
-                ? "https://schema.org/OutOfStock"
-                : "https://schema.org/InStock",
-            url: `${base}/products/${p.slug}`,
-          },
-        }
-      : {}),
-  };
+    categoryName: p.category_name,
+    images: images.map((i) => `/media/${i.storage_key}/master.webp`),
+    path: `/products/${p.slug}`,
+    price: p.sale_price ?? p.price ?? undefined,
+    priceDisplay: p.price_mode === "exact" || p.price_mode === "from" ? p.price_mode : "contact",
+  });
   return (
     <main id="content" className="v-page">
       <nav className="v-breadcrumb" aria-label="เส้นทาง">
+        <Link href="/">หน้าแรก</Link>
+        <span aria-hidden="true">/</span>
         <Link href="/products">ผลิตภัณฑ์</Link>
-        <span>/</span>
+        <span aria-hidden="true">/</span>
         <Link href={`/products/category/${p.category_slug}`}>{p.category_name}</Link>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">{p.name_th}</span>
       </nav>
       <div className="v-product-detail">
         <ProductGallery items={images} name={p.name_th} />
@@ -71,7 +70,9 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
           <p className="v-detail-summary">{p.short_description_th}</p>
           <div className="v-detail-price">
             {priceLabel(p)}
-            {p.sale_price && p.price && <del>{Number(p.price).toLocaleString("th-TH")} บาท</del>}
+            {(p.price_mode === "exact" || p.price_mode === "from") &&
+              p.sale_price !== null &&
+              p.price !== null && <del>{Number(p.price).toLocaleString("th-TH")} บาท</del>}
           </div>
           <span className="v-stock">{STOCK_STATUSES[p.stock_status]}</span>
           <dl className="v-product-specs">
@@ -101,6 +102,12 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
             <span>↗</span>
           </a>
           <p className="v-inquiry-note">สอบถามรายละเอียดกับเจ้าหน้าที่ผ่าน LINE</p>
+          <Link
+            href={`/contact?product=${encodeURIComponent(p.slug)}#contact-form`}
+            className="v-text-link"
+          >
+            สอบถามผ่านแบบฟอร์มติดต่อ ↗
+          </Link>
           <div className="v-detail-copy">
             <h2>รายละเอียดผลงาน</h2>
             <p>{p.description_th || p.short_description_th}</p>
@@ -137,9 +144,16 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
           </div>
         </section>
       )}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(structured).replace(/</g, "\u003c") }}
+      <JsonLd
+        data={[
+          structured,
+          breadcrumbJsonLd(base, locale, [
+            { name: "หน้าแรก", path: "/" },
+            { name: "ผลิตภัณฑ์", path: "/products" },
+            { name: p.category_name, path: `/products/category/${p.category_slug}` },
+            { name: p.name_th, path: `/products/${p.slug}` },
+          ]),
+        ]}
       />
     </main>
   );

@@ -1,19 +1,30 @@
 import { listNews } from "@/lib/vocational/data";
 import { NewsCard } from "@/components/vocational/NewsCard";
 import { Pager } from "@/components/vocational/Pager";
+import { catalogQuery, type PublicSearchParams } from "@/components/vocational/catalog-query";
+import { publicMetadata } from "@/lib/seo/metadata";
+import { Link, redirect } from "@/i18n/navigation";
+import { getLocale } from "next-intl/server";
 export const dynamic = "force-dynamic";
-export const metadata = {
-  title: "ข่าวและกิจกรรมงานฝึกวิชาชีพ",
-  description: "การฝึกอบรม ทักษะอาชีพ นิทรรศการ และการพัฒนาผลิตภัณฑ์",
-  alternates: { canonical: "/news" },
-};
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  return publicMetadata({
+    locale,
+    paths: "/news",
+    title: "ข่าวและกิจกรรมงานฝึกวิชาชีพ",
+    description: "การฝึกอบรม ทักษะอาชีพ นิทรรศการ และการพัฒนาผลิตภัณฑ์",
+  });
+}
 export default async function Page({
   searchParams,
 }: {
-  searchParams: Promise<Record<string, string | undefined>>;
+  searchParams: Promise<PublicSearchParams>;
 }) {
-  const q = await searchParams,
-    data = await listNews({ page: Math.min(100000, Number.parseInt(q.page ?? "1") || 1) });
+  const { page } = catalogQuery(await searchParams),
+    data = await listNews({ page: Number(page ?? 1) });
+  const pages = Math.max(1, Math.ceil(data.total / data.limit));
+  if (data.page > pages)
+    redirect({ href: pages > 1 ? `/news?page=${pages}` : "/news", locale: await getLocale() });
   return (
     <main className="v-page" id="content">
       <header className="v-page-title">
@@ -35,9 +46,12 @@ export default async function Page({
         <div className="v-catalog-empty">
           <h2>ยังไม่มีข่าวที่เผยแพร่</h2>
           <p>ติดตามข่าวและกิจกรรมงานฝึกวิชาชีพได้ที่หน้านี้</p>
+          <Link href="/vocational" className="v-text-link">
+            รู้จักงานฝึกวิชาชีพ ↗
+          </Link>
         </div>
       )}
-      <Pager {...data} base="/news" query={q} />
+      <Pager {...data} base="/news" />
     </main>
   );
 }

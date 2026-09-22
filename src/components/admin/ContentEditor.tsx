@@ -281,8 +281,6 @@ export function ContentEditor({
         const schema =
           kind === "product" ? productInput : kind === "category" ? categoryInput : newsInput;
         const payload = { ...data };
-        if (kind === "news" && payload.published_at)
-          payload.published_at = new Date(String(payload.published_at)).toISOString();
         const parsed = schema.safeParse(payload);
         if (!parsed.success) {
           setLocalErrors(
@@ -291,6 +289,8 @@ export function ContentEditor({
           document.getElementById(String(parsed.error.issues[0]?.path[0]))?.focus();
           return;
         }
+        if (kind === "news" && payload.published_at)
+          payload.published_at = new Date(String(payload.published_at)).toISOString();
         setLocalErrors({});
         const form = new FormData();
         form.set("payload", JSON.stringify(payload));

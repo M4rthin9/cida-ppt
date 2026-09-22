@@ -1,31 +1,33 @@
 import { notFound } from "next/navigation";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import Image from "next/image";
 import { listCategories } from "@/lib/vocational/data";
 import { Catalog } from "@/components/vocational/Catalog";
+import type { PublicSearchParams } from "@/components/vocational/catalog-query";
+import { publicMetadata } from "@/lib/seo/metadata";
 export const dynamic = "force-dynamic";
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params,
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string; slug: string }>;
+}) {
+  const { locale, slug } = await params,
     c = (await listCategories()).find((c) => c.slug === slug);
   if (!c) return {};
-  return {
+  return publicMetadata({
+    locale,
+    paths: `/products/category/${c.slug}`,
     title: c.seo_title || c.name_th,
     description: c.seo_description || c.short_description_th || c.description_th,
-    alternates: { canonical: `/products/category/${c.slug}` },
-    openGraph: {
-      title: c.name_th,
-      description: c.short_description_th,
-      url: `/products/category/${c.slug}`,
-      images: c.image_url ? [c.image_url] : undefined,
-    },
-  };
+    image: c.image_url || undefined,
+  });
 }
 export default async function Page({
   params,
   searchParams,
 }: {
   params: Promise<{ slug: string }>;
-  searchParams: Promise<Record<string, string | undefined>>;
+  searchParams: Promise<PublicSearchParams>;
 }) {
   const { slug } = await params,
     c = (await listCategories()).find((c) => c.slug === slug);

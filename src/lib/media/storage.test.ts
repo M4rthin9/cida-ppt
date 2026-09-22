@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, it } from "vitest";
+import path from "node:path";
 import { newStorageKey, resolveMediaPath } from "./storage";
 
 beforeEach(() => {
@@ -8,7 +9,7 @@ beforeEach(() => {
 describe("resolveMediaPath", () => {
   it("resolves a normal key", () => {
     expect(resolveMediaPath(["2026", "09", "abc", "800.webp"])).toBe(
-      "/data/media/2026/09/abc/800.webp",
+      path.resolve("/data/media/2026/09/abc/800.webp"),
     );
   });
 

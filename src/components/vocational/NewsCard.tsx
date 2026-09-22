@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import type { News } from "@/lib/vocational/types";
 export function NewsCard({ item: n }: { item: News }) {
   return (
