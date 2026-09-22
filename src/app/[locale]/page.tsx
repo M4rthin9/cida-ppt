@@ -27,7 +27,12 @@ export default async function Home() {
   return (
     <main id="content">
       <VocationalHero />
-      <div className="v-marquees" aria-label={words.join(" · ")}>
+      <div className="v-marquees">
+        {/* ARIA forbids naming a generic element, so an aria-label here was
+            silently ignored and the marquee reached assistive tech as nothing
+            at all. The visual rows stay aria-hidden (they repeat each word
+            twice for the loop) and this carries the content instead. */}
+        <p className="sr-only">{words.join(" · ")}</p>
         {[false, true].map((reverse, index) => (
           <div key={index} className={`v-marquee ${reverse ? "reverse" : ""}`} aria-hidden="true">
             <div>

@@ -1,6 +1,8 @@
 :root {
   --v-ink: #242320;
-  --v-muted: #716e67;
+  /* 4.8:1 on the darkest surface it sits on (#eae7df); #716e67 measured
+     4.33-4.42 on the tinted cards and failed WCAG AA for body text. */
+  --v-muted: #67645d;
   --v-paper: #f6f5f0;
   --v-white: #fff;
   --v-line: #deddd6;
@@ -316,7 +318,8 @@
   line-height: 2.1;
 }
 .v-marquee.reverse {
-  color: #858579;
+  /* 4.9:1 on the #e8e6dd band; #858579 measured 2.98 at 19px. */
+  color: #656559;
   font-size: 19px;
 }
 .v-marquee > div {
