@@ -2,6 +2,16 @@
 
 Implementation verified in isolated test environments, September 2026. Test accounts, products, news and generated frame fixtures are not seeded or committed.
 
+## Hero refinement — 22 September 2026
+
+The reference brief for this pass described a different product's hero — a left-aligned "DreamFrame" headline in white-to-lavender with a pink glow. Confirmed with the owner that it was a reference to translate rather than branding to adopt, and that the headline stays centred. The three treatments were applied to this site's own identity and palette: no DreamFrame wordmark, no lavender or pink, and the institutional emblem and Thai content untouched.
+
+- The atmospheric shade behind the copy is centred rather than weighted to the left, matching the centred headline. It sits above the footage but outside it, so the 75% media opacity and the 35% veil reduction are both unchanged.
+- The headline carries one white-to-gold gradient across both lines and one weight step (300 to 400/450), lit with `drop-shadow` rather than `text-shadow` — a shadow cast by text whose own colour is transparent for `background-clip: text` shows straight through the glyphs as a halo.
+- The wordmark is the site's own name at 90vw on the floor of the stage, in the same gradient with a warm glow. It repeats the name in the bar and the badge, so it is `aria-hidden` rather than read out a third time, and it leaves with the copy at the hand-off.
+- Measured across 1920x1080, 1440x900, 1280x720, 1024x768, 768x1024, 390x844, 320x568 and 844x390: nothing clipped outside the pinned stage, no horizontal overflow at any of them. Two clipping defects were found and fixed this way — Thai vowels below the baseline hitting the floor of the stage at the wordmark's original leading, and the whole composition overflowing at 1280x720, a common laptop size, because a pinned stage cannot scroll and the headline was sized against width alone. It is now sized against height between 621px and 820px.
+- All **249 tests across 30 files**, TypeScript, ESLint, Prettier, `scripts/verify-scroll-sequence.mjs` and the production build pass.
+
 ## Real footage imported — 22 September 2026
 
 The supplied `frames/merged_20s_frames` set is now driving the hero. It holds 185 JPEGs numbered `frame_001` to `frame_187` with gaps, at 1280x720 and roughly 930 KB each.
