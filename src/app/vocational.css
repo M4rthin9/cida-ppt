@@ -268,42 +268,24 @@
 }
 
 .v-products-nav {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 0;
 }
 
-.v-products-nav details {
-  position: relative;
-}
-
-.v-products-nav summary {
-  cursor: pointer;
-  list-style: none;
-  padding: 8px;
-  min-height: 44px;
-  min-width: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 100px;
-  color: rgb(246 241 236 / 0.7);
-}
-
-.v-products-nav summary::-webkit-details-marker {
-  display: none;
-}
-
-.v-products-nav summary:hover,
-.v-products-nav details[open] summary {
+/* The item keeps the lit state for as long as its list is up, so the bar
+   still shows which entry the open panel belongs to. */
+.v-products-nav:hover > a,
+.v-products-nav:focus-within > a {
   color: #fff;
   background: rgb(255 255 255 / 0.1);
 }
 
 .v-megamenu {
   position: absolute;
-  right: -50px;
-  top: 52px;
+  inset-inline-start: 0;
+  top: calc(100% + 12px);
   padding: 10px;
   width: 280px;
   background: rgb(17 13 15 / 0.98);
@@ -312,6 +294,32 @@
   box-shadow: 0 22px 60px rgb(8 6 7 / 0.45);
   display: grid;
   gap: 2px;
+  /* Hidden by visibility rather than display, so the panel can fade and so it
+     stays out of the tab order while closed. */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-6px);
+  transition:
+    opacity 0.16s ease,
+    transform 0.16s ease,
+    visibility 0.16s;
+}
+
+/* Bridges the gap between the item and the panel: without it the pointer
+   crosses 12px of nothing on the way down and the panel closes under it. */
+.v-megamenu::before {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  top: -12px;
+  height: 12px;
+}
+
+.v-products-nav:hover > .v-megamenu,
+.v-products-nav:focus-within > .v-megamenu {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
 }
 
 .v-megamenu a {
@@ -442,9 +450,10 @@
 .v-cine {
   position: relative;
   isolation: isolate;
-  /* The scrub range SPEC.md §20 asks for. Longer means a slower, more filmic
-     read of the same frames; the stage inside stays exactly one viewport tall. */
-  min-height: 400svh;
+  /* The scrub range SPEC.md §20 asks for, at the long end of it: four acts
+     need room to arrive and to leave without ever overlapping. The stage
+     inside stays exactly one viewport tall. */
+  min-height: 460svh;
   background: var(--v-cine-ink);
   color: var(--v-cine-paper);
 }
@@ -453,17 +462,28 @@
   min-height: 100svh;
 }
 
+/* The acts are an enhancement, so the resting values are the ones declared
+   here: every line present, nothing timed, nothing hidden. A reader with no
+   sequence imported, no JavaScript yet, or a stated preference for no motion
+   gets that composition at first paint. The timed layout is opted into lower
+   down, under `prefers-reduced-motion: no-preference`. */
 .v-cine-stage {
   --v-progress: 0;
+  --v-title: 1;
+  --v-c1: 1;
+  --v-c2: 1;
+  --v-c3: 1;
+  --v-mark: 1;
   --v-exit: 0;
   position: sticky;
   top: 0;
   height: 100svh;
   display: grid;
-  grid-template-rows: 1fr auto;
-  place-items: center;
+  justify-items: center;
+  align-content: center;
+  gap: clamp(22px, 5vh, 52px);
   overflow: clip;
-  padding: calc(var(--v-header-h) + 24px) var(--v-gutter) 0;
+  padding: calc(var(--v-header-h) + 24px) var(--v-gutter) clamp(28px, 6vh, 64px);
 }
 
 .v-cine-media {
@@ -471,7 +491,7 @@
   inset: 0;
   z-index: 0;
   opacity: var(--v-media-opacity);
-  /* The hand-off. Over the last fifth of the scroll the footage softens,
+  /* The hand-off. Over the last tenth of the scroll the footage softens,
      drifts forward and loses a little colour, so the final frame dissolves
      into the section below instead of ending on a cut. */
   filter: blur(calc(var(--v-exit) * 12px)) saturate(calc(1 - var(--v-exit) * 0.3));
@@ -522,7 +542,11 @@
 /* Sits above the footage but outside it, so it is not dimmed by
    --v-media-opacity and the copy keeps its contrast whatever the frame does.
    It also stays out of the veil's budget: the two dials over the footage are
-   unchanged, this only shades what is behind the words. */
+   unchanged, this only shades what is behind the words.
+
+   Only the two acts that hold the centre of the frame need it, the title card
+   and the wordmark, so it arrives and leaves with them and the captioned
+   middle of the scroll gets the shot unshaded. */
 .v-cine-scrim {
   position: absolute;
   inset: 0;
@@ -536,22 +560,23 @@
     rgb(6 4 5 / 0.1) 84%,
     transparent 100%
   );
-  /* Fades out with the copy it protects. */
-  opacity: calc(1 - var(--v-exit));
+  opacity: calc(max(var(--v-title), var(--v-mark)) * (1 - var(--v-exit)));
 }
+
+/* ---------- Act one: the title card ---------- */
 
 .v-cine-inner {
   position: relative;
   z-index: 2;
-  align-self: center;
-  width: min(60rem, 100%);
+  width: min(56rem, 100%);
   display: grid;
   justify-items: center;
   text-align: center;
   gap: clamp(18px, 2.4vw, 30px);
-  /* The copy leaves before the footage does, so the two never fight. */
-  transform: translateY(calc(var(--v-progress) * -3.5rem));
-  opacity: calc(1 - var(--v-exit));
+  /* It lifts out of the frame before the first caption arrives, so the two
+     are never on screen together. At rest both of these are no-ops. */
+  transform: translateY(calc((1 - var(--v-title)) * -3rem));
+  opacity: var(--v-title);
 }
 
 .v-cine-badge {
@@ -587,6 +612,11 @@
   flex-shrink: 0;
 }
 
+/* Solid, not a gradient fill. Thai stacks tone marks above the line and vowels
+   below it, and a gradient running down to tan took the contrast out of
+   exactly the part of the cluster that tells one word from another, over
+   footage that is itself moving. Weight, size and one accent colour on the
+   second line carry the emphasis instead. */
 .v-cine-title {
   margin: 0;
   font-size: var(--v-t-display);
@@ -594,90 +624,173 @@
   line-height: var(--v-leading-display);
   letter-spacing: var(--v-tracking-display);
   text-wrap: balance;
-  background: linear-gradient(168deg, #fff 22%, #fbf1e4 58%, var(--v-cine-glow) 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  filter: drop-shadow(0 1px 2px rgb(6 4 5 / 0.55)) drop-shadow(0 6px 34px rgb(6 4 5 / 0.5));
+  color: #fff8f0;
+  text-shadow:
+    0 1px 3px rgb(6 4 5 / 0.6),
+    0 8px 40px rgb(6 4 5 / 0.55);
 }
 
 .v-cine-title span {
   display: block;
   font-weight: 450;
-}
-
-.v-cine-lede {
-  max-width: 48ch;
-  margin: 0;
-  font-size: var(--v-t-lede);
-  line-height: 1.95;
-  color: rgb(246 241 236 / 0.92);
-  text-shadow: 0 1px 14px rgb(6 4 5 / 0.65);
-  text-wrap: pretty;
+  color: var(--v-cine-glow);
 }
 
 .v-cine-action {
   margin-top: clamp(6px, 1.2vw, 16px);
 }
 
-.v-cine-foot {
+/* ---------- Acts two to four: the lede ---------- */
+
+/* One paragraph, three clauses, read in order. At rest it is exactly that: a
+   centred paragraph under the card. Running, each clause becomes a caption
+   with its own stretch of the scrub. */
+.v-cine-lede {
   position: relative;
   z-index: 2;
-  align-self: end;
-  justify-self: stretch;
-  width: 100%;
+  width: min(44rem, 100%);
+  margin: 0;
   display: grid;
-  justify-items: center;
-  gap: clamp(12px, 2vh, 24px);
-  padding-bottom: clamp(4px, 1vh, 14px);
+  gap: 2px;
+  text-align: center;
+  font-size: var(--v-t-lede);
+  line-height: 1.9;
+  color: #fdf7f0;
+  text-shadow:
+    0 1px 3px rgb(6 4 5 / 0.8),
+    0 6px 30px rgb(6 4 5 / 0.7);
+  text-wrap: pretty;
 }
 
-/* The opening's typographic anchor: the name at the width of the frame,
-   sitting on the floor of the stage the way a title card does. */
+.v-cine-lede span {
+  position: relative;
+  opacity: var(--v-cap);
+  transform: translateY(calc((1 - var(--v-cap)) * 1.4rem));
+}
+
+.v-cine-lede span:nth-child(1) {
+  --v-cap: var(--v-c1);
+}
+
+.v-cine-lede span:nth-child(2) {
+  --v-cap: var(--v-c2);
+}
+
+.v-cine-lede span:nth-child(3) {
+  --v-cap: var(--v-c3);
+}
+
+/* ---------- The peak: the name, alone, centre frame ---------- */
+
 .v-cine-wordmark {
+  position: relative;
+  z-index: 2;
   margin: 0;
-  width: 90vw;
-  max-width: 90vw;
+  width: 100%;
   text-align: center;
   white-space: nowrap;
-  /* Sized off the width, so the line fills the frame and never wraps. */
-  font-size: min(7.1vw, 9.6vh);
+  font-size: min(6vw, 7vh);
   font-weight: 300;
   /* Thai hangs vowels below the baseline; a display line set tight enough for
-     Latin clips them against the floor of the stage. */
+     Latin clips them. */
   line-height: 1.32;
   letter-spacing: 0.01em;
-  background: linear-gradient(170deg, #fff 18%, #f6e6d2 52%, var(--v-cine-glow) 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  opacity: 0.92;
-  filter: drop-shadow(0 2px 4px rgb(6 4 5 / 0.5)) drop-shadow(0 10px 44px rgb(214 168 116 / 0.28));
+  color: #fdf6ec;
+  /* It settles rather than appears. The last thing the opening does is stop
+     moving. */
+  opacity: calc(var(--v-mark) * (1 - var(--v-exit)));
+  transform: scale(calc(1.08 - var(--v-mark) * 0.08));
+  filter: drop-shadow(0 2px 6px rgb(6 4 5 / 0.6)) drop-shadow(0 14px 50px rgb(214 168 116 / 0.3));
 }
 
-.v-cine-cue {
-  position: relative;
-  margin: 0;
-  display: grid;
-  justify-items: center;
-  gap: 12px;
-  font-family: var(--v-display);
-  font-size: var(--v-t-fine);
-  font-style: italic;
-  letter-spacing: 0.06em;
-  color: rgb(255 255 255 / 0.62);
-  opacity: calc(1 - var(--v-progress) * 2.6);
-}
+/* ---------- The score ----------
 
-/* The wordmark leaves with the rest of the copy at the hand-off. */
-.v-cine-foot {
-  opacity: calc(1 - var(--v-exit));
-}
+   Everything above holds at rest. This is the only block that turns the
+   opening into a timeline, and a reader who has asked for less motion never
+   enters it: the acts share one cell so that each can have the frame to
+   itself, and the lede drops to the lower third as a single line at a time.
+   `data-static` is written by the component and is already correct in the
+   server's HTML, so there is no first-paint flash either way. */
+@media (prefers-reduced-motion: no-preference) {
+  .v-cine-stage[data-static="off"] {
+    --v-c1: 0;
+    --v-c2: 0;
+    --v-c3: 0;
+    --v-mark: 0;
+    gap: 0;
+    /* The shared cell has to be the whole stage, not just as tall as the
+       tallest act, or `align-self: end` lands the captions in the middle of
+       the frame instead of on its floor. */
+    align-content: stretch;
+    align-items: center;
+  }
 
-.v-cine-cue-rule {
-  width: 1px;
-  height: clamp(30px, 6vh, 54px);
-  background: linear-gradient(180deg, transparent, rgb(255 255 255 / 0.65));
+  /* The captions' own scrim, and only theirs. The frames run from a dark wall
+     to a bright sunlit workshop, so the lower third needs shading for the acts
+     that print copy on it and none for the acts that do not. It arrives and
+     leaves with whichever clause is up. */
+  .v-cine-stage[data-static="off"]::before {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    bottom: 0;
+    height: 44%;
+    z-index: 1;
+    pointer-events: none;
+    background: linear-gradient(
+      0deg,
+      rgb(6 4 5 / 0.86) 0%,
+      rgb(6 4 5 / 0.66) 34%,
+      rgb(6 4 5 / 0.3) 68%,
+      transparent 100%
+    );
+    opacity: calc(max(var(--v-c1), var(--v-c2), var(--v-c3)) * (1 - var(--v-exit)));
+  }
+
+  .v-cine-stage[data-static="off"] .v-cine-inner,
+  .v-cine-stage[data-static="off"] .v-cine-lede,
+  .v-cine-stage[data-static="off"] .v-cine-wordmark {
+    grid-area: 1 / 1;
+  }
+
+  /* The lower third. Off the centre line, so the captions never sit on the
+     part of the frame the footage is actually about, and left-anchored, so
+     three clauses of very different lengths start in the same place. */
+  .v-cine-stage[data-static="off"] .v-cine-lede {
+    align-self: end;
+    justify-self: start;
+    width: min(36rem, 100%);
+    margin-block-end: clamp(8px, 4vh, 40px);
+    gap: 0;
+    text-align: start;
+    font-size: clamp(1.15rem, 0.9rem + 1.1vw, 1.9rem);
+    line-height: 1.75;
+  }
+
+  /* The clauses share a cell and cross over in place, so the reader's eye
+     never has to go looking for the copy again. */
+  .v-cine-stage[data-static="off"] .v-cine-lede span {
+    grid-area: 1 / 1;
+    padding-inline-start: 24px;
+  }
+
+  /* The rule draws itself down the side of a caption as the caption arrives,
+     and is the only ornament in the middle of the opening. */
+  .v-cine-stage[data-static="off"] .v-cine-lede span::before {
+    content: "";
+    position: absolute;
+    inset-block: 0.42em 0.42em;
+    inset-inline-start: 0;
+    width: 2px;
+    background: linear-gradient(180deg, var(--v-cine-glow), rgb(214 168 116 / 0));
+    transform: scaleY(var(--v-cap));
+    transform-origin: 50% 0;
+  }
+
+  /* Sized off the width, so the peak fills the frame and never wraps. */
+  .v-cine-stage[data-static="off"] .v-cine-wordmark {
+    font-size: min(7.6vw, 10vh);
+  }
 }
 
 /* The feathered seam. This band belongs to the section, not to the pinned
@@ -709,13 +822,13 @@
 .v-aperture {
   position: relative;
   isolation: isolate;
-  min-height: 300svh;
+  min-height: 340svh;
   background: var(--v-cine-ink);
   color: var(--v-cine-paper);
 }
 
 .v-aperture[data-sequence="off"] {
-  min-height: 240svh;
+  min-height: 300svh;
 }
 
 .v-aperture-stage::before {
@@ -734,8 +847,14 @@
   --v-progress: 0;
   --v-open: 0;
   --v-focus: 0;
+  --v-w1: 0;
+  --v-w2: 0;
+  --v-w3: 0;
   --v-copy: 0;
   --v-copy-in: 0;
+  --v-copy-1: 0;
+  --v-copy-2: 0;
+  --v-copy-3: 0;
   --v-close: 0;
   position: sticky;
   top: 0;
@@ -765,11 +884,16 @@
   transform: scale(calc(1.09 - var(--v-focus) * 0.09));
 }
 
-.v-aperture-canvas {
+.v-aperture-canvas,
+.v-aperture-still {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
+  object-fit: cover;
+}
+
+.v-aperture-canvas {
   opacity: 0;
   transition: opacity 0.9s ease;
 }
@@ -779,23 +903,93 @@
 }
 
 /* Shown until a clip is imported: the aperture opens onto type, never onto
-   stock photography standing in for real work. */
+   stock photography standing in for real work.
+
+   These three words are the reveal, not texture behind one. They are the
+   eyebrow's FROM PRACTICE TO POSSIBILITY said in Thai and in order, so the
+   light moving down them is the section's argument rather than an effect. */
 .v-aperture-panel {
   position: absolute;
   inset: 0;
+  margin: 0;
   display: grid;
   align-content: center;
-  justify-items: center;
-  gap: clamp(4px, 1vh, 14px);
+  justify-items: start;
+  gap: clamp(2px, 0.8vh, 12px);
+  /* Clear of the column on the right, which shares the frame. */
+  padding-inline: calc(max(var(--v-gutter), 5vw) + 52px) 46%;
+  /* Its own ground, and its own shading under the column, because it sits
+     outside the footage's opacity dial and the veil that goes with it. */
   background:
+    linear-gradient(270deg, rgb(8 6 7 / 0.72) 0%, rgb(8 6 7 / 0.2) 38%, transparent 62%),
     radial-gradient(90% 70% at 30% 20%, rgb(120 28 59 / 0.5), transparent 70%),
     radial-gradient(80% 80% at 78% 84%, rgb(214 168 116 / 0.22), transparent 72%),
     linear-gradient(160deg, #1a1215, #0d0a0c 70%);
-  font-size: clamp(2.4rem, 8vw, 6.5rem);
+  /* Carries the hero's softness across the join, exactly as the footage path
+     does, so both routes meet the section above out of focus. */
+  filter: blur(calc((1 - var(--v-focus)) * 22px));
+  transform: scale(calc(1.09 - var(--v-focus) * 0.09));
+  font-size: clamp(2rem, 6vw, 5rem);
   font-weight: 300;
-  line-height: 1.3;
+  line-height: 1.34;
   letter-spacing: var(--v-tracking-display);
-  color: rgb(255 255 255 / 0.11);
+}
+
+/* A word that has had its turn steps back rather than leaving: the stack
+   stays whole and only the emphasis travels down it. Depth comes from three
+   planes moving differently — the gradient field, the words waiting their
+   turn, and the one in front. */
+/* On the hero's final frame the panel stops being the ground and becomes
+   type over a photograph. The image carries the focus blur, so the words stay
+   sharp while the room comes into focus behind them, and the only shading is
+   a pool under the words themselves — the same rule the hero's captions
+   follow, and for the same reason: a full-frame overlay would bury the shot
+   the two movements now share. */
+.v-aperture-panel[data-ground="still"] {
+  background: linear-gradient(
+    90deg,
+    rgb(6 4 5 / 0.78) 0%,
+    rgb(6 4 5 / 0.52) 30%,
+    rgb(6 4 5 / 0.18) 54%,
+    transparent 74%
+  );
+  filter: none;
+  transform: none;
+}
+
+.v-aperture-panel span {
+  position: relative;
+  display: block;
+  color: rgb(246 241 236 / calc(0.2 + var(--v-w) * 0.8));
+  transform: translateX(calc(var(--v-w) * 26px)) scale(calc(0.975 + var(--v-w) * 0.025));
+  transform-origin: 0 50%;
+  filter: drop-shadow(0 10px 44px rgb(214 168 116 / calc(var(--v-w) * 0.3)));
+}
+
+/* The one ornament, and deliberately not the hero's: that one drew a rule
+   down the side of a caption, this one draws across, into the word. */
+.v-aperture-panel span::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: -52px;
+  top: 50%;
+  width: 36px;
+  height: 2px;
+  background: linear-gradient(90deg, rgb(214 168 116 / 0), var(--v-cine-glow));
+  transform: scaleX(var(--v-w));
+  transform-origin: 0 50%;
+}
+
+.v-aperture-panel span:nth-child(1) {
+  --v-w: var(--v-w1);
+}
+
+.v-aperture-panel span:nth-child(2) {
+  --v-w: var(--v-w2);
+}
+
+.v-aperture-panel span:nth-child(3) {
+  --v-w: var(--v-w3);
 }
 
 .v-aperture-veil {
@@ -832,13 +1026,35 @@
   filter: blur(calc(var(--v-open) * 4px));
 }
 
+/* The column's pool of shade, and the last piece of text on this stage that
+   was still being protected from inside the footage layer: --v-media-opacity
+   took a quarter off the veil, which was survivable over the old dark panel
+   and not survivable over the hero's sunlit frame. Same fix as the hero's
+   scrim and the panel's — shade the words from outside the dial, and only
+   where the words are. It arrives with the column and leaves with it. */
+.v-aperture-stage::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    270deg,
+    rgb(6 4 5 / 0.84) 0%,
+    rgb(6 4 5 / 0.56) 26%,
+    rgb(6 4 5 / 0.16) 50%,
+    transparent 68%
+  );
+  opacity: calc(max(var(--v-copy-1), var(--v-copy-2), var(--v-copy-3)) * var(--v-copy));
+}
+
 /* The closing feather, mirroring the one at the end of the hero. It is a layer
    of the stage rather than a band of the section: a sticky element is its own
    stacking context, so a band on the section would paint over the copy inside
    the stage and no z-index on the copy could lift it back out. */
 .v-aperture-close {
   position: absolute;
-  z-index: 1;
+  z-index: 3;
   inset-inline: 0;
   bottom: 0;
   height: 40svh;
@@ -847,14 +1063,34 @@
   background: linear-gradient(180deg, rgb(13 10 12 / 0) 0%, rgb(13 10 12 / 0.55) 42%, #f1ece8 100%);
 }
 
+/* The column now only owns its departure. Each block inside arrives on its
+   own beat, interleaved with the panel's, so the two halves of the frame
+   take turns instead of the whole section landing at once. */
 .v-aperture-copy {
   position: absolute;
   z-index: 2;
   top: 50%;
   inset-inline-end: var(--v-gutter);
   width: min(30rem, 44vw);
-  transform: translateY(-50%) translateX(calc((1 - var(--v-copy-in)) * 2.5rem));
+  transform: translateY(-50%);
   opacity: var(--v-copy);
+}
+
+.v-aperture-copy [data-k] {
+  opacity: var(--v-k);
+  transform: translateX(calc((1 - var(--v-k)) * 2rem));
+}
+
+.v-aperture-copy [data-k="1"] {
+  --v-k: var(--v-copy-1);
+}
+
+.v-aperture-copy [data-k="2"] {
+  --v-k: var(--v-copy-2);
+}
+
+.v-aperture-copy [data-k="3"] {
+  --v-k: var(--v-copy-3);
 }
 
 .v-aperture-copy .v-eyebrow {
@@ -2126,23 +2362,12 @@
     justify-content: center;
   }
   .v-products-nav {
-    flex-wrap: wrap;
-    justify-content: space-between;
-    position: relative;
-  }
-  .v-products-nav details {
+    display: block;
     position: static;
   }
-  .v-products-nav details[open] {
-    width: 100%;
-  }
-  .v-products-nav details[open] summary {
-    position: absolute;
-    right: 0;
-    top: 3px;
-  }
-  .v-products-nav summary {
-    min-width: 44px;
+  .v-products-nav:hover > a,
+  .v-products-nav:focus-within > a {
+    background: none;
   }
   .v-megamenu {
     position: static;
@@ -2153,6 +2378,13 @@
     background: rgb(255 255 255 / 0.05);
     box-shadow: none;
     font-size: var(--v-t-control);
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    transition: none;
+  }
+  .v-megamenu::before {
+    content: none;
   }
   .v-section-heading {
     align-items: flex-start;
@@ -2633,6 +2865,35 @@
     padding: 0 var(--v-gutter) clamp(36px, 7vh, 72px);
     transform: translateY(calc((1 - var(--v-copy-in)) * 1.5rem));
   }
+  /* The column moves under the opening here, and the shutter still spans the
+     whole stage, so the words take the top of the frame rather than the floor
+     the column now stands on. */
+  .v-aperture-panel {
+    align-content: start;
+    padding-inline-end: var(--v-gutter);
+    padding-block-start: calc(var(--v-header-h) + clamp(16px, 4vh, 48px));
+    font-size: clamp(1.8rem, 7.4vw, 3.4rem);
+  }
+  .v-aperture-panel[data-ground="still"] {
+    background: linear-gradient(
+      180deg,
+      rgb(6 4 5 / 0.84) 0%,
+      rgb(6 4 5 / 0.54) 40%,
+      transparent 68%
+    );
+  }
+  .v-aperture-stage::after {
+    background: linear-gradient(
+      0deg,
+      rgb(6 4 5 / 0.88) 0%,
+      rgb(6 4 5 / 0.66) 34%,
+      rgb(6 4 5 / 0.2) 58%,
+      transparent 76%
+    );
+  }
+  .v-aperture-copy [data-k] {
+    transform: translateY(calc((1 - var(--v-k)) * 1.2rem));
+  }
   .v-cine-seam {
     height: 38svh;
   }
@@ -2643,13 +2904,19 @@
     --v-header-h: 68px;
   }
   .v-cine {
-    min-height: 340svh;
+    min-height: 400svh;
   }
   .v-aperture {
     min-height: 260svh;
   }
-  .v-cine-lede br.v-break-wide {
-    display: none;
+  /* A phone frame is portrait, so the caption gets the full gutter width and
+     the wordmark is sized off the height instead of running off the edge. */
+  .v-cine-stage[data-static] .v-cine-lede {
+    width: 100%;
+    font-size: clamp(1.1rem, 0.9rem + 1.6vw, 1.5rem);
+  }
+  .v-cine-stage[data-static] .v-cine-wordmark {
+    font-size: min(8.4vw, 6vh);
   }
   .v-cine-badge {
     flex-wrap: wrap;
@@ -2675,14 +2942,7 @@
   .v-cine-inner {
     gap: clamp(12px, 1.9vh, 22px);
   }
-  .v-cine-foot {
-    gap: clamp(8px, 1.4vh, 16px);
-    padding-bottom: 4px;
-  }
-  .v-cine-cue-rule {
-    height: clamp(20px, 3.4vh, 36px);
-  }
-  .v-cine-wordmark {
+  .v-cine-stage[data-static] .v-cine-wordmark {
     font-size: min(7.1vw, 8vh);
   }
 }
@@ -2704,9 +2964,12 @@
   .v-cine-badge {
     padding-block: 6px;
   }
-  .v-cine-cue,
-  .v-cine-wordmark {
-    display: none;
+  .v-cine-stage[data-static] .v-cine-lede {
+    font-size: 1rem;
+    margin-block-end: 4px;
+  }
+  .v-cine-stage[data-static] .v-cine-wordmark {
+    font-size: min(6.4vw, 9vh);
   }
   .v-aperture-copy h2 {
     font-size: clamp(1.5rem, 5vh, 2.2rem);

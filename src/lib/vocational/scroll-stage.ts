@@ -23,6 +23,16 @@ export function remap(progress: number, start: number, end: number): number {
   return Math.max(0, Math.min(1, (progress - start) / (end - start)));
 }
 
+/**
+ * A caption's window: 0 before it, 1 while it holds, 0 again after, with
+ * `feather` of the range spent on each edge. Several captions can share one
+ * scrub this way and still never be on screen together, which is the whole
+ * point: one frame carries one line.
+ */
+export function band(progress: number, start: number, end: number, feather = 0.035): number {
+  return Math.min(remap(progress, start, start + feather), 1 - remap(progress, end - feather, end));
+}
+
 export type StageTracker = {
   /** Current raw progress, for a subscriber that attaches after the first read. */
   progress: () => number;

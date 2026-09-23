@@ -14,7 +14,6 @@ const links = [
 export function Navigation({ categories }: { categories: { name_th: string; slug: string }[] }) {
   const [open, setOpen] = useState(false),
     path = usePathname();
-  const productMenu = useRef<HTMLDetailsElement>(null);
   const menuToggle = useRef<HTMLButtonElement>(null);
   const [scrolled, setScrolled] = useState(false);
 
@@ -29,7 +28,6 @@ export function Navigation({ categories }: { categories: { name_th: string; slug
   }, []);
   function closeMenus() {
     setOpen(false);
-    if (productMenu.current) productMenu.current.open = false;
   }
   function active(href: string) {
     return path === href || (href !== "/" && path.startsWith(`${href}/`));
@@ -40,9 +38,12 @@ export function Navigation({ categories }: { categories: { name_th: string; slug
       data-scrolled={scrolled}
       onKeyDown={(event) => {
         if (event.key !== "Escape") return;
-        if (productMenu.current?.open) {
-          productMenu.current.open = false;
-          productMenu.current.querySelector("summary")?.focus();
+        // The category menu has no control of its own: it is open because
+        // something inside it has hover or focus, so it closes by giving up
+        // focus rather than by being told to.
+        const focused = document.activeElement;
+        if (focused instanceof HTMLElement && focused.closest(".v-megamenu")) {
+          focused.blur();
         } else if (open) {
           setOpen(false);
           menuToggle.current?.focus();
@@ -75,6 +76,11 @@ export function Navigation({ categories }: { categories: { name_th: string; slug
         {open ? "ปิดเมนู" : "เมนู"} <SiteIcon name={open ? "close" : "menu"} />
       </button>
       <nav id="public-navigation" aria-label="เมนูหลัก" className={open ? "open" : ""}>
+        {/* Products carries the category list. There is no disclosure control:
+            pointing at the item opens it, tabbing into it does the same, and
+            the item itself stays a plain link to the products page. The list
+            is a plain group of links rather than a labelled generic, because
+            ARIA ignores a name on an element with no role. */}
         {links.map(([href, label]) =>
           href === "/products" ? (
             <div className="v-products-nav" key={href}>
@@ -85,19 +91,16 @@ export function Navigation({ categories }: { categories: { name_th: string; slug
               >
                 {label}
               </Link>
-              <details ref={productMenu}>
-                <summary aria-label="หมวดหมู่ผลิตภัณฑ์">⌄</summary>
-                <div className="v-megamenu">
-                  <Link href="/products" onClick={closeMenus}>
-                    สินค้าทั้งหมด
+              <div className="v-megamenu">
+                <Link href="/products" onClick={closeMenus}>
+                  สินค้าทั้งหมด
+                </Link>
+                {categories.map((c) => (
+                  <Link href={`/products/category/${c.slug}`} key={c.slug} onClick={closeMenus}>
+                    {c.name_th}
                   </Link>
-                  {categories.map((c) => (
-                    <Link href={`/products/category/${c.slug}`} key={c.slug} onClick={closeMenus}>
-                      {c.name_th}
-                    </Link>
-                  ))}
-                </div>
-              </details>
+                ))}
+              </div>
             </div>
           ) : (
             <Link

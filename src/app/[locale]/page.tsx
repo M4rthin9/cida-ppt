@@ -7,6 +7,7 @@ import { StorySection } from "@/components/vocational/StorySection";
 import { ProductCard } from "@/components/vocational/ProductCard";
 import { NewsCard } from "@/components/vocational/NewsCard";
 import { readSequence } from "@/lib/vocational/sequence-assets";
+import { frameUrl } from "@/lib/vocational/sequence";
 import { publicMetadata } from "@/lib/seo/metadata";
 export const dynamic = "force-dynamic";
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
@@ -33,11 +34,19 @@ export default async function Home() {
     readSequence("hero"),
     readSequence("reveal"),
   ]);
+  /**
+   * The second movement opens onto the frame the first one ends on. The hero
+   * lifts its last frame away blurred behind the seam; the aperture parts on
+   * that same image and resolves it. One shot continuing, rather than two
+   * sections that happen to share a background colour. It costs nothing: the
+   * frame is already on disk and already in the reader's cache by then.
+   */
+  const apertureStill = heroSequence ? frameUrl(heroSequence, heroSequence.count - 1) : undefined;
   const words = [...categories.map((c) => c.name_th), "งานฝึกวิชาชีพ", "CRAFTED WITH PURPOSE"];
   return (
     <main id="content">
       <CinematicHero sequence={heroSequence} />
-      <ApertureSection sequence={revealSequence} categories={categories} />
+      <ApertureSection sequence={revealSequence} still={apertureStill} categories={categories} />
       <div className="v-marquees">
         {/* ARIA forbids naming a generic element, so an aria-label here was
             silently ignored and the marquee reached assistive tech as nothing

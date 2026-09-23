@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { remap, scrollProgress } from "./scroll-stage";
+import { band, remap, scrollProgress } from "./scroll-stage";
 import { frameAt, landmarksFor } from "./scroll-player";
 
 describe("stage progress", () => {
@@ -36,6 +36,33 @@ describe("remap", () => {
   it("degrades to a step when the slice has no width", () => {
     expect(remap(0.4, 0.5, 0.5)).toBe(0);
     expect(remap(0.5, 0.5, 0.5)).toBe(1);
+  });
+});
+
+describe("band", () => {
+  it("holds at 1 between its feathered edges and is 0 outside them", () => {
+    expect(band(0.1, 0.24, 0.4)).toBe(0);
+    expect(band(0.32, 0.24, 0.4)).toBe(1);
+    expect(band(0.5, 0.24, 0.4)).toBe(0);
+  });
+
+  it("feathers in and out rather than cutting", () => {
+    expect(band(0.24 + 0.035 / 2, 0.24, 0.4)).toBeCloseTo(0.5);
+    expect(band(0.4 - 0.035 / 2, 0.24, 0.4)).toBeCloseTo(0.5);
+  });
+
+  it("keeps the hero's three captions off each other's stretch", () => {
+    // The whole point of the score: at no scroll position do two clauses of
+    // the lede both have a presence on screen.
+    const windows: [number, number][] = [
+      [0.24, 0.4],
+      [0.42, 0.58],
+      [0.6, 0.74],
+    ];
+    for (let p = 0; p <= 1; p += 0.005) {
+      const lit = windows.filter(([a, b]) => band(p, a, b) > 0);
+      expect(lit.length).toBeLessThanOrEqual(1);
+    }
   });
 });
 
