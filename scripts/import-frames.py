@@ -110,8 +110,8 @@ def encode(frames, staged, width, quality):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("source", nargs="?", help="Folder or ZIP of frames (default: public/frames/_150.zip)")
-    parser.add_argument("--set", choices=SETS, dest="name", help="Named sequence: hero or reveal")
-    parser.add_argument("--output", help="Output directory (default: public/frames[/<set>])")
+    parser.add_argument("--set", choices=SETS, dest="name", default="hero", help="Named sequence (default: hero)")
+    parser.add_argument("--output", help="Output directory (default: public/frames/<set>)")
     parser.add_argument(
         "--max",
         type=int,
@@ -135,14 +135,10 @@ def main():
         parser.error(f"--max must be between {MIN_FRAMES} and {MAX_FRAMES}")
 
     source = Path(args.source) if args.source else Path("public/frames/_150.zip")
-    # Preserve the older README/SETUP workflow while preferring the new path.
-    legacy = Path("public/frames_150.zip")
-    if args.source is None and not source.exists() and legacy.is_file():
-        source = legacy
     if not source.exists():
         parser.error(f"Frames missing: {source}. See docs/SCROLL-SEQUENCE.md.")
 
-    output = Path(args.output) if args.output else Path("public/frames") / (args.name or "")
+    output = Path(args.output) if args.output else Path("public/frames") / args.name
 
     try:
         frames = collect_zip(source) if source.is_file() else collect_directory(source)

@@ -3,16 +3,6 @@ import { readdir, readFile, stat } from "node:fs/promises";
 import { join } from "node:path";
 import { frameName, isSequenceManifest, type SequenceManifest, type SequenceSet } from "./sequence";
 
-/**
- * Candidate directories per set, most specific first. `hero` still accepts the
- * original flat `public/frames` import so an existing 150-frame sequence keeps
- * driving the homepage without being re-imported.
- */
-const LOCATIONS: Record<SequenceSet, string[]> = {
-  hero: ["frames/hero", "frames"],
-  reveal: ["frames/reveal"],
-};
-
 async function read(relative: string): Promise<SequenceManifest | undefined> {
   const directory = join(process.cwd(), "public", relative);
   try {
@@ -49,10 +39,6 @@ async function read(relative: string): Promise<SequenceManifest | undefined> {
  * renders the static composition instead of collapsing the page height once the
  * player gives up in the browser.
  */
-export async function readSequence(set: SequenceSet): Promise<SequenceManifest | undefined> {
-  for (const relative of LOCATIONS[set]) {
-    const manifest = await read(relative);
-    if (manifest) return manifest;
-  }
-  return undefined;
+export function readSequence(set: SequenceSet): Promise<SequenceManifest | undefined> {
+  return read(`frames/${set}`);
 }
