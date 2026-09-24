@@ -1,40 +1,42 @@
 import { Link } from "@/i18n/navigation";
-export function StorySection() {
+import type { SettingValue } from "@/lib/settings/registry";
+import { splitLines } from "./Lines";
+export function StorySection({ copy }: { copy: SettingValue<"home"> }) {
+  const steps = splitLines(copy.storySteps).map((line) => {
+    const [title = "", ...rest] = line.split("|");
+    return [title.trim(), rest.join("|").trim()];
+  });
   return (
     <section className="v-story" id="story">
       <div>
-        <p className="v-eyebrow">THE SKILL BEHIND THE CRAFT</p>
+        {copy.storyEyebrow && <p className="v-eyebrow">{copy.storyEyebrow}</p>}
         <h2>
-          จากการฝึกฝน
-          <br />
-          <span>สู่ผลงานที่มีคุณค่า</span>
+          {copy.storyTitle}
+          {copy.storyTitleAccent && (
+            <>
+              <br />
+              <span>{copy.storyTitleAccent}</span>
+            </>
+          )}
         </h2>
-        <p>
-          ทุกขั้นตอนของการผลิตคือกระบวนการเรียนรู้ ทั้งทักษะ ความรับผิดชอบ ความละเอียด
-          และมาตรฐานในการทำงาน
-        </p>
+        {copy.storyBody && <p>{copy.storyBody}</p>}
         <Link className="v-text-link" href="/story">
-          เรื่องราวของเรา ↗
+          {copy.storyCta} ↗
         </Link>
       </div>
-      <ol>
-        {[
-          ["ฝึกฝน", "เรียนรู้จากการลงมือทำจริง"],
-          ["พัฒนาทักษะ", "ใส่ใจในวัสดุ เครื่องมือ และรายละเอียด"],
-          ["สร้างผลงาน", "ฝึกความรับผิดชอบในทุกขั้นตอน"],
-          ["สร้างคุณค่า", "ถ่ายทอดความตั้งใจผ่านงานฝีมือ"],
-          ["สร้างโอกาสใหม่", "เตรียมความพร้อมสู่การประกอบอาชีพ"],
-        ].map(([title, copy], i) => (
-          <li key={title}>
-            <span>{String(i + 1).padStart(2, "0")}</span>
-            <div>
-              <h3>{title}</h3>
-              <p>{copy}</p>
-            </div>
-            <span>↗</span>
-          </li>
-        ))}
-      </ol>
+      {steps.length > 0 && (
+        <ol>
+          {steps.map(([title, text], i) => (
+            <li key={i}>
+              <span aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
+              <div>
+                <h3>{title}</h3>
+                {text && <p>{text}</p>}
+              </div>
+            </li>
+          ))}
+        </ol>
+      )}
     </section>
   );
 }

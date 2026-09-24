@@ -3,7 +3,7 @@ import { SETTINGS, SETTING_KEYS, defaultsFor, parseGlobal, parseLocalized } from
 
 describe("registry", () => {
   it("covers the keys phase 6 names", () => {
-    expect(SETTING_KEYS.sort()).toEqual(["contact", "general", "line", "seo", "theme"]);
+    expect(SETTING_KEYS.sort()).toEqual(["contact", "general", "home", "line", "seo", "theme"]);
   });
 
   it("every key's own defaults satisfy its own schema", () => {

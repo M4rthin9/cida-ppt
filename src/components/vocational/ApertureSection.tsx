@@ -7,6 +7,8 @@ import { SiteIcon } from "@/components/site/icons";
 import { startScrollSequence } from "@/lib/vocational/scroll-player";
 import { band, remap, trackStage } from "@/lib/vocational/scroll-stage";
 import type { SequenceManifest } from "@/lib/vocational/sequence";
+import type { SettingValue } from "@/lib/settings/registry";
+import { splitLines } from "./Lines";
 import type { Category } from "@/lib/vocational/types";
 
 /**
@@ -51,16 +53,22 @@ export function ApertureSection({
   sequence,
   still,
   categories = [],
+  copy,
 }: {
   sequence?: SequenceManifest;
   /** The hero's last frame, so this movement opens where that one ended. */
   still?: string;
   categories?: Category[];
+  copy: SettingValue<"home">;
 }) {
   const section = useRef<HTMLElement>(null);
   const stage = useRef<HTMLDivElement>(null);
   const canvas = useRef<HTMLCanvasElement>(null);
   const rail = categories.slice(0, 4);
+  // Both sequences present: this stage starts pinned over the hero's held
+  // frame, which is its own first frame, so there is no aperture to open and
+  // no blur to resolve. The shot just keeps playing.
+  const joined = Boolean(sequence && still);
 
   useEffect(() => {
     const host = section.current;
@@ -73,8 +81,11 @@ export function ApertureSection({
       set("--v-progress", progress);
       // Reduced motion rests fully open: the aperture is the only thing
       // standing between the reader and this section's content.
-      set("--v-open", reduced ? 1 : remap(progress, 0, 0.3));
-      set("--v-focus", reduced ? 1 : remap(progress, 0.06, 0.38));
+      set("--v-open", reduced || joined ? 1 : remap(progress, 0, 0.3));
+      set("--v-focus", reduced || joined ? 1 : remap(progress, 0.06, 0.38));
+      // Joined, the frame arrives under the hero's shading, exactly as the
+      // hero left it, and trades it for the column's as the column arrives.
+      set("--v-veil-in", reduced || !joined ? 1 : remap(progress, 0.04, 0.34));
       // The light travels down the three stages of the craft. A word that has
       // had its turn steps back rather than leaving, so the whole argument
       // stays on screen and only the emphasis moves.
@@ -101,13 +112,16 @@ export function ApertureSection({
       tracker.stop();
       player?.stop();
     };
-  }, [sequence]);
+  }, [sequence, joined]);
 
+  // The panel is choreographed for three words.
+  const words = splitLines(copy.apertureWords).slice(0, 3);
   return (
     <section
       ref={section}
       className="v-aperture"
       data-sequence={sequence ? "on" : "off"}
+      data-join={joined ? "on" : "off"}
       aria-label="งานฝึกวิชาชีพ"
     >
       <div ref={stage} className="v-aperture-stage">
@@ -120,6 +134,8 @@ export function ApertureSection({
           {sequence ? (
             <div className="v-aperture-media">
               <canvas ref={canvas} className="v-aperture-canvas" />
+              <span className="v-cine-veil" />
+              <span className="v-cine-vignette" />
               <span className="v-aperture-veil" />
             </div>
           ) : (
@@ -130,11 +146,11 @@ export function ApertureSection({
               </div>
             )
           )}
-          {!sequence && (
+          {!sequence && words.length > 0 && (
             <p className="v-aperture-panel" data-ground={still ? "still" : "type"}>
-              <span>ฝึกฝน</span>
-              <span>ลงมือทำ</span>
-              <span>ส่งต่อคุณค่า</span>
+              {words.map((word, i) => (
+                <span key={i}>{word}</span>
+              ))}
             </p>
           )}
         </div>
@@ -142,17 +158,20 @@ export function ApertureSection({
         <span className="v-aperture-close" aria-hidden="true" />
 
         <div className="v-aperture-copy">
-          <p className="v-eyebrow" data-k="1">
-            FROM PRACTICE TO POSSIBILITY
-          </p>
+          {copy.apertureEyebrow && (
+            <p className="v-eyebrow" data-k="1">
+              {copy.apertureEyebrow}
+            </p>
+          )}
           <h2 data-k="1">
-            จากการฝึกฝน
-            <span>สู่ผลงานที่มีคุณค่า</span>
+            {copy.apertureTitle}
+            {copy.apertureTitleAccent && <span>{copy.apertureTitleAccent}</span>}
           </h2>
-          <p className="v-aperture-lede" data-k="2">
-            ทุกชิ้นงานเริ่มจากการเรียนรู้ ฝึกฝนซ้ำแล้วซ้ำเล่า จนกลายเป็นทักษะติดตัว
-            และกลายเป็นโอกาสในวันข้างหน้า
-          </p>
+          {copy.apertureLede && (
+            <p className="v-aperture-lede" data-k="2">
+              {copy.apertureLede}
+            </p>
+          )}
           {rail.length > 0 && (
             <nav className="v-aperture-rail" aria-label="หมวดงานฝีมือ" data-k="3">
               <ul>
@@ -165,7 +184,7 @@ export function ApertureSection({
             </nav>
           )}
           <Link className="v-pill v-pill-solid" href="/vocational" data-k="3">
-            เรียนรู้เรื่องงานฝึกวิชาชีพ <SiteIcon name="arrow" />
+            {copy.apertureCta} <SiteIcon name="arrow" />
           </Link>
         </div>
       </div>

@@ -62,26 +62,28 @@ export function startScrollSequence(
   let target = 0;
   let current = 0;
   let lastPainted = -1;
+  let lastKey = "";
   let lastWanted = -1;
   let width = 0;
   let height = 0;
   let dpr = 0;
   let dirty = true;
 
+  /**
+   * The pair on screen first (a blend needs both), then every frame on the way
+   * to where the scroll is heading and a few past it, then a couple behind in
+   * case the reader turns round. Fetching only around the current frame meant
+   * a quick flick outran the cache and painted a stale frame until it caught up.
+   */
   function wantedFrames() {
     if (!preload) return [0];
-    const wanted = Math.round(current);
-    const destination = Math.round(target);
-    return [
-      wanted,
-      destination,
-      wanted + 1,
-      wanted - 1,
-      destination + 1,
-      destination - 1,
-      wanted + 2,
-      wanted - 2,
-    ].filter((n) => n >= 0 && n < count);
+    const from = Math.floor(current);
+    const to = Math.round(target);
+    const step = to >= from ? 1 : -1;
+    const frames = [from, from + 1];
+    for (let n = from; n !== to + step * 5; n += step) frames.push(n);
+    frames.push(from - step, from - step * 2);
+    return [...new Set(frames)].filter((n) => n >= 0 && n < count);
   }
 
   function trimCache() {
@@ -151,14 +153,30 @@ export function startScrollSequence(
   }
 
   function paint() {
-    let best: number | undefined;
-    for (const n of cache.keys()) {
-      if (!preload && n !== 0) continue;
-      if (best === undefined || Math.abs(n - current) < Math.abs(best - current)) best = n;
+    if (width <= 0 || height <= 0) return;
+    // Between two frames, show both: the next one laid over this one at the
+    // fraction of the way the scroll has travelled. The motion then moves
+    // continuously instead of stepping a whole frame at a time.
+    const lo = Math.floor(current);
+    const hi = Math.min(count - 1, lo + 1);
+    let base: number | undefined;
+    let over = -1;
+    let mix = 0;
+    if (preload && hi > lo && cache.has(lo) && cache.has(hi)) {
+      base = lo;
+      over = hi;
+      mix = Math.round((current - lo) * 32) / 32;
+    } else {
+      for (const n of cache.keys()) {
+        if (!preload && n !== 0) continue;
+        if (base === undefined || Math.abs(n - current) < Math.abs(base - current)) base = n;
+      }
     }
-    if (best === undefined || width <= 0 || height <= 0) return;
-    if (!dirty && best === lastPainted && dpr === devicePixelRatio) return;
-    const img = cache.get(best);
+    if (base === undefined) return;
+    const key = `${base}:${over}:${mix}`;
+    if (!dirty && key === lastKey && dpr === devicePixelRatio) return;
+    const img = cache.get(base);
+    const top = over >= 0 && mix > 0 ? cache.get(over) : undefined;
     if (!img) return;
     dpr = devicePixelRatio || 1;
     const w = Math.max(1, Math.round(width * dpr));
@@ -173,11 +191,19 @@ export function startScrollSequence(
     const dh = img.naturalHeight * scale;
     ctx.clearRect(0, 0, w, h);
     ctx.drawImage(img, (w - dw) / 2, (h - dh) / 2, dw, dh);
-    lastPainted = best;
+    if (top) {
+      ctx.globalAlpha = mix;
+      ctx.drawImage(top, (w - dw) / 2, (h - dh) / 2, dw, dh);
+      ctx.globalAlpha = 1;
+    }
+    // The frame the reader mostly sees, for the cache and for anyone watching.
+    const shown = top && mix >= 0.5 ? over : base;
+    lastPainted = shown;
+    lastKey = key;
     dirty = false;
-    canvas.dataset.frame = String(best + 1);
+    canvas.dataset.frame = String(shown + 1);
     canvas.dataset.ready = "true";
-    options.onFrame?.(best + 1);
+    options.onFrame?.(shown + 1);
   }
 
   function tick(time: number) {
@@ -228,7 +254,9 @@ export function startScrollSequence(
 
   return {
     setProgress(progress: number) {
-      target = preload ? frameAt(progress, count) : 0;
+      // A whole frame to rest on, so a paused scroll shows one crisp image;
+      // the easing in `tick` blends through the frames on the way to it.
+      target = preload ? Math.round(frameAt(progress, count)) : 0;
       pump();
       schedule();
     },
@@ -240,6 +268,7 @@ export function startScrollSequence(
       lastTime = 0;
       lastWanted = -1;
       lastPainted = -1;
+      lastKey = "";
       if (!enabled) {
         target = 0;
         current = 0;

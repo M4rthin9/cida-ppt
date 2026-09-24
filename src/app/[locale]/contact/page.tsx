@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { getCachedSetting } from "@/lib/settings/cached";
 import { publicMetadata } from "@/lib/seo/metadata";
-import { goLinePath } from "@/lib/line";
+import { addFriendUrl } from "@/lib/line";
 import { Breadcrumbs } from "@/components/site/breadcrumbs";
 import { LineLink } from "@/components/site/line-link";
 import { SectionHeading } from "@/components/site/section-heading";
@@ -130,7 +130,9 @@ export default async function ContactPage({
               <dt className="text-sm text-(--color-text-muted)">{t("line")}</dt>
               <dd className="col-span-2">
                 <p className="lat text-(--color-text)">{tLine("handle", { id: line.oaId })}</p>
-                <LineLink href={goLinePath()} className="mt-3">
+                {/* Straight to the account rather than through /go/line, so
+                    the link a visitor sees and copies is LINE's own. */}
+                <LineLink href={addFriendUrl(line.oaId)} className="mt-3">
                   {tLine("openAccount")}
                 </LineLink>
               </dd>

@@ -449,6 +449,14 @@
 .v-button-light:hover {
   background: #efefef;
 }
+.v-button-outline {
+  border-color: var(--v-rule-strong);
+  color: var(--v-ink);
+}
+.v-button-outline:hover {
+  border-color: var(--v-ink);
+  background: var(--v-white);
+}
 .v-text-link {
   display: inline-flex;
   align-items: center;
@@ -484,10 +492,12 @@
 .v-cine {
   position: relative;
   isolation: isolate;
-  /* The scrub range SPEC.md §20 asks for, at the long end of it: four acts
-     need room to arrive and to leave without ever overlapping. The stage
+  /* Four acts need room to arrive and leave without overlapping. The pace is
+     tied to the reveal's: 320svh of scrub for this set's 100 steps is 3.2svh
+     a frame, and the reveal's height below spends the same on each of its
+     own, so the two sets play as one clip. Change them together. The stage
      inside stays exactly one viewport tall. */
-  min-height: 460svh;
+  min-height: 420svh;
   background: var(--v-cine-ink);
   color: var(--v-cine-paper);
 }
@@ -525,12 +535,6 @@
   inset: 0;
   z-index: 0;
   opacity: var(--v-media-opacity);
-  /* The hand-off. Over the last tenth of the scroll the footage softens,
-     drifts forward and loses a little colour, so the final frame dissolves
-     into the section below instead of ending on a cut. */
-  filter: blur(calc(var(--v-exit) * 12px)) saturate(calc(1 - var(--v-exit) * 0.3));
-  transform: scale(calc(1 + var(--v-exit) * 0.05));
-  transform-origin: 50% 46%;
 }
 
 .v-cine-canvas,
@@ -856,7 +860,8 @@
 .v-aperture {
   position: relative;
   isolation: isolate;
-  min-height: 340svh;
+  /* 99 steps at the hero's 3.2svh a frame, plus the pinned screen. */
+  min-height: 417svh;
   background: var(--v-cine-ink);
   color: var(--v-cine-paper);
 }
@@ -890,10 +895,24 @@
   --v-copy-2: 0;
   --v-copy-3: 0;
   --v-close: 0;
+  --v-veil-in: 1;
   position: sticky;
   top: 0;
   height: 100svh;
   overflow: clip;
+}
+
+/* One shot across two sections. The reveal starts a screen early, so its
+   stage pins at the moment the hero's would start to leave, over the same
+   held frame; the hero's seam has nothing left to hide. Motion only: with
+   reduced motion neither stage pins and each keeps its own screen. */
+@media (prefers-reduced-motion: no-preference) {
+  .v-aperture[data-join="on"] {
+    margin-top: -100svh;
+  }
+  .v-cine:has(+ .v-aperture[data-join="on"]) .v-cine-seam {
+    display: none;
+  }
 }
 
 /* The screen opens from the middle: a centre seam that grows to full bleed. */
@@ -1026,9 +1045,18 @@
   --v-w: var(--v-w3);
 }
 
+/* Joined, the reveal opens under the hero's own shading, so the frame it
+   takes over on looks exactly as the hero left it, then trades that shading
+   for its own as the column arrives. */
+.v-aperture .v-cine-veil,
+.v-aperture .v-cine-vignette {
+  opacity: calc(1 - var(--v-veil-in));
+}
+
 .v-aperture-veil {
   position: absolute;
   inset: 0;
+  opacity: var(--v-veil-in);
   background:
     linear-gradient(
       270deg,
@@ -1330,8 +1358,6 @@
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
     .v-section-heading,
-    .v-bento-card,
-    .v-bento-note,
     .v-story li,
     .v-product-card,
     .v-news-card,
@@ -1403,416 +1429,184 @@
   margin-bottom: 18px;
   max-width: 34ch;
 }
-/* ------------------------------------------------------------------
-   Collections.
-
-   Cards are grid cells, not objects floating on the page: each opens on
-   a hairline that carries its index, and the asymmetric 7/5 rhythm is
-   what keeps a four-item grid from reading as a template. The index is
-   tabular so 01 and 04 occupy the same width and the column edges stay
-   true down the whole set.
-   ------------------------------------------------------------------ */
 .v-bento {
   display: grid;
-  grid-template-columns: repeat(var(--v-cols), minmax(0, 1fr));
-  column-gap: var(--v-col-gap);
-  row-gap: clamp(28px, 3.4vw, 52px);
-}
-.v-bento-card,
-.v-bento-note {
-  /* Resting values for everything BentoGrid publishes. The stylesheet is a
-     pure function of these four numbers, so with no script, a coarse pointer
-     or reduced motion the cells simply rest here. */
-  --mx: 0.5;
-  --my: 0.5;
-  --px: 0;
-  --py: 0;
-  --hot: 0;
-  --lit: 0;
-}
-/* Keyboard parity: a focused cell runs the same choreography as a hovered
-   one, minus the cue — there is no pointer for it to ride. */
-.v-bento-card:focus-visible,
-.v-bento-note:focus-visible {
-  --hot: 1;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 18px;
 }
 .v-bento-card {
-  grid-column: span 5;
+  grid-column: span 2;
+  min-height: 395px;
+  padding: 30px 34px;
   position: relative;
-  display: flex;
-  flex-direction: column;
-  min-height: clamp(320px, 34vw, 430px);
-  padding: 22px 0 0;
-  border-top: 1px solid var(--v-rule);
-  border-radius: 0;
   overflow: hidden;
   isolation: isolate;
+  background: #e4e6e9;
+  color: var(--v-ink);
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.35s;
 }
-.v-bento-card:nth-child(4n + 1),
+.v-bento-card:hover {
+  transform: translateY(-4px);
+}
+.v-bento-card:nth-child(4n + 1) {
+  grid-column: span 4;
+}
 .v-bento-card:nth-child(4n + 4) {
-  grid-column: span 7;
+  grid-column: span 4;
 }
-/* The hairline does not change colour, it is drawn: a second rule wipes
-   across the first from the left in the accent. It is the only place the
-   palette's one non-neutral moves. */
-.v-bento-draw {
+.v-bento-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  position: relative;
+  z-index: 1;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+}
+.v-bento-top > span:last-child {
+  font-size: 27px;
+  letter-spacing: 0;
+  font-weight: 300;
+}
+.v-bento-icon img {
+  object-fit: contain;
+}
+.v-bento-number {
   position: absolute;
-  top: -1px;
-  right: 0;
-  left: 0;
-  height: 1px;
-  background: var(--v-accent);
-  transform: scaleX(var(--hot));
-  transform-origin: left;
-  transition: transform var(--v-dur) var(--v-ease);
+  right: 25px;
+  top: 25px;
+  font: 200px/1.2 var(--v-serif);
+  font-style: italic;
+  opacity: 0.13;
+  transition: transform 0.4s;
   pointer-events: none;
-  z-index: 4;
 }
-/* The four categories take four steps of the one palette — with the hues
-   gone, the ramp is the only distinction the set has left. */
+.v-bento-card:hover .v-bento-number {
+  transform: translateY(8px);
+}
+.v-bento-copy {
+  position: relative;
+  z-index: 1;
+  max-width: 82%;
+  margin-top: 80px;
+}
+.v-bento-copy h3 {
+  font-size: 28px;
+  margin: 0 0 12px;
+}
+.v-bento-copy p {
+  font-size: 15px;
+  line-height: 1.85;
+  opacity: 0.85;
+  max-width: 370px;
+}
+.v-bento-copy small {
+  display: block;
+  font-size: 12px;
+  margin-top: 20px;
+  opacity: 0.7;
+}
 .v-bento-wreath {
-  --v-cell: #f7f7f7;
+  --v-cell: #e4e6e9;
   --v-cell-ink: #393e46;
+  background: var(--v-cell);
+  color: var(--v-cell-ink);
 }
 .v-bento-material {
   --v-cell: #393e46;
   --v-cell-ink: #f7f7f7;
+  background: var(--v-cell);
+  color: var(--v-cell-ink);
 }
 .v-bento-flower {
   --v-cell: #eeeeee;
   --v-cell-ink: #393e46;
+  background: var(--v-cell);
+  color: var(--v-cell-ink);
 }
 .v-bento-textile {
   --v-cell: #d6dae1;
   --v-cell-ink: #2c3037;
+  background: var(--v-cell);
+  color: var(--v-cell-ink);
 }
-
-/* Index and marker ride the rule, above the image plane. */
-.v-bento-top {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 20px;
-  margin-bottom: 18px;
-}
-.v-bento-top > span:first-child {
-  font-size: var(--v-t-fine);
-  font-weight: 500;
-  font-variant-numeric: tabular-nums;
-  letter-spacing: var(--v-tracking-eyebrow);
-  text-transform: uppercase;
-  color: var(--v-muted);
-}
-.v-bento-top > span:last-child {
-  font-size: 18px;
-  line-height: 1;
-  color: var(--v-accent);
-  transition: transform 0.35s cubic-bezier(0.2, 0.7, 0.3, 1);
-}
-.v-bento-card:hover .v-bento-top > span:last-child {
-  transform: translate(5px, -5px);
-}
-.v-bento-top > .v-bento-icon {
-  display: grid;
-  place-items: center;
-  width: 34px;
-  height: 34px;
-  background: var(--v-white);
-  border: 1px solid var(--v-rule);
-  align-self: center;
-}
-.v-bento-card:hover .v-bento-top > .v-bento-icon {
-  transform: none;
-}
-
-/* The image plane fills the cell under the rule; type sits on top of it. */
-.v-bento-media {
-  position: relative;
-  flex: 1;
-  min-height: 0;
-  overflow: hidden;
-  border-radius: var(--v-edge);
-  background: var(--v-cell, #eeeeee);
-}
-.v-bento-media > img {
+.v-bento-card > img {
   object-fit: cover;
-  /* Drifts against the pointer. The frame is oversized by the same amount it
-     can travel, so the parallax never exposes an edge. */
-  transform: scale(calc(1.055 + var(--hot) * 0.035))
-    translate3d(calc(var(--px) * -1.4%), calc(var(--py) * -1.4%), 0);
-  transition: transform var(--v-dur) var(--v-ease);
-  will-change: transform;
+  z-index: -2;
 }
-
-/* The luxury move, and the only one: a soft specular rake that follows the
-   pointer across the cell, as if a light were passing over coated stock.
-   In a monochrome palette this is what reads as material — glow would just
-   read as a website. */
-.v-bento-media::before {
+.v-bento-card.with-image {
+  color: #fff;
+}
+.v-bento-card.with-image:after {
   content: "";
   position: absolute;
   inset: 0;
-  z-index: 1;
-  pointer-events: none;
-  opacity: var(--hot);
-  transition: opacity var(--v-dur) var(--v-ease);
-  background: radial-gradient(
-    38% 52% at calc(var(--mx) * 100%) calc(var(--my) * 100%),
-    rgb(255 255 255 / 0.3) 0%,
-    rgb(255 255 255 / 0.1) 42%,
-    transparent 72%
-  );
-}
-/* On a cell with no photograph the rake works the other way: the ramp step is
-   already light, so the light lands as a darkening, not a wash. */
-.v-bento-card:not(.with-image) .v-bento-media::before {
-  background: radial-gradient(
-    42% 58% at calc(var(--mx) * 100%) calc(var(--my) * 100%),
-    rgb(57 62 70 / 0.14) 0%,
-    rgb(57 62 70 / 0.05) 46%,
-    transparent 74%
-  );
-}
-.v-bento-material:not(.with-image) .v-bento-media::before {
-  background: radial-gradient(
-    42% 58% at calc(var(--mx) * 100%) calc(var(--my) * 100%),
-    rgb(255 255 255 / 0.12) 0%,
-    rgb(255 255 255 / 0.04) 46%,
-    transparent 74%
-  );
-}
-/* The veil is weighted to where the copy actually sits, so the top of the
-   frame stays clear and the craftwork is still the subject. Measured
-   against a pure-white photograph — the worst case — the type lands at
-   8.2:1 where the copy block begins. */
-.v-bento-media::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  background: linear-gradient(
-    180deg,
-    transparent 0%,
-    rgb(21 25 29 / 0.1) 26%,
-    rgb(21 25 29 / 0.72) 58%,
-    rgb(21 25 29 / 0.92) 100%
-  );
-  /* Deepens as the copy lifts into it, so contrast rises with the motion
-     rather than being spent by it. */
-  opacity: calc(1 + var(--hot) * 0.12);
-  transition: opacity var(--v-dur) var(--v-ease);
-}
-.v-bento-card:not(.with-image) .v-bento-media::after {
-  content: none;
-}
-
-/* The oversized numeral is composition, not watermark: it sits on the
-   baseline of the copy block and is clipped by the cell edge. */
-.v-bento-number {
-  position: absolute;
-  right: -0.06em;
-  bottom: -0.2em;
-  font: 500 clamp(120px, 15vw, 210px) / 0.78 var(--font-sans);
-  font-variant-numeric: tabular-nums;
-  letter-spacing: -0.04em;
-  color: var(--v-cell-ink, var(--v-ink));
-  opacity: calc(0.12 + var(--hot) * 0.1);
-  /* Travels WITH the pointer while the photograph travels against it. The
-     opposed directions are what make the cell read as two planes rather
-     than one picture that moves. */
-  transform: translate3d(calc(var(--px) * 1.1%), calc(var(--py) * 1.6%), 0);
-  transition:
-    transform var(--v-dur) var(--v-ease),
-    opacity var(--v-dur) var(--v-ease);
-  pointer-events: none;
-  z-index: 3;
-}
-.v-bento-copy {
-  position: absolute;
-  z-index: 3;
-  right: clamp(20px, 2.2vw, 34px);
-  bottom: clamp(20px, 2.2vw, 30px);
-  left: clamp(20px, 2.2vw, 34px);
-  color: var(--v-cell-ink, var(--v-ink));
-}
-/* The three lines rise as one gesture, offset by a frame each, so the block
-   arrives rather than jumps. Restraint is the point: 10px, not 30. */
-.v-bento-copy > * {
-  transform: translate3d(0, calc(var(--hot) * -10px), 0);
-  transition: transform var(--v-dur) var(--v-ease);
-}
-.v-bento-copy > p {
-  transition-delay: 40ms;
-}
-.v-bento-copy > small {
-  transition-delay: 80ms;
-}
-.v-bento-copy h3 {
-  font-size: var(--v-t-heading);
-  line-height: var(--v-leading-heading);
-  color: inherit;
-  margin-bottom: 7px;
-}
-.v-bento-copy p {
-  font-size: var(--v-t-control);
-  line-height: 1.75;
-  max-width: 46ch;
-  /* 0.86 is the floor that keeps every step of the ramp at AA — see the
-     contrast run in the commit; 0.82 dropped the lightest cell to 4.3. */
-  opacity: 0.86;
-}
-.v-bento-copy small {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  margin-top: 18px;
-  font-size: var(--v-t-fine);
-  font-variant-numeric: tabular-nums;
-  opacity: 0.82;
-}
-.v-bento-copy small::before {
-  content: "";
-  width: 22px;
-  height: 1px;
-  background: currentColor;
-}
-/* With a photograph behind it the copy is always light, whatever step of
-   the ramp the category sits on. */
-.v-bento-card.with-image .v-bento-copy,
-.v-bento-card.with-image .v-bento-number {
-  color: #ffffff;
-}
-.v-bento-card.with-image .v-bento-media::before {
-  z-index: 3;
-  mix-blend-mode: soft-light;
+  z-index: -1;
+  background: linear-gradient(0deg, #000b, transparent 90%);
 }
 .v-bento-card.with-image .v-bento-number {
-  opacity: 0.22;
-}
-
-/* ------------------------------------------------------------------
-   The cue.
-
-   A disc that rides the pointer inside the cell and scales in from
-   nothing — the one piece of the page that is purely an invitation. It
-   is decorative (aria-hidden) and never hit-tested: the whole cell is
-   already the link, and the accessible name comes from the heading.
-
-   Only fine pointers get it. On a touch screen there is no pointer to
-   follow, and a disc parked in the middle of a photograph is worse than
-   no disc at all.
-   ------------------------------------------------------------------ */
-.v-bento-cue {
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 4;
   display: none;
-  place-items: center;
-  width: 104px;
-  height: 104px;
-  margin: -52px 0 0 -52px;
-  border-radius: 50%;
-  /* Sits in the scene rather than on top of it: a hairline edge, and a
-     shadow soft enough to read as contact rather than as elevation. */
-  background: var(--v-paper);
-  box-shadow:
-    inset 0 0 0 1px rgb(255 255 255 / 0.6),
-    0 18px 40px rgb(21 25 29 / 0.26);
-  color: var(--v-ink);
-  font-size: var(--v-t-fine);
-  font-weight: 500;
-  letter-spacing: 0.06em;
-  pointer-events: none;
-  opacity: var(--lit);
-  /* Pixel offsets rather than container-query units: `container-type: size`
-     would make the cell size itself without looking at its contents, and
-     animating left/top would put this on the layout path. */
-  translate: var(--mpx, 0px) var(--mpy, 0px);
-  scale: calc(0.62 + var(--hot) * 0.38);
-  will-change: translate;
-  transition:
-    opacity var(--v-dur-fast) var(--v-ease),
-    scale var(--v-dur-fast) var(--v-ease),
-    translate 0.14s linear;
 }
-.v-bento-cue::after {
-  content: "↗";
-  margin-left: 5px;
-}
-@media (hover: hover) and (pointer: fine) {
-  .v-bento-cue {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-}
-
-/* The two standing links close the grid on the same rule as the cards. */
 .v-bento-note {
-  position: relative;
-  grid-column: span 6;
+  grid-column: span 3;
+  background: #eeeeee;
+  border-radius: 4px;
+  padding: 29px 34px;
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: 1fr 1fr;
   align-items: end;
-  gap: 18px;
-  min-height: 170px;
-  padding: 22px 0 24px;
-  border-top: 1px solid var(--v-rule);
-  border-radius: 0;
+  gap: 20px;
 }
-.v-bento-note h3 {
-  transform: translate3d(calc(var(--hot) * 8px), 0, 0);
-  transition: transform var(--v-dur) var(--v-ease);
-}
-/* Targeted by class, not by position: the drawing rule is also a child of
-   this grid and `:first-child` would follow it instead of the label. */
-.v-bento-note > .lat {
+.v-bento-note > span:first-child {
   grid-column: 1/-1;
+  font-size: 12px;
+  letter-spacing: 0.12em;
   color: var(--v-muted);
-  font-size: var(--v-t-fine);
-  font-weight: 500;
-  letter-spacing: var(--v-tracking-eyebrow);
-  text-transform: uppercase;
 }
 .v-bento-note h3 {
-  font-size: var(--v-t-heading);
-  line-height: var(--v-leading-heading);
-  text-wrap: balance;
+  font-size: 25px;
+  line-height: 1.55;
 }
 .v-bento-note > span:last-child {
-  font-size: var(--v-t-fine);
-  color: color-mix(in srgb, var(--v-ink) calc(58% + var(--hot) * 42%), transparent);
   text-align: right;
-  padding-bottom: 4px;
-  transform: translate3d(calc(var(--hot) * 6px), 0, 0);
-  transition:
-    color var(--v-dur-fast) var(--v-ease),
-    transform var(--v-dur) var(--v-ease);
+  font-size: 14px;
+}
+.v-bento-featured {
+  background: #e4e6e9;
 }
 /* ------------------------------------------------------------------
    The one tonal inversion on the page.
 
    Dark ground, same grid, same rules — the five steps are set as a
    numbered table rather than a list of cards, which is what the Swiss
-   reading of a process actually looks like. Indices are tabular so the
-   rules above them start on a true left edge.
+   reading of a process actually looks like. One light source rakes the
+   coal from the heading's corner, the heading holds its place while the
+   steps pass it, and each oversized index is only an outline until the
+   reader has scrolled through it — the process reads as progress.
    ------------------------------------------------------------------ */
 .v-story {
   max-width: 1500px;
   margin: 0 auto;
-  padding: clamp(64px, 8vw, 116px) var(--v-gutter);
+  padding: clamp(80px, 10vw, 148px) var(--v-gutter);
   display: grid;
   grid-template-columns: repeat(var(--v-cols), minmax(0, 1fr));
   column-gap: var(--v-col-gap);
   row-gap: 48px;
-  background: var(--v-coal);
+  background:
+    radial-gradient(ellipse 70% 60% at 8% 0%, #3b414b 0%, transparent 62%),
+    radial-gradient(ellipse 50% 50% at 100% 100%, #1b1e23 0%, transparent 70%), var(--v-coal);
   color: #fbfbfb;
 }
 .v-story > div:first-child {
   grid-column: 1 / span 5;
+  position: sticky;
+  top: calc(var(--v-header-h) + 40px);
+  align-self: start;
 }
 .v-story ol {
   grid-column: 7 / -1;
@@ -1843,34 +1637,55 @@
   border-color: var(--v-accent);
 }
 .v-story li {
+  position: relative;
   display: grid;
-  grid-template-columns: 3.5ch 1fr auto;
-  align-items: start;
-  gap: 0 clamp(16px, 2vw, 30px);
-  padding: 20px 0;
-  border-top: 1px solid #ffffff24;
-  transition: border-color 0.3s;
+  grid-template-columns: clamp(64px, 7vw, 112px) 1fr;
+  align-items: center;
+  gap: 0 clamp(16px, 2.4vw, 36px);
+  padding: clamp(22px, 2.6vw, 36px) 0;
+  border-top: 1px solid #ffffff1f;
 }
 .v-story li:last-child {
-  border-bottom: 1px solid #ffffff24;
+  border-bottom: 1px solid #ffffff1f;
 }
-.v-story li:hover {
-  border-top-color: var(--v-accent);
+/* Same grammar as the collections: the rule is drawn, not recoloured. */
+.v-story li::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--v-accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--v-dur) var(--v-ease);
 }
-.v-story li > span:first-child {
-  font-size: var(--v-t-fine);
+.v-story li:hover::before {
+  transform: scaleX(1);
+}
+/* The index is type as object: an outline at rest, filled once read. */
+.v-story li > span {
+  font-size: clamp(2.6rem, 5.2vw, 4.6rem);
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: -0.03em;
   font-variant-numeric: tabular-nums;
-  color: var(--v-accent);
-  padding-top: 0.45em;
+  color: transparent;
+  -webkit-text-stroke: 1px #ffffff47;
+  transition:
+    color var(--v-dur) var(--v-ease),
+    -webkit-text-stroke-color var(--v-dur) var(--v-ease);
 }
-.v-story li > span:last-child {
-  font-size: 17px;
-  color: #b2b8c3;
-  padding-top: 0.35em;
-  transition: transform 0.35s cubic-bezier(0.2, 0.7, 0.3, 1);
+.v-story li:hover > span {
+  color: #eef0f3;
+  -webkit-text-stroke-color: transparent;
 }
-.v-story li:hover > span:last-child {
-  transform: translate(4px, -4px);
+.v-story li > div {
+  transition: transform var(--v-dur) var(--v-ease);
+}
+.v-story li:hover > div {
+  transform: translateX(8px);
 }
 .v-story li h3 {
   font-size: var(--v-t-heading);
@@ -1880,7 +1695,26 @@
 .v-story li p {
   color: #babfc9;
   font-size: var(--v-t-control);
-  margin-top: 5px;
+  margin-top: 6px;
+  transition: color var(--v-dur-fast);
+}
+.v-story li:hover p {
+  color: #dfe2e6;
+}
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .v-story li > span {
+      animation: v-story-ink both linear;
+      animation-timeline: view();
+      animation-range: cover 30% cover 48%;
+    }
+  }
+}
+@keyframes v-story-ink {
+  to {
+    color: #eef0f3;
+    -webkit-text-stroke-color: transparent;
+  }
 }
 
 /* ------------------------------------------------------------------
@@ -2432,23 +2266,25 @@
 .v-gallery-main,
 .v-gallery-empty {
   position: relative;
-  aspect-ratio: 1/1.1;
-  background: #ededed;
+  aspect-ratio: 4/5;
+  background: var(--v-white);
   border: 1px solid var(--v-line);
-  border-radius: 20px;
+  border-radius: var(--v-radius);
   overflow: hidden;
 }
 .v-gallery-main img {
   object-fit: contain;
-  padding: 26px;
+  padding: clamp(16px, 3vw, 36px);
 }
 .v-gallery-main > span {
   position: absolute;
   bottom: 18px;
   left: 22px;
-  background: #ffffffd9;
+  background: #ffffffe6;
+  border: 1px solid var(--v-line);
   border-radius: 100px;
   padding: 3px 12px;
+  font-variant-numeric: tabular-nums;
   font-size: 12px;
   color: var(--v-muted);
 }
@@ -2466,11 +2302,19 @@
 }
 .v-gallery-thumbs button {
   border: 1px solid var(--v-line);
-  border-radius: 10px;
-  background: #ededed;
+  border-radius: 12px;
+  background: var(--v-white);
   padding: 5px;
   flex-shrink: 0;
   cursor: pointer;
+  opacity: 0.7;
+  transition:
+    opacity 0.2s,
+    border-color 0.2s;
+}
+.v-gallery-thumbs button:hover,
+.v-gallery-thumbs button[aria-pressed="true"] {
+  opacity: 1;
 }
 .v-gallery-thumbs button[aria-pressed="true"] {
   border-color: var(--v-burgundy);
@@ -2484,6 +2328,8 @@
 .v-product-detail-info {
   min-width: 0;
   padding: 14px 0;
+  position: sticky;
+  top: calc(var(--v-header-h) + 24px);
 }
 .v-gallery {
   min-width: 0;
@@ -2494,35 +2340,68 @@
 }
 .v-product-detail-info h1 {
   font-size: clamp(30px, 3.2vw, 44px);
+  line-height: var(--v-leading-heading);
+  text-wrap: balance;
+}
+.v-product-detail-info h1 + p[lang="en"] {
+  color: var(--v-muted);
+  margin-top: 6px;
 }
 .v-detail-summary {
   color: var(--v-muted);
   margin: 24px 0;
 }
+.v-detail-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 20px;
+  margin-top: 28px;
+  padding-block: 22px;
+  border-top: 1px solid var(--v-line);
+}
 .v-detail-price {
   display: flex;
   flex-wrap: wrap;
-  gap: 16px;
-  align-items: center;
-  font-size: 28px;
-  color: var(--v-burgundy);
-  margin-bottom: 14px;
+  gap: 12px;
+  align-items: baseline;
+  font-size: 30px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  color: var(--v-ink);
 }
 .v-detail-price del {
   font-size: 16px;
   color: var(--v-muted);
 }
 .v-stock {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   font-size: 13px;
   padding: 5px 13px;
-  border: 1px solid #d6d9de;
-  background: #f0f0f0;
-  color: #494e58;
+  border: 1px solid var(--v-line);
+  background: var(--v-white);
+  color: var(--v-ink);
   border-radius: 100px;
 }
+/* The dot supplements the label; the text alone carries the status. */
+.v-stock::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--v-rule-strong);
+}
+.v-stock[data-status="available"]::before {
+  background: #2f8a57;
+}
+.v-stock[data-status="made_to_order"]::before {
+  background: #b7791f;
+}
 .v-product-specs {
-  margin: 26px 0 30px;
+  margin: 0 0 28px;
   border-top: 1px solid var(--v-line);
 }
 .v-product-specs > div {
@@ -2536,16 +2415,23 @@
 .v-product-specs dt {
   color: var(--v-muted);
 }
+.v-detail-actions {
+  display: grid;
+  gap: 10px;
+}
 .v-inquiry-note {
   font-size: 13px;
   color: var(--v-muted);
-  margin-top: 14px;
+  text-align: center;
+  margin-top: 4px;
 }
 .v-detail-copy {
-  margin-top: 42px;
+  margin-top: 40px;
+  padding-top: 28px;
+  border-top: 1px solid var(--v-line);
 }
 .v-detail-copy h2 {
-  font-size: 23px;
+  font-size: var(--v-t-heading);
 }
 .v-detail-copy p {
   margin-top: 15px;
@@ -2553,15 +2439,38 @@
   color: var(--v-muted);
 }
 .v-product-story {
-  border-block: 1px solid var(--v-line);
-  padding: 60px 0;
-  margin-top: 85px;
-  max-width: 900px;
+  display: grid;
+  grid-template-columns: repeat(var(--v-cols), minmax(0, 1fr));
+  column-gap: var(--v-col-gap);
+  row-gap: 24px;
+  align-items: end;
+  margin-top: clamp(64px, 8vw, 110px);
+  padding: clamp(40px, 5vw, 72px);
+  border-radius: var(--v-radius);
+  background: var(--v-coal);
+  color: var(--v-white);
 }
-.v-product-story > p:not(.v-eyebrow) {
-  max-width: 680px;
-  margin: 24px 0;
-  color: var(--v-muted);
+.v-product-story > div:first-child {
+  grid-column: 1 / span 7;
+}
+.v-product-story > div:last-child {
+  grid-column: 9 / -1;
+}
+.v-product-story .v-eyebrow {
+  color: var(--v-accent);
+}
+.v-product-story h2 span {
+  color: var(--v-accent);
+}
+.v-product-story p:not(.v-eyebrow) {
+  color: #c9ccd2;
+  margin-bottom: 20px;
+}
+.v-product-story .v-text-link {
+  border-color: #ffffff55;
+}
+.v-product-story .v-text-link:hover {
+  color: var(--v-white);
 }
 
 /* Editorial pages */
@@ -2726,6 +2635,12 @@
   }
 }
 @media (max-width: 1000px) {
+  .v-bento-copy {
+    max-width: 100%;
+  }
+  .v-bento-copy h3 {
+    font-size: 24px;
+  }
   .v-header {
     padding-block: 9px;
   }
@@ -2807,6 +2722,7 @@
   }
   .v-story > div:first-child {
     grid-column: 1 / span 6;
+    position: static;
   }
   .v-story ol {
     grid-column: 1 / -1;
@@ -2924,22 +2840,34 @@
   }
   .v-bento {
     grid-template-columns: 1fr;
-    row-gap: 26px;
+    gap: 14px;
   }
   .v-bento-card,
   .v-bento-card:nth-child(4n + 1),
   .v-bento-card:nth-child(4n + 4),
   .v-bento-note {
     grid-column: 1;
+    min-height: 355px;
   }
   .v-bento-card {
-    padding: 18px 0 0;
-    min-height: 330px;
+    padding: 26px;
+  }
+  .v-bento-number {
+    font-size: 180px;
+    right: 20px;
+  }
+  .v-bento-copy h3 {
+    font-size: 26px;
+  }
+  .v-bento-copy p {
+    font-size: 15px;
   }
   .v-bento-note {
-    min-height: 0;
-    padding: 18px 0 20px;
-    gap: 14px;
+    min-height: 205px;
+    padding: 26px;
+  }
+  .v-bento-note h3 {
+    font-size: 25px;
   }
   .v-story {
     grid-template-columns: 1fr;
@@ -2951,13 +2879,14 @@
     grid-column: 1;
   }
   .v-story li {
-    grid-template-columns: 3ch 1fr auto;
+    grid-template-columns: 56px 1fr;
+    gap: 16px;
+  }
+  .v-story li > span {
+    font-size: 2.4rem;
   }
   .v-story > div > p:not(.v-eyebrow) {
     font-size: 16px;
-  }
-  .v-story li {
-    gap: 18px;
   }
 
   .v-product-grid,
@@ -3146,12 +3075,16 @@
   .v-product-detail-info h1 {
     font-size: 34px;
   }
-  .v-product-detail-info > .v-button {
-    width: 100%;
+  .v-product-detail-info {
+    position: static;
   }
   .v-product-story {
     margin-top: 48px;
-    padding-block: 40px;
+    padding: 32px 24px;
+  }
+  .v-product-story > div:first-child,
+  .v-product-story > div:last-child {
+    grid-column: 1 / -1;
   }
   .v-article {
     padding-top: 30px;
@@ -3207,6 +3140,9 @@
   }
 }
 @media (max-width: 380px) {
+  .v-bento-copy h3 {
+    font-size: 24px;
+  }
   .v-site {
     --v-gutter: 20px;
   }
@@ -3309,12 +3245,6 @@
 @media (max-width: 760px) {
   .v-site {
     --v-header-h: 68px;
-  }
-  .v-cine {
-    min-height: 400svh;
-  }
-  .v-aperture {
-    min-height: 260svh;
   }
   /* A phone frame is portrait, so the caption gets the full gutter width and
      the wordmark is sized off the height instead of running off the edge. */

@@ -22,8 +22,8 @@ describe("normaliseOaId", () => {
 });
 
 describe("addFriendUrl", () => {
-  it("matches the form SPEC.md §8 publishes", () => {
-    expect(addFriendUrl("@355kxfoj")).toBe("https://line.me/ti/p/%40355kxfoj");
+  it("uses LINE's Official Account form", () => {
+    expect(addFriendUrl("@355kxfoj")).toBe("https://line.me/R/ti/p/%40355kxfoj");
   });
 
   it("encodes the @, since LINE's own published link does", () => {

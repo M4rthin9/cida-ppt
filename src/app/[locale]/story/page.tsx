@@ -1,6 +1,7 @@
 import { Link } from "@/i18n/navigation";
 import { StorySection } from "@/components/vocational/StorySection";
 import { publicMetadata } from "@/lib/seo/metadata";
+import { getCachedSetting } from "@/lib/settings/cached";
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   return publicMetadata({
@@ -10,7 +11,8 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     description: "จากการฝึกฝน สู่ผลงานที่มีคุณค่า และโอกาสใหม่",
   });
 }
-export default function Page() {
+export default async function Page() {
+  const copy = await getCachedSetting("home");
   return (
     <main id="content">
       <header className="v-story-hero">
@@ -46,7 +48,7 @@ export default function Page() {
           </Link>
         </div>
       </div>
-      <StorySection />
+      <StorySection copy={copy} />
     </main>
   );
 }

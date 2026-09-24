@@ -16,13 +16,14 @@ export function normaliseOaId(oaId: string): string {
 }
 
 /**
- * The add-friend link. The `@` is percent-encoded because LINE's own published
- * form is `line.me/ti/p/%40handle`, and a bare `@` in a path is legal but
- * inconsistently handled by the chat clients that rewrite these links.
+ * The add-friend link, in LINE's published Official Account form
+ * `https://line.me/R/ti/p/%40handle`. The `/R/` path opens the LINE app
+ * directly on a phone, and the `@` is percent-encoded because a bare `@` in a
+ * path is inconsistently handled by the chat clients that rewrite these links.
  */
 export function addFriendUrl(oaId: string): string {
   const handle = normaliseOaId(oaId);
-  return `https://line.me/ti/p/${encodeURIComponent(handle)}`;
+  return `https://line.me/R/ti/p/${encodeURIComponent(handle)}`;
 }
 
 /**

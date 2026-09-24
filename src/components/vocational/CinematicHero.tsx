@@ -7,11 +7,13 @@ import { SiteIcon } from "@/components/site/icons";
 import { startScrollSequence } from "@/lib/vocational/scroll-player";
 import { band, remap, trackStage } from "@/lib/vocational/scroll-stage";
 import type { SequenceManifest } from "@/lib/vocational/sequence";
+import type { SettingValue } from "@/lib/settings/registry";
+import { splitLines } from "./Lines";
 
 /**
  * The opening, scored rather than stacked.
  *
- * One pinned viewport, 150 frames scrubbed under the reader's own hand, and the
+ * One pinned viewport, the phase-1 frames scrubbed under the reader's own hand, and the
  * copy spread ALONG that scrub instead of piled on top of it. Earlier the badge,
  * the headline, the lede, the button, a scroll cue and a full-width wordmark all
  * sat on frame one together and left together; six blocks competing for the same
@@ -22,8 +24,15 @@ import type { SequenceManifest } from "@/lib/vocational/sequence";
  *
  *   0.00 - 0.24  the title card: badge, headline, the one action
  *   0.24 - 0.74  the lede, as three timed captions on the lower third
- *   0.76 - 0.90  the wordmark alone, centre frame. This is the peak
- *   0.90 - 1.00  the hand-off into the section below
+ *   0.74 - 0.95  the wordmark alone, centre frame. This is the peak
+ *   0.88 - 1.00  the last scrims clear, so the last frame arrives clean
+ *
+ * The frames run the whole range without stopping. The last one is also the
+ * reveal's first, the reveal overlaps the end of this section by one screen,
+ * and both sections spend the same scroll on each frame (see the heights in
+ * vocational.css). When this stage would start to scroll away, the reveal's
+ * stage is already pinned over it on the same image and carries on at the
+ * same pace, so the two sequences play as one shot.
  *
  * Each act publishes one number for CSS to read, all of them 0-1:
  *
@@ -31,14 +40,20 @@ import type { SequenceManifest } from "@/lib/vocational/sequence";
  *  - `--v-title`     the title card's presence
  *  - `--v-c1/2/3`    each caption's window (see `band`)
  *  - `--v-mark`      the wordmark resolving
- *  - `--v-exit`      the closing stretch that softens the last frame away
+ *  - `--v-exit`      the closing stretch that clears the scrims off the last frame
  *
  * Without an imported sequence, or for a reader who has asked for reduced
  * motion, there is no timeline to run: `data-static` lays the same composition
  * out as one readable screen with every line present, no canvas, no frame
  * requests, and no reserved scroll for a scrub that will never happen.
  */
-export function CinematicHero({ sequence }: { sequence?: SequenceManifest }) {
+export function CinematicHero({
+  sequence,
+  copy,
+}: {
+  sequence?: SequenceManifest;
+  copy: SettingValue<"home">;
+}) {
   const section = useRef<HTMLElement>(null);
   const stage = useRef<HTMLDivElement>(null);
   const canvas = useRef<HTMLCanvasElement>(null);
@@ -64,8 +79,8 @@ export function CinematicHero({ sequence }: { sequence?: SequenceManifest }) {
       set("--v-c1", still ? 1 : band(progress, 0.24, 0.4));
       set("--v-c2", still ? 1 : band(progress, 0.42, 0.58));
       set("--v-c3", still ? 1 : band(progress, 0.6, 0.74));
-      set("--v-mark", still ? 1 : remap(progress, 0.76, 0.88));
-      set("--v-exit", still ? 0 : remap(progress, 0.9, 1));
+      set("--v-mark", still ? 1 : band(progress, 0.74, 0.95, 0.07));
+      set("--v-exit", still ? 0 : remap(progress, 0.88, 1));
       // A faded card still answers the keyboard and the pointer, so the one
       // action on the page would be reachable while invisible. Inert, not
       // pointer-events, because focus order matters as much as clicks here.
@@ -81,6 +96,8 @@ export function CinematicHero({ sequence }: { sequence?: SequenceManifest }) {
     };
   }, [sequence]);
 
+  // The scroll choreography times exactly three captions.
+  const lede = splitLines(copy.heroLede).slice(0, 3);
   return (
     <section
       ref={section}
@@ -118,15 +135,15 @@ export function CinematicHero({ sequence }: { sequence?: SequenceManifest }) {
         <div ref={card} className="v-cine-inner">
           <p className="v-cine-badge">
             <span className="v-cine-badge-dot" aria-hidden="true" />
-            ฝ่ายฝึกวิชาชีพผู้ต้องขัง
-            <small>ทัณฑสถานบำบัดพิเศษกลาง</small>
+            {copy.heroBadge}
+            {copy.heroBadgeNote && <small>{copy.heroBadgeNote}</small>}
           </p>
           <h1 className="v-cine-title">
-            ฝึกอาชีพ
-            <span>สร้างโอกาสใหม่</span>
+            {copy.heroTitle}
+            {copy.heroTitleAccent && <span>{copy.heroTitleAccent}</span>}
           </h1>
           <Link className="v-pill v-pill-ghost v-cine-action" href="/products">
-            ชมผลิตภัณฑ์ทั้งหมด <SiteIcon name="arrow" />
+            {copy.heroCta} <SiteIcon name="arrow" />
           </Link>
         </div>
 
@@ -135,19 +152,23 @@ export function CinematicHero({ sequence }: { sequence?: SequenceManifest }) {
             lower-third captions that hand over one at a time; standing still
             they are three lines of one paragraph. No copy is duplicated and
             none of it is decoration. */}
-        <p className="v-cine-lede">
-          <span>พื้นที่แห่งการเรียนรู้และพัฒนาทักษะวิชาชีพ</span>
-          <span>ผ่านการลงมือทำจริง</span>
-          <span>สู่ผลงานที่มีคุณค่าและโอกาสในวันข้างหน้า</span>
-        </p>
+        {lede.length > 0 && (
+          <p className="v-cine-lede">
+            {lede.map((line, i) => (
+              <span key={i}>{line}</span>
+            ))}
+          </p>
+        )}
 
         {/* The peak: the last act clears the frame of everything else and
             resolves on the name alone, centre, at the width of the shot. It
             repeats the name already in the bar and the badge, so it is
             decoration to a screen reader rather than a third reading. */}
-        <p className="v-cine-wordmark" aria-hidden="true">
-          ฝ่ายฝึกวิชาชีพผู้ต้องขัง
-        </p>
+        {copy.heroWordmark && (
+          <p className="v-cine-wordmark" aria-hidden="true">
+            {copy.heroWordmark}
+          </p>
+        )}
       </div>
 
       {/* Feathered hand-off: this band scrolls up over the pinned stage at the
