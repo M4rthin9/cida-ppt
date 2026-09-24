@@ -3,9 +3,9 @@
   --cms-ink: #252a32;
   --cms-line: #e2e5e9;
   --cms-muted: #626b76;
-  --cms-brand: #781c3b;
-  --cms-brand-hover: #5b152d;
-  --cms-tint: #f8eef1;
+  --cms-brand: #393e46;
+  --cms-brand-hover: #23272e;
+  --cms-tint: #eceef1;
   --cms-canvas: #f5f6f8;
   --cms-shadow: 0 3px 16px #242b3505;
   --color-heading: var(--cms-ink);
@@ -283,7 +283,7 @@
   min-height: 48px;
   font-size: 14px;
   font-weight: 600;
-  box-shadow: 0 3px 8px #781c3b14;
+  box-shadow: 0 3px 8px #393e4614;
 }
 .cms-main .cms-primary:hover,
 .cms-main button.cms-primary:hover {
@@ -326,7 +326,7 @@
     box-shadow 160ms ease;
 }
 .cms-stats > a:hover {
-  border-color: #c1a4ad;
+  border-color: #aeb4bf;
   box-shadow: 0 7px 20px #242b3508;
 }
 .cms-stats > a:first-child {
@@ -335,7 +335,7 @@
   border-color: var(--cms-brand);
 }
 .cms-stats > a:first-child span {
-  color: #f1dce4;
+  color: #d5d8de;
 }
 .cms-stats span {
   font-size: 14px;
@@ -446,7 +446,7 @@
   min-width: 100px;
 }
 .cms-main table tbody tr:hover {
-  background: #faf8f9;
+  background: #f7f8f9;
 }
 .cms-main table:not(.cms-table) th {
   background: #f8f9fb;

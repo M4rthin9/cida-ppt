@@ -54,9 +54,15 @@ function sections(kind: Kind, categories: { id: string; name_th: string }[]): Se
       {
         title: "ภาพและไอคอน",
         fields: [
-          f("cover_image", "ภาพปกหมวดหมู่", "media"),
-          f("thumbnail_image", "ภาพย่อ", "media"),
-          f("icon_media_id", "ภาพไอคอน", "media"),
+          f("cover_image", "ภาพแบนเนอร์หมวดหมู่", "media", {
+            hint: "แสดงบนแบนเนอร์หน้าหมวดหมู่ และใช้เป็นพื้นหลังการ์ดหากไม่ได้ตั้งภาพพื้นหลังไว้",
+          }),
+          f("thumbnail_image", "ภาพพื้นหลังการ์ด", "media", {
+            hint: "พื้นหลังการ์ดหมวดหมู่บนหน้าแรก · เลือกแล้วต้องกดบันทึกข้อมูลจึงจะแสดงผล",
+          }),
+          f("icon_media_id", "ภาพไอคอน", "media", {
+            hint: "สัญลักษณ์ขนาดเล็กมุมบนขวาของการ์ด",
+          }),
           f("icon", "สัญลักษณ์", "select", {
             options: {
               wreath: "พวงหรีด",
@@ -325,6 +331,7 @@ export function ContentEditor({
                         }
                         multiple={field.multiple ?? false}
                       />
+                      {field.hint && <small>{field.hint}</small>}
                       {error && (
                         <p className="cms-error" role="alert">
                           {error}

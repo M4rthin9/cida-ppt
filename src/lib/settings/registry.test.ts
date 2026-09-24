@@ -21,14 +21,14 @@ describe("registry", () => {
 
 describe("parseGlobal / parseLocalized", () => {
   it("falls back to the default when the row is missing — a fresh install renders", () => {
-    expect(parseGlobal("theme", undefined).colorBrand).toBe("#880924");
+    expect(parseGlobal("theme", undefined).colorBrand).toBe("#393e46");
     expect(parseLocalized("line", undefined).buttonLabel).toBe("สั่งซื้อ / สอบถามทาง LINE");
   });
 
   it("falls back rather than throwing on a corrupt row", () => {
-    expect(parseGlobal("theme", { colorBrand: "not-a-colour" }).colorBrand).toBe("#880924");
-    expect(parseGlobal("theme", "garbage").colorBrand).toBe("#880924");
-    expect(parseGlobal("theme", null).colorBrand).toBe("#880924");
+    expect(parseGlobal("theme", { colorBrand: "not-a-colour" }).colorBrand).toBe("#393e46");
+    expect(parseGlobal("theme", "garbage").colorBrand).toBe("#393e46");
+    expect(parseGlobal("theme", null).colorBrand).toBe("#393e46");
   });
 
   it("keeps stored values that are valid", () => {

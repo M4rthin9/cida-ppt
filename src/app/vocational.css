@@ -1,19 +1,19 @@
 /* Public gallery. Anuphan and the official seal are shared with the CMS. */
 .v-site {
-  --v-ink: #282326;
-  --v-muted: #6e6569;
-  --v-paper: #faf9f6;
-  --v-white: #fff;
-  --v-line: #e6e1df;
-  --v-burgundy: #781c3b;
-  --v-coal: #30262c;
-  --v-sand: #ebe3d7;
+  --v-ink: #202328;
+  --v-muted: #5d6470;
+  --v-paper: #f7f7f7;
+  --v-white: #ffffff;
+  --v-line: #e0e2e4;
+  --v-burgundy: #393e46;
+  --v-coal: #25292f;
+  --v-sand: #eeeeee;
 
   /* Cinematic ground, shared by the hero and the aperture section so the two
      meet on the same tone rather than on a change of colour. */
-  --v-cine-ink: #0d0a0c;
-  --v-cine-paper: #f6f1ec;
-  --v-cine-glow: #d6a874;
+  --v-cine-ink: #090a0c;
+  --v-cine-paper: #f1f1f1;
+  --v-cine-glow: #929aab;
 
   /* The two dials over the footage. The frames play at 75% — a 25% reduction —
      so the type and the bars keep their contrast, and the dark veil above them
@@ -59,6 +59,26 @@
   --v-gutter: clamp(24px, 5vw, 80px);
   --v-radius: 20px;
   --v-header-h: 84px;
+
+  /* ------------------------------------------------------------------
+     Swiss grid, below the hero.
+
+     The cinematic opening is pinned, veiled and curved; everything under
+     it is the opposite by design — a hard 12-column grid with its rules
+     left visible, near-zero radius, and hierarchy carried by type size
+     and whitespace rather than by cards floating on shadows.
+
+     One accent only. #929AAB is the palette's single non-neutral and it
+     never carries text: at 2.6:1 on the paper it would fail AA. It draws
+     rules, indices and markers, where contrast is not a reading task.
+     ------------------------------------------------------------------ */
+  --v-cols: 12;
+  --v-col-gap: clamp(16px, 1.6vw, 28px);
+  --v-accent: #929aab;
+  --v-rule: #d7dade;
+  --v-rule-strong: #9aa1ad;
+  /* Swiss corners are square; 2px only keeps overflow clipping from aliasing. */
+  --v-edge: 2px;
 
   background: var(--v-paper);
   color: var(--v-ink);
@@ -118,15 +138,15 @@
   font-family: inherit;
 }
 .v-site :is(a, button, summary, input, select, textarea):focus-visible {
-  outline: 3px solid #ba5979;
+  outline: 3px solid #7d8493;
   outline-offset: 4px;
 }
 .v-site img {
   max-width: 100%;
 }
 .v-site ::selection {
-  background: #eacbd5;
-  color: #401127;
+  background: #d6d9dd;
+  color: #23262c;
 }
 
 /* ============================================================
@@ -153,10 +173,10 @@
   /* Solid by default: over the light pages that make up most of the site, a
      translucent dark bar turns to grey mud and takes the link contrast with
      it. Only the cinematic opening gets the glass. */
-  background: rgb(17 13 15 / 0.92);
+  background: rgb(12 14 16 / 0.92);
   backdrop-filter: blur(20px) saturate(1.4);
   color: var(--v-cine-paper);
-  box-shadow: 0 14px 40px rgb(8 6 7 / 0.28);
+  box-shadow: 0 14px 40px rgb(5 6 7 / 0.28);
   transition:
     background 0.25s,
     padding 0.25s,
@@ -167,16 +187,16 @@
    any page that starts on the cinematic stage gets the glass bar, and a browser
    without :has() simply keeps the solid one. */
 .v-site:has(main > .v-cine:first-child) .v-header {
-  background: rgb(18 14 16 / 0.5);
+  background: rgb(13 14 17 / 0.5);
 }
 
 /* Past the opening the bar tightens and gains weight, so it stays readable
    over whatever scrolls underneath. */
 .v-header[data-scrolled="true"],
 .v-site:has(main > .v-cine:first-child) .v-header[data-scrolled="true"] {
-  background: rgb(14 11 13 / 0.86);
+  background: rgb(10 11 13 / 0.86);
   padding-block: 7px;
-  box-shadow: 0 10px 30px rgb(8 6 7 / 0.34);
+  box-shadow: 0 10px 30px rgb(5 6 7 / 0.34);
 }
 
 /* The hero owns the top of the window; every other page reserves the space. */
@@ -220,7 +240,7 @@
   display: block;
   font-size: 11.5px;
   line-height: 1.4;
-  color: rgb(246 241 236 / 0.6);
+  color: rgb(241 241 241 / 0.6);
 }
 
 .v-header nav {
@@ -236,7 +256,7 @@
   border-radius: 100px;
   white-space: nowrap;
   position: relative;
-  color: rgb(246 241 236 / 0.78);
+  color: rgb(241 241 241 / 0.78);
 }
 
 .v-header nav a {
@@ -247,7 +267,7 @@
 
 .v-header nav a:hover,
 .v-header nav a[aria-current="page"] {
-  color: #fff;
+  color: #ffffff;
   background: rgb(255 255 255 / 0.1);
 }
 
@@ -263,7 +283,7 @@
 
 .v-header nav > a:last-child:hover,
 .v-header nav > a:last-child[aria-current="page"] {
-  background: #fff;
+  background: #ffffff;
   color: var(--v-cine-ink);
 }
 
@@ -278,7 +298,7 @@
    still shows which entry the open panel belongs to. */
 .v-products-nav:hover > a,
 .v-products-nav:focus-within > a {
-  color: #fff;
+  color: #ffffff;
   background: rgb(255 255 255 / 0.1);
 }
 
@@ -288,10 +308,10 @@
   top: calc(100% + 12px);
   padding: 10px;
   width: 280px;
-  background: rgb(17 13 15 / 0.98);
+  background: rgb(12 14 16 / 0.98);
   border: 1px solid rgb(255 255 255 / 0.14);
   border-radius: 20px;
-  box-shadow: 0 22px 60px rgb(8 6 7 / 0.45);
+  box-shadow: 0 22px 60px rgb(5 6 7 / 0.45);
   display: grid;
   gap: 2px;
   /* Hidden by visibility rather than display, so the panel can fade and so it
@@ -325,12 +345,12 @@
 .v-megamenu a {
   padding: 11px 14px;
   border-radius: 12px;
-  color: rgb(246 241 236 / 0.82);
+  color: rgb(241 241 241 / 0.82);
 }
 
 .v-megamenu a:hover {
   background: rgb(255 255 255 / 0.1);
-  color: #fff;
+  color: #ffffff;
 }
 
 .v-menu-toggle {
@@ -370,6 +390,12 @@
   background: currentColor;
   flex-shrink: 0;
 }
+/* #929AAB is the palette's one non-neutral and it never sets type — at
+   2.6:1 on the paper it would fail AA. It marks structure instead. */
+.v-section .v-eyebrow::before,
+.v-bento .v-eyebrow::before {
+  background: var(--v-accent);
+}
 .v-actions {
   display: flex;
   align-items: center;
@@ -395,7 +421,7 @@
 }
 .v-button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 7px 18px #30262c12;
+  box-shadow: 0 7px 18px #25292f12;
 }
 .v-button span {
   font-size: 21px;
@@ -406,29 +432,29 @@
   color: white;
 }
 .v-button-dark:hover {
-  background: #59122b;
+  background: #2f343a;
 }
 .v-button-light {
   background: white;
   color: var(--v-burgundy);
 }
 .v-button-light:hover {
-  background: #f4e9ed;
+  background: #efefef;
 }
 .v-text-link {
   display: inline-flex;
   align-items: center;
   gap: 20px;
-  font-size: 14px;
+  font-size: var(--v-t-control);
   font-weight: 500;
-  border-bottom: 1px solid #b8a8ad;
+  border-bottom: 1px solid var(--v-rule-strong);
   padding: 9px 0;
   transition:
     color 0.2s,
     border-color 0.2s;
 }
 .v-text-link:hover {
-  color: var(--v-burgundy);
+  color: var(--v-ink);
   border-color: currentColor;
 }
 
@@ -522,10 +548,10 @@
   inset: 0;
   background: linear-gradient(
     180deg,
-    rgb(8 6 7 / calc(0.74 * var(--v-veil))) 0%,
-    rgb(8 6 7 / calc(0.3 * var(--v-veil))) 34%,
-    rgb(8 6 7 / calc(0.52 * var(--v-veil))) 68%,
-    rgb(8 6 7 / calc(0.94 * var(--v-veil))) 100%
+    rgb(5 6 7 / calc(0.74 * var(--v-veil))) 0%,
+    rgb(5 6 7 / calc(0.3 * var(--v-veil))) 34%,
+    rgb(5 6 7 / calc(0.52 * var(--v-veil))) 68%,
+    rgb(5 6 7 / calc(0.94 * var(--v-veil))) 100%
   );
 }
 
@@ -535,7 +561,7 @@
   background: radial-gradient(
     118% 86% at 50% 42%,
     transparent 34%,
-    rgb(6 4 5 / calc(0.78 * var(--v-veil))) 100%
+    rgb(4 5 5 / calc(0.78 * var(--v-veil))) 100%
   );
 }
 
@@ -554,10 +580,10 @@
   pointer-events: none;
   background: radial-gradient(
     62% 56% at 50% 45%,
-    rgb(6 4 5 / 0.74) 0%,
-    rgb(6 4 5 / 0.62) 32%,
-    rgb(6 4 5 / 0.34) 62%,
-    rgb(6 4 5 / 0.1) 84%,
+    rgb(4 5 5 / 0.74) 0%,
+    rgb(4 5 5 / 0.62) 32%,
+    rgb(4 5 5 / 0.34) 62%,
+    rgb(4 5 5 / 0.1) 84%,
     transparent 100%
   );
   opacity: calc(max(var(--v-title), var(--v-mark)) * (1 - var(--v-exit)));
@@ -608,7 +634,7 @@
   height: 7px;
   border-radius: 50%;
   background: var(--v-cine-glow);
-  box-shadow: 0 0 0 4px rgb(214 168 116 / 0.16);
+  box-shadow: 0 0 0 4px rgb(153 161 177 / 0.16);
   flex-shrink: 0;
 }
 
@@ -624,10 +650,10 @@
   line-height: var(--v-leading-display);
   letter-spacing: var(--v-tracking-display);
   text-wrap: balance;
-  color: #fff8f0;
+  color: #f7f7f7;
   text-shadow:
-    0 1px 3px rgb(6 4 5 / 0.6),
-    0 8px 40px rgb(6 4 5 / 0.55);
+    0 1px 3px rgb(4 5 5 / 0.6),
+    0 8px 40px rgb(4 5 5 / 0.55);
 }
 
 .v-cine-title span {
@@ -655,10 +681,10 @@
   text-align: center;
   font-size: var(--v-t-lede);
   line-height: 1.9;
-  color: #fdf7f0;
+  color: #f6f6f6;
   text-shadow:
-    0 1px 3px rgb(6 4 5 / 0.8),
-    0 6px 30px rgb(6 4 5 / 0.7);
+    0 1px 3px rgb(4 5 5 / 0.8),
+    0 6px 30px rgb(4 5 5 / 0.7);
   text-wrap: pretty;
 }
 
@@ -695,12 +721,12 @@
      Latin clips them. */
   line-height: 1.32;
   letter-spacing: 0.01em;
-  color: #fdf6ec;
+  color: #f4f4f4;
   /* It settles rather than appears. The last thing the opening does is stop
      moving. */
   opacity: calc(var(--v-mark) * (1 - var(--v-exit)));
   transform: scale(calc(1.08 - var(--v-mark) * 0.08));
-  filter: drop-shadow(0 2px 6px rgb(6 4 5 / 0.6)) drop-shadow(0 14px 50px rgb(214 168 116 / 0.3));
+  filter: drop-shadow(0 2px 6px rgb(4 5 5 / 0.6)) drop-shadow(0 14px 50px rgb(153 161 177 / 0.3));
 }
 
 /* ---------- The score ----------
@@ -739,9 +765,9 @@
     pointer-events: none;
     background: linear-gradient(
       0deg,
-      rgb(6 4 5 / 0.86) 0%,
-      rgb(6 4 5 / 0.66) 34%,
-      rgb(6 4 5 / 0.3) 68%,
+      rgb(4 5 5 / 0.86) 0%,
+      rgb(4 5 5 / 0.66) 34%,
+      rgb(4 5 5 / 0.3) 68%,
       transparent 100%
     );
     opacity: calc(max(var(--v-c1), var(--v-c2), var(--v-c3)) * (1 - var(--v-exit)));
@@ -782,7 +808,7 @@
     inset-block: 0.42em 0.42em;
     inset-inline-start: 0;
     width: 2px;
-    background: linear-gradient(180deg, var(--v-cine-glow), rgb(214 168 116 / 0));
+    background: linear-gradient(180deg, var(--v-cine-glow), rgb(153 161 177 / 0));
     transform: scaleY(var(--v-cap));
     transform-origin: 50% 0;
   }
@@ -807,12 +833,12 @@
   backdrop-filter: blur(16px) saturate(0.9);
   background: linear-gradient(
     180deg,
-    rgb(13 10 12 / 0) 0%,
-    rgb(13 10 12 / 0.3) 55%,
-    rgb(13 10 12 / 0.72) 100%
+    rgb(9 10 12 / 0) 0%,
+    rgb(9 10 12 / 0.3) 55%,
+    rgb(9 10 12 / 0.72) 100%
   );
-  -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 62%, #000 100%);
-  mask-image: linear-gradient(180deg, transparent 0%, #000 62%, #000 100%);
+  -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000000 62%, #000000 100%);
+  mask-image: linear-gradient(180deg, transparent 0%, #000000 62%, #000000 100%);
 }
 
 /* ============================================================
@@ -838,7 +864,7 @@
   z-index: 0;
   background: radial-gradient(
     64% 38% at 50% 50%,
-    rgb(214 168 116 / calc(0.2 * (1 - var(--v-open)))),
+    rgb(153 161 177 / calc(0.2 * (1 - var(--v-open)))),
     transparent 72%
   );
 }
@@ -921,10 +947,10 @@
   /* Its own ground, and its own shading under the column, because it sits
      outside the footage's opacity dial and the veil that goes with it. */
   background:
-    linear-gradient(270deg, rgb(8 6 7 / 0.72) 0%, rgb(8 6 7 / 0.2) 38%, transparent 62%),
-    radial-gradient(90% 70% at 30% 20%, rgb(120 28 59 / 0.5), transparent 70%),
-    radial-gradient(80% 80% at 78% 84%, rgb(214 168 116 / 0.22), transparent 72%),
-    linear-gradient(160deg, #1a1215, #0d0a0c 70%);
+    linear-gradient(270deg, rgb(5 6 7 / 0.72) 0%, rgb(5 6 7 / 0.2) 38%, transparent 62%),
+    radial-gradient(90% 70% at 30% 20%, rgb(66 71 80 / 0.5), transparent 70%),
+    radial-gradient(80% 80% at 78% 84%, rgb(153 161 177 / 0.22), transparent 72%),
+    linear-gradient(160deg, #111417, #090a0c 70%);
   /* Carries the hero's softness across the join, exactly as the footage path
      does, so both routes meet the section above out of focus. */
   filter: blur(calc((1 - var(--v-focus)) * 22px));
@@ -948,9 +974,9 @@
 .v-aperture-panel[data-ground="still"] {
   background: linear-gradient(
     90deg,
-    rgb(6 4 5 / 0.78) 0%,
-    rgb(6 4 5 / 0.52) 30%,
-    rgb(6 4 5 / 0.18) 54%,
+    rgb(4 5 5 / 0.78) 0%,
+    rgb(4 5 5 / 0.52) 30%,
+    rgb(4 5 5 / 0.18) 54%,
     transparent 74%
   );
   filter: none;
@@ -960,10 +986,10 @@
 .v-aperture-panel span {
   position: relative;
   display: block;
-  color: rgb(246 241 236 / calc(0.2 + var(--v-w) * 0.8));
+  color: rgb(241 241 241 / calc(0.2 + var(--v-w) * 0.8));
   transform: translateX(calc(var(--v-w) * 26px)) scale(calc(0.975 + var(--v-w) * 0.025));
   transform-origin: 0 50%;
-  filter: drop-shadow(0 10px 44px rgb(214 168 116 / calc(var(--v-w) * 0.3)));
+  filter: drop-shadow(0 10px 44px rgb(153 161 177 / calc(var(--v-w) * 0.3)));
 }
 
 /* The one ornament, and deliberately not the hero's: that one drew a rule
@@ -975,7 +1001,7 @@
   top: 50%;
   width: 36px;
   height: 2px;
-  background: linear-gradient(90deg, rgb(214 168 116 / 0), var(--v-cine-glow));
+  background: linear-gradient(90deg, rgb(153 161 177 / 0), var(--v-cine-glow));
   transform: scaleX(var(--v-w));
   transform-origin: 0 50%;
 }
@@ -998,12 +1024,12 @@
   background:
     linear-gradient(
       270deg,
-      rgb(8 6 7 / 0.82) 0%,
-      rgb(8 6 7 / calc(0.55 * var(--v-veil))) 34%,
-      rgb(8 6 7 / calc(0.26 * var(--v-veil))) 62%,
-      rgb(8 6 7 / calc(0.5 * var(--v-veil))) 100%
+      rgb(5 6 7 / 0.82) 0%,
+      rgb(5 6 7 / calc(0.55 * var(--v-veil))) 34%,
+      rgb(5 6 7 / calc(0.26 * var(--v-veil))) 62%,
+      rgb(5 6 7 / calc(0.5 * var(--v-veil))) 100%
     ),
-    linear-gradient(180deg, rgb(8 6 7 / calc(0.55 * var(--v-veil))) 0%, transparent 30%);
+    linear-gradient(180deg, rgb(5 6 7 / calc(0.55 * var(--v-veil))) 0%, transparent 30%);
 }
 
 /* The hairline the screen parts along; it glows before the opening and
@@ -1040,9 +1066,9 @@
   pointer-events: none;
   background: linear-gradient(
     270deg,
-    rgb(6 4 5 / 0.84) 0%,
-    rgb(6 4 5 / 0.56) 26%,
-    rgb(6 4 5 / 0.16) 50%,
+    rgb(4 5 5 / 0.84) 0%,
+    rgb(4 5 5 / 0.56) 26%,
+    rgb(4 5 5 / 0.16) 50%,
     transparent 68%
   );
   opacity: calc(max(var(--v-copy-1), var(--v-copy-2), var(--v-copy-3)) * var(--v-copy));
@@ -1060,7 +1086,7 @@
   height: 40svh;
   pointer-events: none;
   opacity: var(--v-close);
-  background: linear-gradient(180deg, rgb(13 10 12 / 0) 0%, rgb(13 10 12 / 0.55) 42%, #f1ece8 100%);
+  background: linear-gradient(180deg, rgb(9 10 12 / 0) 0%, rgb(9 10 12 / 0.55) 42%, #ededed 100%);
 }
 
 /* The column now only owns its departure. Each block inside arrives on its
@@ -1104,20 +1130,20 @@
   font-weight: 300;
   line-height: var(--v-leading-heading);
   letter-spacing: var(--v-tracking-heading);
-  color: #fff;
+  color: #ffffff;
   text-wrap: balance;
 }
 
 .v-aperture-copy h2 span {
   display: block;
-  color: rgb(246 241 236 / 0.74);
+  color: rgb(241 241 241 / 0.74);
 }
 
 .v-aperture-lede {
   margin: 0 0 clamp(20px, 2.6vw, 30px);
   font-size: var(--v-t-body);
   line-height: 1.95;
-  color: rgb(246 241 236 / 0.76);
+  color: rgb(241 241 241 / 0.76);
   text-wrap: pretty;
 }
 
@@ -1137,7 +1163,7 @@
   border-radius: 100px;
   background: rgb(255 255 255 / 0.05);
   font-size: var(--v-t-fine);
-  color: rgb(246 241 236 / 0.86);
+  color: rgb(241 241 241 / 0.86);
   transition:
     background 0.2s,
     border-color 0.2s,
@@ -1147,7 +1173,7 @@
 .v-aperture-rail a:hover {
   background: rgb(255 255 255 / 0.14);
   border-color: rgb(255 255 255 / 0.5);
-  color: #fff;
+  color: #ffffff;
 }
 
 /* ============================================================
@@ -1189,12 +1215,12 @@
   border-color: rgb(255 255 255 / 0.38);
   background: rgb(255 255 255 / 0.07);
   backdrop-filter: blur(14px);
-  color: #fff;
+  color: #ffffff;
 }
 
 .v-pill-ghost:hover {
   background: rgb(255 255 255 / 0.16);
-  border-color: #fff;
+  border-color: #ffffff;
 }
 
 .v-pill-solid {
@@ -1203,25 +1229,25 @@
 }
 
 .v-pill-solid:hover {
-  background: #fff;
+  background: #ffffff;
 }
 
 /* Quiet typographic ribbon */
 .v-marquees {
-  padding: 19px 0;
-  background: #f1ece8;
+  padding: 16px 0;
+  background: var(--v-sand);
   overflow: hidden;
-  border-block: 1px solid var(--v-line);
+  border-block: 1px solid var(--v-rule-strong);
 }
 .v-marquee {
   overflow: hidden;
   font-size: 18px;
   font-weight: 400;
-  color: #57434a;
+  color: #444a53;
   line-height: 1.85;
 }
 .v-marquee.reverse {
-  color: #786a6b;
+  color: #636a77;
   font-size: 15px;
 }
 .v-marquee > div {
@@ -1245,9 +1271,9 @@
   white-space: nowrap;
 }
 .v-marquee b {
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 400;
-  color: #936a78;
+  color: var(--v-accent);
 }
 .v-marquees:hover .v-marquee > div {
   animation-play-state: paused;
@@ -1258,442 +1284,654 @@
   }
 }
 
-/* Collection and story chapters */
+/* ============================================================
+   Signature: paper grain, and reveals that arrive on the grid
+   ------------------------------------------------------------
+   Flat greys photograph as a wireframe. One inline feTurbulence over the
+   sections under the hero gives the paper tooth at a weight you read
+   rather than see — no asset, no request, ~400 bytes in the stylesheet.
+
+   The reveal runs on a scroll-driven timeline, so there is no observer,
+   no JS and no layout thrash. Everything is visible by default and the
+   opacity floor only exists inside the @supports block, so a browser
+   without `animation-timeline` simply renders the finished state.
+   ============================================================ */
+.v-section,
+.v-story,
+.v-closing {
+  position: relative;
+}
+.v-section::after,
+.v-story::after,
+.v-closing::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  opacity: 0.4;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.22'/%3E%3C/svg%3E");
+}
+/* The dark chapter takes the grain the other way round. */
+.v-story::after {
+  mix-blend-mode: screen;
+  opacity: 0.22;
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .v-section-heading,
+    .v-bento-card,
+    .v-bento-note,
+    .v-story li,
+    .v-product-card,
+    .v-news-card,
+    .v-closing h2 {
+      animation: v-rise both;
+      animation-timeline: view();
+      animation-range: entry 8% cover 26%;
+    }
+  }
+}
+@keyframes v-rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ============================================================
+   Collection and story chapters — the Swiss half of the page
+   ------------------------------------------------------------
+   Every section under the hero hangs off one 12-column grid and opens
+   on a rule. The eyebrow sits ON that rule, the heading takes the left
+   seven columns and the lede the right four, so the two never centre on
+   each other and the whitespace between them is the composition.
+   ============================================================ */
 .v-section {
   max-width: 1500px;
-  padding: 100px var(--v-gutter);
+  padding: clamp(72px, 9vw, 128px) var(--v-gutter);
   margin: auto;
 }
 .v-section-heading {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 44px;
-  margin-bottom: 42px;
+  display: grid;
+  grid-template-columns: repeat(var(--v-cols), minmax(0, 1fr));
+  column-gap: var(--v-col-gap);
+  align-items: end;
+  padding-top: 26px;
+  margin-bottom: clamp(40px, 5vw, 72px);
+  border-top: 1px solid var(--v-rule);
+}
+.v-section-heading > div:first-child {
+  grid-column: 1 / span 7;
+}
+.v-section-heading > div:last-child,
+.v-section-heading > .v-text-link {
+  grid-column: 9 / -1;
+}
+.v-section-heading > .v-text-link {
+  justify-self: start;
+  align-self: end;
 }
 .v-section-heading h2,
 .v-story h2,
 .v-product-story h2 {
-  font-size: clamp(32px, 3.4vw, 48px);
-  line-height: 1.5;
+  font-size: var(--v-t-section);
+  line-height: var(--v-leading-heading);
+  letter-spacing: var(--v-tracking-heading);
+  text-wrap: balance;
 }
 .v-section-heading h2 span {
-  color: #817176;
+  color: var(--v-muted);
 }
 .v-section-heading > div:last-child > p:not(.v-eyebrow) {
-  font-size: 15px;
+  font-size: var(--v-t-control);
   color: var(--v-muted);
-  margin-bottom: 15px;
-  max-width: 340px;
+  margin-bottom: 18px;
+  max-width: 34ch;
 }
+/* ------------------------------------------------------------------
+   Collections.
+
+   Cards are grid cells, not objects floating on the page: each opens on
+   a hairline that carries its index, and the asymmetric 7/5 rhythm is
+   what keeps a four-item grid from reading as a template. The index is
+   tabular so 01 and 04 occupy the same width and the column edges stay
+   true down the whole set.
+   ------------------------------------------------------------------ */
 .v-bento {
   display: grid;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(var(--v-cols), minmax(0, 1fr));
+  column-gap: var(--v-col-gap);
+  row-gap: clamp(28px, 3.4vw, 52px);
 }
 .v-bento-card {
   grid-column: span 5;
   position: relative;
   display: flex;
   flex-direction: column;
-  min-height: 360px;
-  padding: 30px 34px;
-  border-radius: var(--v-radius);
+  min-height: clamp(320px, 34vw, 430px);
+  padding: 22px 0 0;
+  border-top: 1px solid var(--v-rule-strong);
+  border-radius: 0;
   overflow: hidden;
   isolation: isolate;
-  background: #eee8e3;
-  transition:
-    transform 0.25s,
-    box-shadow 0.25s;
+  transition: border-color 0.3s;
 }
 .v-bento-card:nth-child(4n + 1),
 .v-bento-card:nth-child(4n + 4) {
   grid-column: span 7;
 }
 .v-bento-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 15px 30px #30262c12;
+  border-top-color: var(--v-ink);
 }
+/* The four categories take four steps of the one palette — with the hues
+   gone, the ramp is the only distinction the set has left. */
 .v-bento-wreath {
-  background: #f0e3e7;
-  color: #63223a;
+  --v-cell: #f7f7f7;
+  --v-cell-ink: #393e46;
 }
 .v-bento-material {
-  background: #333c37;
-  color: #f7f5ed;
+  --v-cell: #393e46;
+  --v-cell-ink: #f7f7f7;
 }
 .v-bento-flower {
-  background: #e9e7df;
-  color: #3c4032;
+  --v-cell: #eeeeee;
+  --v-cell-ink: #393e46;
 }
 .v-bento-textile {
-  background: #e6e9ef;
-  color: #303d51;
+  --v-cell: #d6dae1;
+  --v-cell-ink: #2c3037;
 }
+
+/* Index and marker ride the rule, above the image plane. */
 .v-bento-top {
   position: relative;
+  z-index: 2;
   display: flex;
-  align-items: center;
+  align-items: baseline;
   justify-content: space-between;
   gap: 20px;
+  margin-bottom: 18px;
 }
 .v-bento-top > span:first-child {
-  font-size: 10px;
+  font-size: var(--v-t-fine);
   font-weight: 500;
-  letter-spacing: 0.14em;
-  border: 1px solid currentColor;
-  border-radius: 100px;
-  padding: 5px 11px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: var(--v-tracking-eyebrow);
+  text-transform: uppercase;
+  color: var(--v-muted);
 }
 .v-bento-top > span:last-child {
-  display: grid;
-  place-items: center;
-  width: 43px;
-  height: 43px;
-  border-radius: 50%;
-  border: 1px solid currentColor;
-  font-size: 23px;
-  transition:
-    background 0.2s,
-    transform 0.2s;
+  font-size: 18px;
+  line-height: 1;
+  color: var(--v-accent);
+  transition: transform 0.35s cubic-bezier(0.2, 0.7, 0.3, 1);
 }
 .v-bento-card:hover .v-bento-top > span:last-child {
-  transform: rotate(45deg);
+  transform: translate(5px, -5px);
 }
 .v-bento-top > .v-bento-icon {
-  background: #ffffffd9;
-  padding: 5px;
-  border-color: #ffffff80;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  background: var(--v-white);
+  border: 1px solid var(--v-rule);
+  align-self: center;
 }
 .v-bento-card:hover .v-bento-top > .v-bento-icon {
   transform: none;
 }
+
+/* The image plane fills the cell under the rule; type sits on top of it. */
+.v-bento-media {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  border-radius: var(--v-edge);
+  background: var(--v-cell, #eeeeee);
+}
+.v-bento-media > img {
+  object-fit: cover;
+  transition: transform 0.7s cubic-bezier(0.2, 0.7, 0.3, 1);
+}
+.v-bento-card:hover .v-bento-media > img {
+  transform: scale(1.03);
+}
+/* The veil is weighted to where the copy actually sits, so the top of the
+   frame stays clear and the craftwork is still the subject. Measured
+   against a pure-white photograph — the worst case — the type lands at
+   8.2:1 where the copy block begins. */
+.v-bento-media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgb(21 25 29 / 0.1) 26%,
+    rgb(21 25 29 / 0.72) 58%,
+    rgb(21 25 29 / 0.92) 100%
+  );
+}
+.v-bento-card:not(.with-image) .v-bento-media::after {
+  content: none;
+}
+
+/* The oversized numeral is composition, not watermark: it sits on the
+   baseline of the copy block and is clipped by the cell edge. */
 .v-bento-number {
   position: absolute;
-  right: 22px;
-  bottom: -25px;
-  font: 240px/1 var(--v-serif);
-  letter-spacing: -0.075em;
-  opacity: 0.07;
+  right: -0.06em;
+  bottom: -0.2em;
+  font: 500 clamp(120px, 15vw, 210px) / 0.78 var(--font-sans);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.04em;
+  color: var(--v-cell-ink, var(--v-ink));
+  opacity: 0.12;
   pointer-events: none;
-  z-index: -1;
+  z-index: 1;
 }
 .v-bento-copy {
-  max-width: 86%;
-  margin-top: auto;
-  padding-top: 57px;
+  position: absolute;
+  z-index: 2;
+  right: clamp(20px, 2.2vw, 34px);
+  bottom: clamp(20px, 2.2vw, 30px);
+  left: clamp(20px, 2.2vw, 34px);
+  color: var(--v-cell-ink, var(--v-ink));
 }
 .v-bento-copy h3 {
-  font-size: 28px;
-  margin-bottom: 9px;
+  font-size: var(--v-t-heading);
+  line-height: var(--v-leading-heading);
+  color: inherit;
+  margin-bottom: 7px;
 }
 .v-bento-copy p {
-  font-size: 15px;
-  line-height: 1.8;
-  max-width: 440px;
+  font-size: var(--v-t-control);
+  line-height: 1.75;
+  max-width: 46ch;
+  /* 0.86 is the floor that keeps every step of the ramp at AA — see the
+     contrast run in the commit; 0.82 dropped the lightest cell to 4.3. */
+  opacity: 0.86;
 }
 .v-bento-copy small {
   display: inline-flex;
   align-items: center;
-  gap: 9px;
-  margin-top: 22px;
-  font-size: 12px;
+  gap: 10px;
+  margin-top: 18px;
+  font-size: var(--v-t-fine);
+  font-variant-numeric: tabular-nums;
+  opacity: 0.82;
 }
 .v-bento-copy small::before {
   content: "";
-  width: 18px;
+  width: 22px;
   height: 1px;
   background: currentColor;
 }
-.v-bento-card.with-image {
-  color: white;
-}
-.v-bento-card.with-image > img {
-  object-fit: cover;
-  z-index: -3;
-  transition: transform 0.5s;
-}
-.v-bento-card.with-image:hover > img {
-  transform: scale(1.025);
-}
-.v-bento-card.with-image::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -2;
-  background: linear-gradient(180deg, #21151c4d, #21151cda);
+/* With a photograph behind it the copy is always light, whatever step of
+   the ramp the category sits on. */
+.v-bento-card.with-image .v-bento-copy,
+.v-bento-card.with-image .v-bento-number {
+  color: #ffffff;
 }
 .v-bento-card.with-image .v-bento-number {
-  display: none;
+  opacity: 0.22;
 }
+
+/* The two standing links close the grid on the same rule as the cards. */
 .v-bento-note {
   grid-column: span 6;
   display: grid;
   grid-template-columns: 1fr auto;
   align-items: end;
-  gap: 22px;
-  min-height: 180px;
-  padding: 28px 32px;
-  border: 1px solid var(--v-line);
-  border-radius: var(--v-radius);
-  background: #fff9;
-  transition:
-    border-color 0.2s,
-    background 0.2s;
+  gap: 18px;
+  min-height: 170px;
+  padding: 22px 0 24px;
+  border-top: 1px solid var(--v-rule-strong);
+  border-radius: 0;
+  transition: border-color 0.3s;
 }
 .v-bento-note:hover {
-  border-color: #b48a99;
-  background: white;
+  border-top-color: var(--v-ink);
 }
 .v-bento-note > span:first-child {
   grid-column: 1/-1;
   color: var(--v-muted);
-  font-size: 10px;
-  letter-spacing: 0.14em;
+  font-size: var(--v-t-fine);
+  font-weight: 500;
+  letter-spacing: var(--v-tracking-eyebrow);
+  text-transform: uppercase;
 }
 .v-bento-note h3 {
-  font-size: 24px;
+  font-size: var(--v-t-heading);
+  line-height: var(--v-leading-heading);
+  text-wrap: balance;
 }
 .v-bento-note > span:last-child {
-  font-size: 13px;
-  color: var(--v-burgundy);
+  font-size: var(--v-t-fine);
+  color: var(--v-muted);
   text-align: right;
-  padding-bottom: 5px;
+  padding-bottom: 4px;
+  transition: color 0.2s;
 }
+.v-bento-note:hover > span:last-child {
+  color: var(--v-ink);
+}
+/* ------------------------------------------------------------------
+   The one tonal inversion on the page.
+
+   Dark ground, same grid, same rules — the five steps are set as a
+   numbered table rather than a list of cards, which is what the Swiss
+   reading of a process actually looks like. Indices are tabular so the
+   rules above them start on a true left edge.
+   ------------------------------------------------------------------ */
 .v-story {
   max-width: 1500px;
   margin: 0 auto;
-  padding: 90px var(--v-gutter);
+  padding: clamp(64px, 8vw, 116px) var(--v-gutter);
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: clamp(50px, 9vw, 150px);
+  grid-template-columns: repeat(var(--v-cols), minmax(0, 1fr));
+  column-gap: var(--v-col-gap);
+  row-gap: 48px;
   background: var(--v-coal);
-  color: #fff9f8;
+  color: #fbfbfb;
 }
-.v-story .v-eyebrow {
-  color: #d2a6b7;
-}
-.v-story h2 span {
-  color: #d6b9c4;
-}
-.v-story > div > p:not(.v-eyebrow) {
-  max-width: 420px;
-  margin: 26px 0 27px;
-  color: #d5c9ce;
-  font-size: 16px;
-}
-.v-story .v-text-link {
-  border-color: #99858e;
-}
-.v-story .v-text-link:hover {
-  color: #f4c1d4;
+.v-story > div:first-child {
+  grid-column: 1 / span 5;
 }
 .v-story ol {
+  grid-column: 7 / -1;
   list-style: none;
   padding: 0;
   margin: 0;
 }
+.v-story .v-eyebrow {
+  color: #b2b8c3;
+}
+.v-story .v-eyebrow::before {
+  background: var(--v-accent);
+}
+.v-story h2 span {
+  color: #bec3cc;
+}
+.v-story > div > p:not(.v-eyebrow) {
+  max-width: 34ch;
+  margin: 26px 0 30px;
+  color: #c7cbd3;
+  font-size: var(--v-t-lede);
+}
+.v-story .v-text-link {
+  border-color: #828a9a;
+}
+.v-story .v-text-link:hover {
+  color: #d6d9dd;
+  border-color: var(--v-accent);
+}
 .v-story li {
-  display: flex;
-  align-items: flex-start;
-  gap: 22px;
-  padding: 22px 0;
+  display: grid;
+  grid-template-columns: 3.5ch 1fr auto;
+  align-items: start;
+  gap: 0 clamp(16px, 2vw, 30px);
+  padding: 20px 0;
   border-top: 1px solid #ffffff24;
+  transition: border-color 0.3s;
 }
 .v-story li:last-child {
   border-bottom: 1px solid #ffffff24;
 }
+.v-story li:hover {
+  border-top-color: var(--v-accent);
+}
 .v-story li > span:first-child {
-  font-size: 12px;
-  color: #d2a6b7;
-  padding-top: 7px;
+  font-size: var(--v-t-fine);
+  font-variant-numeric: tabular-nums;
+  color: var(--v-accent);
+  padding-top: 0.45em;
 }
 .v-story li > span:last-child {
-  margin-left: auto;
-  font-size: 20px;
-  color: #d2a6b7;
+  font-size: 17px;
+  color: #b2b8c3;
+  padding-top: 0.35em;
+  transition: transform 0.35s cubic-bezier(0.2, 0.7, 0.3, 1);
+}
+.v-story li:hover > span:last-child {
+  transform: translate(4px, -4px);
 }
 .v-story li h3 {
-  font-size: 22px;
+  font-size: var(--v-t-heading);
+  line-height: var(--v-leading-heading);
+  color: inherit;
 }
 .v-story li p {
-  color: #cabdc3;
-  font-size: 14px;
-  margin-top: 6px;
+  color: #babfc9;
+  font-size: var(--v-t-control);
+  margin-top: 5px;
 }
 
-/* Real product and news content */
+/* ------------------------------------------------------------------
+   Real product and news content.
+
+   Same grammar as the collections: a hairline opens every card, corners
+   are square, and the hover is a rule darkening and a marker moving —
+   not a lift on a shadow. These classes are shared with the catalogue
+   and the news index, so the language holds across the whole public site
+   rather than stopping at the homepage fold.
+   ------------------------------------------------------------------ */
 .v-product-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 40px 24px;
+  column-gap: var(--v-col-gap);
+  row-gap: clamp(32px, 3.6vw, 56px);
 }
 .v-featured-grid {
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 .v-product-card {
   min-width: 0;
+  border-top: 1px solid var(--v-rule);
+  padding-top: 18px;
+  transition: border-color 0.3s;
+}
+.v-product-card:hover {
+  border-top-color: var(--v-ink);
 }
 .v-product-image {
   display: block;
   position: relative;
   aspect-ratio: 4/4.7;
-  background: #f0ede9;
-  border: 1px solid #e8e2dc;
-  border-radius: 16px;
+  background: var(--v-sand);
+  border-radius: var(--v-edge);
   overflow: hidden;
 }
 .v-product-image img {
+  /* Craftwork is photographed whole; cropping it to fill would cut the
+     detail the piece is being shown for. */
   object-fit: contain;
   padding: 20px;
-  transition: transform 0.4s;
+  transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.3, 1);
 }
 .v-product-card:hover .v-product-image img {
   transform: scale(1.035);
 }
 .v-card-arrow {
   position: absolute;
-  right: 16px;
-  bottom: 16px;
-  width: 40px;
-  height: 40px;
-  display: grid;
-  place-items: center;
-  background: white;
-  color: var(--v-ink);
-  border-radius: 50%;
-  box-shadow: 0 3px 10px #30262c0a;
+  right: 14px;
+  bottom: 12px;
+  font-size: 17px;
+  line-height: 1;
+  color: var(--v-muted);
   transition:
-    background 0.2s,
+    transform 0.35s cubic-bezier(0.2, 0.7, 0.3, 1),
     color 0.2s;
 }
 .v-product-card:hover .v-card-arrow {
-  background: var(--v-burgundy);
-  color: white;
+  transform: translate(4px, -4px);
+  color: var(--v-ink);
 }
 .v-product-badge {
   position: absolute;
-  left: 16px;
-  top: 16px;
-  background: white;
-  border-radius: 100px;
-  padding: 5px 13px;
-  color: var(--v-burgundy);
-  font-size: 12px;
+  left: 12px;
+  top: 12px;
+  background: var(--v-white);
+  border: 1px solid var(--v-rule);
+  padding: 4px 10px;
+  color: var(--v-ink);
+  font-size: var(--v-t-fine);
+  letter-spacing: 0.04em;
 }
 .v-no-image {
   position: absolute;
   inset: 0;
   display: grid;
   place-items: center;
-  font-size: 14px;
+  font-size: var(--v-t-control);
   color: var(--v-muted);
 }
 .v-product-info {
-  padding: 19px 2px 0;
+  padding: 17px 0 0;
 }
 .v-product-info > small {
   color: var(--v-muted);
-  font-size: 12px;
+  font-size: var(--v-t-fine);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 .v-product-info h3 {
-  font-size: 21px;
-  margin-top: 4px;
+  font-size: var(--v-t-heading);
+  line-height: var(--v-leading-heading);
+  margin-top: 5px;
 }
 .v-product-info > p {
   color: var(--v-muted);
-  font-size: 13px;
+  font-size: var(--v-t-fine);
   margin-top: 3px;
 }
 .v-product-price {
-  margin-top: 11px;
-  color: var(--v-burgundy);
+  margin-top: 12px;
+  padding-top: 11px;
+  border-top: 1px solid var(--v-rule);
+  color: var(--v-ink);
   display: flex;
   align-items: baseline;
   gap: 12px;
-  font-size: 16px;
+  font-size: var(--v-t-body);
+  font-variant-numeric: tabular-nums;
 }
 .v-product-price del {
   color: var(--v-muted);
-  font-size: 13px;
+  font-size: var(--v-t-fine);
 }
 .v-featured-empty {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 30px;
-  padding: 38px;
-  border-radius: var(--v-radius);
-  border: 1px solid var(--v-line);
-  background: white;
+  padding: 36px 0;
+  border-block: 1px solid var(--v-rule-strong);
 }
 .v-featured-empty p {
-  font-size: 25px;
+  font-size: var(--v-t-heading);
+  line-height: var(--v-leading-heading);
 }
 .v-featured-empty span {
   display: block;
-  font-size: 14px;
+  font-size: var(--v-t-control);
   margin-top: 10px;
   color: var(--v-muted);
 }
 .v-news-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 28px;
+  column-gap: var(--v-col-gap);
+  row-gap: clamp(32px, 3.6vw, 52px);
 }
 .v-news-card {
-  border-top: 1px solid var(--v-line);
+  border-top: 1px solid var(--v-rule-strong);
   padding-top: 20px;
+  transition: border-color 0.3s;
+}
+.v-news-card:hover {
+  border-top-color: var(--v-ink);
 }
 .v-news-image {
   position: relative;
   aspect-ratio: 1.5;
-  background: #efe9e3;
-  margin-bottom: 22px;
+  background: var(--v-sand);
+  margin-bottom: 20px;
   overflow: hidden;
-  border-radius: 15px;
+  border-radius: var(--v-edge);
 }
 .v-news-image img {
   object-fit: cover;
-  transition: transform 0.4s;
+  transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.3, 1);
 }
 .v-news-card:hover .v-news-image img {
   transform: scale(1.03);
 }
 .v-news-card small {
   color: var(--v-muted);
-  font-size: 12px;
+  font-size: var(--v-t-fine);
+  font-variant-numeric: tabular-nums;
 }
 .v-news-card h2 {
-  font-size: 23px;
-  margin: 10px 0;
+  font-size: var(--v-t-heading);
+  line-height: var(--v-leading-heading);
+  margin: 9px 0;
+  text-wrap: balance;
 }
 .v-news-card p {
   color: var(--v-muted);
-  font-size: 15px;
+  font-size: var(--v-t-control);
 }
+
+/* The page closes off-centre: the line lands on the left seven columns
+   and the call sits out at the right edge, on the same baseline. */
 .v-closing {
-  background: #f0e6e9;
-  padding: 85px 24px 92px;
-  text-align: center;
-  color: var(--v-burgundy);
-  border-block: 1px solid #e7d5dc;
+  max-width: 1500px;
+  margin: auto;
+  padding: clamp(64px, 8vw, 110px) var(--v-gutter);
+  display: grid;
+  grid-template-columns: repeat(var(--v-cols), minmax(0, 1fr));
+  column-gap: var(--v-col-gap);
+  row-gap: 30px;
+  align-items: end;
+  background: var(--v-sand);
+  color: var(--v-ink);
+  border-block: 1px solid var(--v-rule-strong);
+  text-align: left;
 }
 .v-closing .v-eyebrow {
-  justify-content: center;
-  margin-bottom: 25px;
+  grid-column: 1 / -1;
+  justify-content: flex-start;
+  margin-bottom: 4px;
+}
+.v-closing .v-eyebrow::before {
+  background: var(--v-accent);
 }
 .v-closing h2 {
-  font-size: clamp(32px, 4vw, 53px);
-  line-height: 1.5;
-  margin-bottom: 30px;
+  grid-column: 1 / span 8;
+  font-size: var(--v-t-section);
+  line-height: var(--v-leading-heading);
+  letter-spacing: var(--v-tracking-heading);
+  margin-bottom: 0;
 }
 .v-closing .v-button-light {
-  background: var(--v-burgundy);
-  color: white;
+  grid-column: 10 / -1;
+  justify-self: start;
+  background: var(--v-ink);
+  color: var(--v-paper);
+  border-radius: 0;
 }
 .v-closing .v-button-light:hover {
-  background: #59122b;
+  background: var(--v-burgundy);
 }
 
 /* Footer */
@@ -1762,7 +2000,7 @@
   line-height: 1.5;
 }
 .v-page-title h1 span {
-  color: #89747d;
+  color: #717887;
 }
 .v-page-title > p:not(.v-eyebrow) {
   max-width: 670px;
@@ -1789,7 +2027,7 @@
     border-color 0.2s;
 }
 .v-category-tabs a:hover {
-  border-color: #bc93a1;
+  border-color: #9ca3b3;
   color: var(--v-burgundy);
 }
 .v-category-tabs a[aria-current="page"] {
@@ -1815,21 +2053,21 @@
 }
 .v-catalog-filters > label > span {
   font-size: 13px;
-  color: #62565d;
+  color: #515762;
 }
 .v-catalog-filters input:not([type="checkbox"]):not([type="hidden"]),
 .v-catalog-filters select {
   width: 100%;
   height: 50px;
   padding: 10px 13px;
-  border: 1px solid #ded6d9;
+  border: 1px solid #d5d8dd;
   border-radius: 9px;
   color: var(--v-ink);
-  background: #fdfcfb;
+  background: #fcfcfc;
   font-size: 16px;
 }
 .v-catalog-filters input::placeholder {
-  color: #81757a;
+  color: #6e7583;
 }
 .v-catalog-filters select {
   padding-right: 30px;
@@ -1895,7 +2133,7 @@
   padding: 58px 30px 63px;
   border: 1px solid var(--v-line);
   border-radius: var(--v-radius);
-  background: #f4f0ee;
+  background: #f1f1f1;
   text-align: center;
   margin: 24px 0;
 }
@@ -1904,10 +2142,10 @@
   place-items: center;
   width: 60px;
   height: 60px;
-  border: 1px solid #e5d8dd;
+  border: 1px solid #dbdde1;
   border-radius: 18px;
-  background: #fffcfc;
-  color: #926379;
+  background: #fdfdfd;
+  color: #6d7482;
   margin: 0 auto 23px;
 }
 .v-empty-icon .site-icon {
@@ -1956,9 +2194,10 @@
   min-height: 330px;
   margin: 40px 0;
   padding: 48px;
-  border-radius: 24px;
-  background: #f0e6e9;
-  color: #622139;
+  border-radius: var(--v-edge);
+  border-top: 1px solid var(--v-rule-strong);
+  background: var(--v-cell, #eeeeee);
+  color: var(--v-cell-ink, #393e46);
 }
 .v-category-hero:has(> :only-child) {
   grid-template-columns: 1fr;
@@ -1982,7 +2221,8 @@
   background: #ffffff70;
 }
 .v-category-cover img {
-  object-fit: contain;
+  /* A banner, not a letterboxed thumbnail — the uploaded image fills the box. */
+  object-fit: cover;
 }
 .v-back {
   display: inline-flex;
@@ -2026,7 +2266,7 @@
 .v-gallery-empty {
   position: relative;
   aspect-ratio: 1/1.1;
-  background: #f0ede9;
+  background: #ededed;
   border: 1px solid var(--v-line);
   border-radius: 20px;
   overflow: hidden;
@@ -2060,7 +2300,7 @@
 .v-gallery-thumbs button {
   border: 1px solid var(--v-line);
   border-radius: 10px;
-  background: #f0ede9;
+  background: #ededed;
   padding: 5px;
   flex-shrink: 0;
   cursor: pointer;
@@ -2109,9 +2349,9 @@
   display: inline-block;
   font-size: 13px;
   padding: 5px 13px;
-  border: 1px solid #d6e0d8;
-  background: #edf2ec;
-  color: #426247;
+  border: 1px solid #d6d9de;
+  background: #f0f0f0;
+  color: #494e58;
   border-radius: 100px;
 }
 .v-product-specs {
@@ -2186,19 +2426,19 @@
   margin: 36px 0 50px;
 }
 .v-story-hero {
-  color: #fff9f8;
+  color: #fbfbfb;
   background: var(--v-burgundy);
   padding: 85px max(var(--v-gutter), calc((100vw - 1200px) / 2)) 90px;
 }
 .v-story-hero .v-eyebrow {
-  color: #e2bccb;
+  color: #c7cbd3;
 }
 .v-story-hero h1 {
   font-size: clamp(42px, 5.5vw, 76px);
   line-height: 1.5;
 }
 .v-story-hero > p:last-child {
-  color: #eed8e0;
+  color: #e1e2e5;
   font-size: 18px;
   margin-top: 27px;
 }
@@ -2256,20 +2496,20 @@
   background: white;
   border: 1px solid var(--v-line);
   border-radius: 22px;
-  box-shadow: 0 12px 40px #30262c04;
+  box-shadow: 0 12px 40px #25292f04;
 }
 .v-contact-form-panel input:not([type="checkbox"]),
 .v-contact-form-panel textarea {
   font-size: 16px;
   padding: 13px 15px;
   border-radius: 9px;
-  background: #fdfcfb;
-  border-color: #ded6d9;
+  background: #fcfcfc;
+  border-color: #d5d8dd;
   box-shadow: none;
 }
 .v-contact-form-panel label {
   font-size: 14px;
-  color: #4f4048;
+  color: #40454e;
 }
 .v-contact-form-panel :is(input, textarea)[aria-invalid="true"] {
   border-color: var(--v-burgundy);
@@ -2283,7 +2523,7 @@
   transition: background 0.2s;
 }
 .v-contact-form-panel button[type="submit"]:hover {
-  background: #59122b;
+  background: #2f343a;
 }
 
 @media (max-width: 1180px) {
@@ -2311,12 +2551,6 @@
   .v-actions {
     gap: 16px;
   }
-  .v-bento-copy {
-    max-width: 95%;
-  }
-  .v-bento-copy h3 {
-    font-size: 25px;
-  }
   .v-featured-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -2341,8 +2575,8 @@
     padding: 14px;
     border: 1px solid rgb(255 255 255 / 0.14);
     border-radius: 26px;
-    background: rgb(17 13 15 / 0.98);
-    box-shadow: 0 22px 60px rgb(8 6 7 / 0.45);
+    background: rgb(12 14 16 / 0.98);
+    box-shadow: 0 22px 60px rgb(5 6 7 / 0.45);
     flex-direction: column;
     align-items: stretch;
     gap: 2px;
@@ -2387,13 +2621,34 @@
     content: none;
   }
   .v-section-heading {
-    align-items: flex-start;
+    align-items: start;
+    row-gap: 26px;
+  }
+  .v-section-heading > div:first-child {
+    grid-column: 1 / span 8;
+  }
+  .v-section-heading > div:last-child,
+  .v-section-heading > .v-text-link {
+    grid-column: 1 / -1;
   }
   .v-section-heading > div:last-child > p:not(.v-eyebrow) {
-    max-width: 280px;
+    max-width: 44ch;
   }
   .v-story {
-    gap: 45px;
+    column-gap: 40px;
+    row-gap: 44px;
+  }
+  .v-story > div:first-child {
+    grid-column: 1 / span 6;
+  }
+  .v-story ol {
+    grid-column: 1 / -1;
+  }
+  .v-closing h2 {
+    grid-column: 1 / span 10;
+  }
+  .v-closing .v-button-light {
+    grid-column: 1 / -1;
   }
   .v-footer-main {
     grid-template-columns: 1.3fr 1fr 1fr;
@@ -2487,21 +2742,22 @@
     padding-block: 65px;
   }
   .v-section-heading {
-    flex-direction: column;
-    gap: 22px;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding-top: 20px;
     margin-bottom: 30px;
   }
-  .v-section-heading h2,
-  .v-story h2,
-  .v-product-story h2 {
-    font-size: 32px;
+  .v-section-heading > div:first-child,
+  .v-section-heading > div:last-child,
+  .v-section-heading > .v-text-link {
+    grid-column: 1;
   }
   .v-section-heading > div:last-child > p:not(.v-eyebrow) {
     max-width: 100%;
   }
   .v-bento {
     grid-template-columns: 1fr;
-    gap: 15px;
+    row-gap: 26px;
   }
   .v-bento-card,
   .v-bento-card:nth-child(4n + 1),
@@ -2510,37 +2766,25 @@
     grid-column: 1;
   }
   .v-bento-card {
-    padding: 25px;
-    min-height: 320px;
-  }
-  .v-bento-copy {
-    max-width: 100%;
-    padding-top: 40px;
-  }
-  .v-bento-copy h3 {
-    font-size: 26px;
-  }
-  .v-bento-copy p {
-    font-size: 15px;
-  }
-  .v-bento-number {
-    font-size: 210px;
+    padding: 18px 0 0;
+    min-height: 330px;
   }
   .v-bento-note {
-    min-height: 170px;
-    padding: 25px;
-    gap: 16px;
-  }
-  .v-bento-note h3 {
-    font-size: 23px;
-  }
-  .v-bento-note > span:last-child {
-    font-size: 12px;
+    min-height: 0;
+    padding: 18px 0 20px;
+    gap: 14px;
   }
   .v-story {
     grid-template-columns: 1fr;
-    gap: 40px;
+    gap: 36px;
     padding-block: 60px;
+  }
+  .v-story > div:first-child,
+  .v-story ol {
+    grid-column: 1;
+  }
+  .v-story li {
+    grid-template-columns: 3ch 1fr auto;
   }
   .v-story > div > p:not(.v-eyebrow) {
     font-size: 16px;
@@ -2548,9 +2792,7 @@
   .v-story li {
     gap: 18px;
   }
-  .v-story li h3 {
-    font-size: 21px;
-  }
+
   .v-product-grid,
   .v-featured-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -2602,13 +2844,14 @@
     gap: 35px;
   }
   .v-closing {
-    padding: 62px 24px 68px;
+    grid-template-columns: 1fr;
+    padding-block: 58px 64px;
+    row-gap: 24px;
   }
-  .v-closing h2 {
-    font-size: 31px;
-  }
+  .v-closing h2,
+  .v-closing .v-button-light,
   .v-closing .v-eyebrow {
-    font-size: 9px;
+    grid-column: 1;
   }
   .v-footer {
     padding-top: 44px;
@@ -2812,9 +3055,6 @@
   .v-menu-toggle {
     padding-inline: 12px;
   }
-  .v-bento-copy h3 {
-    font-size: 24px;
-  }
   .v-product-grid {
     grid-template-columns: 1fr;
   }
@@ -2851,9 +3091,9 @@
   .v-aperture-veil {
     background: linear-gradient(
       180deg,
-      rgb(8 6 7 / calc(0.5 * var(--v-veil))) 0%,
-      rgb(8 6 7 / calc(0.25 * var(--v-veil))) 34%,
-      rgb(8 6 7 / calc(0.92 * var(--v-veil))) 100%
+      rgb(5 6 7 / calc(0.5 * var(--v-veil))) 0%,
+      rgb(5 6 7 / calc(0.25 * var(--v-veil))) 34%,
+      rgb(5 6 7 / calc(0.92 * var(--v-veil))) 100%
     );
   }
   .v-aperture-copy {
@@ -2877,17 +3117,17 @@
   .v-aperture-panel[data-ground="still"] {
     background: linear-gradient(
       180deg,
-      rgb(6 4 5 / 0.84) 0%,
-      rgb(6 4 5 / 0.54) 40%,
+      rgb(4 5 5 / 0.84) 0%,
+      rgb(4 5 5 / 0.54) 40%,
       transparent 68%
     );
   }
   .v-aperture-stage::after {
     background: linear-gradient(
       0deg,
-      rgb(6 4 5 / 0.88) 0%,
-      rgb(6 4 5 / 0.66) 34%,
-      rgb(6 4 5 / 0.2) 58%,
+      rgb(4 5 5 / 0.88) 0%,
+      rgb(4 5 5 / 0.66) 34%,
+      rgb(4 5 5 / 0.2) 58%,
       transparent 76%
     );
   }

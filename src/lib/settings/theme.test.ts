@@ -13,7 +13,7 @@ describe("themeStyle", () => {
 
   it("emits the colours Tailwind's utilities resolve through", () => {
     const style = themeStyle(theme);
-    expect(style["--color-brand"]).toBe("#880924");
+    expect(style["--color-brand"]).toBe("#393e46");
     expect(style["--color-accent"]).toBe("#0b7a3f");
     expect(style["--color-seal-gold"]).toBe("#edd357");
   });
@@ -22,7 +22,7 @@ describe("themeStyle", () => {
     const style = themeStyle(theme);
     expect(style["--radius-card"]).toBe("8px");
     expect(style["--container-site"]).toBe("1200px");
-    expect(style["--color-bg"]).toBe("#ffffff");
+    expect(style["--color-bg"]).toBe("#f7f7f7");
   });
 
   it("reflects an overridden colour, which is what 'no rebuild' rests on", () => {

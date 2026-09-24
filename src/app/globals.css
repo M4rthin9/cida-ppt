@@ -42,23 +42,23 @@
  * Never hard-code a hex value in a component (CLAUDE.md).
  */
 @theme {
-  --color-bg: #ffffff;
-  --color-surface: #f8f6f5;
-  --color-surface-alt: #efeae8;
+  --color-bg: #f7f7f7;
+  --color-surface: #eeeeee;
+  --color-surface-alt: #e2e5ea;
 
-  --color-heading: #241c1e;
-  --color-text: #574e50;
-  --color-text-muted: #6f6467;
+  --color-heading: #23272e;
+  --color-text: #464c56;
+  --color-text-muted: #5f6673;
 
-  --color-brand: #880924;
-  --color-brand-hover: #6d071d;
-  --color-brand-tint: #f8f0f2;
+  --color-brand: #393e46;
+  --color-brand-hover: #23272e;
+  --color-brand-tint: #e6e8ec;
 
   --color-accent: #0b7a3f;
   --color-accent-tint: #e8f5ec;
   --color-accent-ink: #075c2f;
 
-  --color-border: #e2dad8;
+  --color-border: #d5d8de;
 
   /* Lives inside the seal artwork only — 1.5:1 on white. Never text, never a surface. */
   --color-seal-gold: #edd357;
