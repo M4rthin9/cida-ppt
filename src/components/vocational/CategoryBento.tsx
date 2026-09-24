@@ -1,5 +1,6 @@
 import { Link } from "@/i18n/navigation";
 import Image from "next/image";
+import { BentoGrid } from "./BentoGrid";
 import type { Category } from "@/lib/vocational/types";
 
 /**
@@ -13,7 +14,7 @@ import type { Category } from "@/lib/vocational/types";
  */
 export function CategoryBento({ categories }: { categories: Category[] }) {
   return (
-    <div className="v-bento">
+    <BentoGrid>
       {categories.map((c, i) => {
         const background = c.thumbnail_url || c.image_url;
         const index = String(i + 1).padStart(2, "0");
@@ -23,6 +24,7 @@ export function CategoryBento({ categories }: { categories: Category[] }) {
             href={`/products/category/${c.slug}`}
             className={`v-bento-card v-bento-${c.icon} ${background ? "with-image" : ""}`}
           >
+            <span className="v-bento-draw" aria-hidden="true" />
             <div className="v-bento-top">
               <span className="lat">COLLECTION {index}</span>
               {c.icon_url ? (
@@ -51,10 +53,14 @@ export function CategoryBento({ categories }: { categories: Category[] }) {
               <p>{c.short_description_th || c.description_th}</p>
               <small>{c.product_count} ผลงาน</small>
             </div>
+            <span className="v-bento-cue" aria-hidden="true">
+              ดูผลงาน
+            </span>
           </Link>
         );
       })}
       <Link href="/story" className="v-bento-note">
+        <span className="v-bento-draw" aria-hidden="true" />
         <span className="lat">OUR STORY</span>
         <h3>
           เรื่องราว
@@ -64,6 +70,7 @@ export function CategoryBento({ categories }: { categories: Category[] }) {
         <span>อ่านเรื่องราว ↗</span>
       </Link>
       <Link href="/products?featured=1" className="v-bento-note v-bento-featured">
+        <span className="v-bento-draw" aria-hidden="true" />
         <span className="lat">SELECTED WORKS</span>
         <h3>
           ผลงานที่ตั้งใจ
@@ -72,6 +79,6 @@ export function CategoryBento({ categories }: { categories: Category[] }) {
         </h3>
         <span>สินค้าแนะนำ ↗</span>
       </Link>
-    </div>
+    </BentoGrid>
   );
 }
