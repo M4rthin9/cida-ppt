@@ -76,7 +76,7 @@ const lineGlobal = z.object({
    * The Official Account handle, e.g. "@355kxfoj" — the single source of truth
    * (§8). Stored as the handle rather than as §8's literal `oa_url` because the
    * two links the site needs are derived from it and cannot both be stored as
-   * one URL: line.me/ti/p/<id> adds the friend, line.me/R/oaMessage/<id>/?<text>
+   * one URL: line.me/R/ti/p/<id> adds the friend, line.me/R/oaMessage/<id>/?<text>
    * opens a chat with the pre-filled message §8 requires. Phase 8 owns /go/line
    * and should confirm this shape.
    */
@@ -93,6 +93,71 @@ const lineLocalized = z.object({
   buttonLabel: z.string().trim().min(1, "กรุณากรอกข้อความบนปุ่ม").max(120),
   /** Supports {product_name} and {product_url} (§8). */
   messageTemplate: z.string().trim().min(1, "กรุณากรอกข้อความตั้งต้น").max(500),
+});
+
+// --- home ------------------------------------------------------------------
+
+/**
+ * Every line of copy on the homepage. Optional fields store "" rather than
+ * being omitted: reads merge the row over the defaults, so an omitted key would
+ * bring the default straight back after the operator cleared it.
+ */
+const copy = (max: number) => z.string().trim().max(max);
+const requiredCopy = (max: number) => copy(max).min(1, "กรุณากรอกข้อความ");
+
+const homeLocalized = z.object({
+  heroBadge: requiredCopy(120),
+  heroBadgeNote: copy(120),
+  heroTitle: requiredCopy(120),
+  heroTitleAccent: copy(120),
+  heroCta: requiredCopy(60),
+  /** One caption per line. */
+  heroLede: copy(500),
+  heroWordmark: copy(120),
+
+  /** One word per line — shown when no footage is imported. */
+  apertureWords: copy(200),
+  apertureEyebrow: copy(80),
+  apertureTitle: requiredCopy(120),
+  apertureTitleAccent: copy(120),
+  apertureLede: copy(500),
+  apertureCta: requiredCopy(60),
+
+  /** One word per line, after the category names. */
+  marqueeWords: copy(500),
+
+  collectionsEyebrow: copy(80),
+  collectionsTitle: requiredCopy(120),
+  collectionsTitleAccent: copy(120),
+  collectionsIntro: copy(500),
+  collectionsCta: requiredCopy(60),
+  storyNoteEyebrow: copy(80),
+  storyNoteTitle: requiredCopy(120),
+  storyNoteCta: requiredCopy(60),
+  featuredNoteEyebrow: copy(80),
+  featuredNoteTitle: requiredCopy(120),
+  featuredNoteCta: requiredCopy(60),
+
+  storyEyebrow: copy(80),
+  storyTitle: requiredCopy(120),
+  storyTitleAccent: copy(120),
+  storyBody: copy(1000),
+  storyCta: requiredCopy(60),
+  /** One step per line, "หัวข้อ | คำอธิบาย". */
+  storySteps: copy(1500),
+
+  featuredEyebrow: copy(80),
+  featuredTitle: requiredCopy(120),
+  featuredCta: requiredCopy(60),
+  featuredEmptyCta: requiredCopy(60),
+
+  newsEyebrow: copy(80),
+  newsTitle: requiredCopy(120),
+  newsCta: requiredCopy(60),
+
+  closingEyebrow: copy(80),
+  closingTitle: requiredCopy(200),
+  closingCta: requiredCopy(60),
 });
 
 // --- theme -----------------------------------------------------------------
@@ -151,6 +216,72 @@ export const SETTINGS = {
       organisation: "ทัณฑสถานบำบัดพิเศษกลาง",
       tagline: "ฝึกอาชีพ สร้างทักษะ สร้างคุณค่า สร้างโอกาสใหม่",
     } as z.infer<typeof generalLocalized>,
+  },
+  home: {
+    label: "หน้าแรก",
+    global: z.object({}),
+    globalDefault: {},
+    localized: homeLocalized,
+    localizedDefault: {
+      heroBadge: "ฝ่ายฝึกวิชาชีพผู้ต้องขัง",
+      heroBadgeNote: "ทัณฑสถานบำบัดพิเศษกลาง",
+      heroTitle: "ฝึกอาชีพ",
+      heroTitleAccent: "สร้างโอกาสใหม่",
+      heroCta: "ชมผลิตภัณฑ์ทั้งหมด",
+      heroLede:
+        "พื้นที่แห่งการเรียนรู้และพัฒนาทักษะวิชาชีพ\nผ่านการลงมือทำจริง\nสู่ผลงานที่มีคุณค่าและโอกาสในวันข้างหน้า",
+      heroWordmark: "ฝ่ายฝึกวิชาชีพผู้ต้องขัง",
+
+      apertureWords: "ฝึกฝน\nลงมือทำ\nส่งต่อคุณค่า",
+      apertureEyebrow: "FROM PRACTICE TO POSSIBILITY",
+      apertureTitle: "จากการฝึกฝน",
+      apertureTitleAccent: "สู่ผลงานที่มีคุณค่า",
+      apertureLede:
+        "ทุกชิ้นงานเริ่มจากการเรียนรู้ ฝึกฝนซ้ำแล้วซ้ำเล่า จนกลายเป็นทักษะติดตัว และกลายเป็นโอกาสในวันข้างหน้า",
+      apertureCta: "เรียนรู้เรื่องงานฝึกวิชาชีพ",
+
+      marqueeWords: "งานฝึกวิชาชีพ\nCRAFTED WITH PURPOSE",
+
+      collectionsEyebrow: "CRAFT COLLECTIONS",
+      collectionsTitle: "ทักษะที่หลากหลาย",
+      collectionsTitleAccent: "ความตั้งใจเดียวกัน",
+      collectionsIntro:
+        "ค้นพบงานฝีมือจากการเรียนรู้และฝึกฝน\nที่ส่งต่อคุณค่า ผ่านรายละเอียดของทุกชิ้นงาน",
+      collectionsCta: "สำรวจผลิตภัณฑ์ทั้งหมด",
+      storyNoteEyebrow: "OUR STORY",
+      storyNoteTitle: "เรื่องราว\nงานฝึกวิชาชีพ",
+      storyNoteCta: "อ่านเรื่องราว",
+      featuredNoteEyebrow: "SELECTED WORKS",
+      featuredNoteTitle: "ผลงานที่ตั้งใจ\nให้คุณได้รู้จัก",
+      featuredNoteCta: "สินค้าแนะนำ",
+
+      storyEyebrow: "THE SKILL BEHIND THE CRAFT",
+      storyTitle: "จากการฝึกฝน",
+      storyTitleAccent: "สู่ผลงานที่มีคุณค่า",
+      storyBody:
+        "ทุกขั้นตอนของการผลิตคือกระบวนการเรียนรู้ ทั้งทักษะ ความรับผิดชอบ ความละเอียด และมาตรฐานในการทำงาน",
+      storyCta: "เรื่องราวของเรา",
+      storySteps: [
+        "ฝึกฝน | เรียนรู้จากการลงมือทำจริง",
+        "พัฒนาทักษะ | ใส่ใจในวัสดุ เครื่องมือ และรายละเอียด",
+        "สร้างผลงาน | ฝึกความรับผิดชอบในทุกขั้นตอน",
+        "สร้างคุณค่า | ถ่ายทอดความตั้งใจผ่านงานฝีมือ",
+        "สร้างโอกาสใหม่ | เตรียมความพร้อมสู่การประกอบอาชีพ",
+      ].join("\n"),
+
+      featuredEyebrow: "SELECTED WORKS",
+      featuredTitle: "ผลงานที่อยากให้รู้จัก",
+      featuredCta: "ชมผลงานแนะนำ",
+      featuredEmptyCta: "สำรวจหมวดหมู่",
+
+      newsEyebrow: "NEWS & ACTIVITIES",
+      newsTitle: "ความเคลื่อนไหว\nแห่งการเรียนรู้",
+      newsCta: "ข่าวและกิจกรรมทั้งหมด",
+
+      closingEyebrow: "EVERY CRAFT. A NEW POSSIBILITY.",
+      closingTitle: "ทุกผลงานมีความหมาย\nทุกทักษะคือโอกาสใหม่",
+      closingCta: "สอบถามผลิตภัณฑ์",
+    } as z.infer<typeof homeLocalized>,
   },
   contact: {
     label: "ติดต่อ",

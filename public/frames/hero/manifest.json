@@ -1,11 +1,11 @@
 {
-  "count": 150,
+  "count": 101,
   "pattern": "frame-%03d.jpg",
-  "source": "merged_20s_frames",
-  "sampledFrom": 185,
+  "source": "p1",
+  "sampledFrom": 101,
   "encoded": true,
-  "bytes": 18093759,
+  "bytes": 6419459,
   "width": 1280,
   "height": 720,
-  "version": "c269bcac130231f4"
+  "version": "be741b11c7f208ca"
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState } from "react";
+import { Fragment, useActionState } from "react";
 import { Button, FieldError, FormBanner, Hint, Input, Label } from "@/components/ui/field";
 import type { SettingsFormState } from "./actions";
 
@@ -13,6 +13,9 @@ export type FieldSpec = {
   hint?: string;
   required?: boolean;
   placeholder?: string;
+  /** Starts a new group: a heading is drawn above this field. */
+  section?: string;
+  rows?: number;
 };
 
 export function SettingsForm({
@@ -37,60 +40,16 @@ export function SettingsForm({
       {fields.map((f) => {
         const value = values[f.name];
         const error = state.errors?.[f.name];
-
-        if (f.type === "checkbox") {
-          return (
-            <div key={f.name} className="flex items-start gap-2.5">
-              <input
-                id={f.name}
-                name={f.name}
-                type="checkbox"
-                defaultChecked={Boolean(value)}
-                className="mt-1 size-4 accent-(--color-brand)"
-              />
-              <label htmlFor={f.name} className="text-sm text-(--color-heading)">
-                {f.label}
-                {f.hint ? <span className="block text-(--color-text-muted)">{f.hint}</span> : null}
-              </label>
-            </div>
-          );
-        }
-
-        if (f.type === "textarea") {
-          return (
-            <div key={f.name}>
-              <Label htmlFor={f.name} required={f.required}>
-                {f.label}
-              </Label>
-              <textarea
-                id={f.name}
-                name={f.name}
-                rows={3}
-                defaultValue={typeof value === "string" ? value : ""}
-                className="mt-1.5 block w-full rounded-(--radius-control) border border-(--color-border) bg-(--color-bg) px-3 py-2.5 text-base leading-[1.8] text-(--color-heading) focus:outline-none focus:ring-2 focus:ring-(--color-brand)"
-              />
-              <FieldError id={`${f.name}-error`} message={error} />
-              {f.hint ? <Hint>{f.hint}</Hint> : null}
-            </div>
-          );
-        }
-
-        return (
-          <div key={f.name}>
-            <Label htmlFor={f.name} required={f.required}>
-              {f.label}
-            </Label>
-            <Input
-              id={f.name}
-              name={f.name}
-              type={f.type ?? "text"}
-              placeholder={f.placeholder}
-              defaultValue={value === undefined || value === null ? "" : String(value)}
-              error={error}
-            />
-            <FieldError id={`${f.name}-error`} message={error} />
-            {f.hint ? <Hint>{f.hint}</Hint> : null}
-          </div>
+        const field = renderField(f, value, error);
+        return f.section ? (
+          <Fragment key={f.name}>
+            <h2 className="border-t border-(--color-border) pt-6 text-lg font-semibold text-(--color-heading) first:border-t-0 first:pt-0">
+              {f.section}
+            </h2>
+            {field}
+          </Fragment>
+        ) : (
+          field
         );
       })}
 
@@ -100,5 +59,62 @@ export function SettingsForm({
         {pending ? "กำลังบันทึก…" : "บันทึกการตั้งค่า"}
       </Button>
     </form>
+  );
+}
+
+function renderField(f: FieldSpec, value: unknown, error: string | undefined) {
+  if (f.type === "checkbox") {
+    return (
+      <div key={f.name} className="flex items-start gap-2.5">
+        <input
+          id={f.name}
+          name={f.name}
+          type="checkbox"
+          defaultChecked={Boolean(value)}
+          className="mt-1 size-4 accent-(--color-brand)"
+        />
+        <label htmlFor={f.name} className="text-sm text-(--color-heading)">
+          {f.label}
+          {f.hint ? <span className="block text-(--color-text-muted)">{f.hint}</span> : null}
+        </label>
+      </div>
+    );
+  }
+
+  if (f.type === "textarea") {
+    return (
+      <div key={f.name}>
+        <Label htmlFor={f.name} required={f.required}>
+          {f.label}
+        </Label>
+        <textarea
+          id={f.name}
+          name={f.name}
+          rows={f.rows ?? 3}
+          defaultValue={typeof value === "string" ? value : ""}
+          className="mt-1.5 block w-full rounded-(--radius-control) border border-(--color-border) bg-(--color-bg) px-3 py-2.5 text-base leading-[1.8] text-(--color-heading) focus:outline-none focus:ring-2 focus:ring-(--color-brand)"
+        />
+        <FieldError id={`${f.name}-error`} message={error} />
+        {f.hint ? <Hint>{f.hint}</Hint> : null}
+      </div>
+    );
+  }
+
+  return (
+    <div key={f.name}>
+      <Label htmlFor={f.name} required={f.required}>
+        {f.label}
+      </Label>
+      <Input
+        id={f.name}
+        name={f.name}
+        type={f.type ?? "text"}
+        placeholder={f.placeholder}
+        defaultValue={value === undefined || value === null ? "" : String(value)}
+        error={error}
+      />
+      <FieldError id={`${f.name}-error`} message={error} />
+      {f.hint ? <Hint>{f.hint}</Hint> : null}
+    </div>
   );
 }

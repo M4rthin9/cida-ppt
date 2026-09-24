@@ -2,6 +2,7 @@ import { listCategories } from "@/lib/vocational/data";
 import { CategoryBento } from "@/components/vocational/CategoryBento";
 import { StorySection } from "@/components/vocational/StorySection";
 import { publicMetadata } from "@/lib/seo/metadata";
+import { getCachedSetting } from "@/lib/settings/cached";
 export const dynamic = "force-dynamic";
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
@@ -13,6 +14,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   });
 }
 export default async function Page() {
+  const [categories, copy] = await Promise.all([listCategories(), getCachedSetting("home")]);
   return (
     <main id="content">
       <div className="v-page">
@@ -29,9 +31,9 @@ export default async function Page() {
             พื้นที่เรียนรู้ทักษะอาชีพ ความมีวินัย และความรับผิดชอบผ่านการทำงานจริง
           </p>
         </header>
-        <CategoryBento categories={await listCategories()} />
+        <CategoryBento categories={categories} copy={copy} />
       </div>
-      <StorySection />
+      <StorySection copy={copy} />
     </main>
   );
 }

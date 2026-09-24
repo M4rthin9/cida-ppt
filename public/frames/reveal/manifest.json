@@ -1,0 +1,11 @@
+{
+  "count": 100,
+  "pattern": "frame-%03d.jpg",
+  "source": "p2",
+  "sampledFrom": 100,
+  "encoded": true,
+  "bytes": 10235404,
+  "width": 1280,
+  "height": 720,
+  "version": "e9372e8a3e5cbab2"
+}

@@ -13,6 +13,10 @@ const nextConfig: NextConfig = {
   outputFileTracingIncludes: {
     "/*": ["./node_modules/drizzle-orm/**/*"],
   },
+  // Posts are managed as news; keep old admin links working.
+  async redirects() {
+    return [{ source: "/admin/posts/:path*", destination: "/admin/news/:path*", permanent: false }];
+  },
   reactStrictMode: true,
   poweredByHeader: false,
   experimental: {

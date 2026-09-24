@@ -68,14 +68,18 @@ export default async function Page({
           <p className="v-eyebrow">{p.category_name}</p>
           <h1>{p.name_th}</h1>
           {p.name_en && <p lang="en">{p.name_en}</p>}
-          <p className="v-detail-summary">{p.short_description_th}</p>
-          <div className="v-detail-price">
-            {priceLabel(p)}
-            {(p.price_mode === "exact" || p.price_mode === "from") &&
-              p.sale_price !== null &&
-              p.price !== null && <del>{Number(p.price).toLocaleString("th-TH")} บาท</del>}
+          {p.short_description_th && <p className="v-detail-summary">{p.short_description_th}</p>}
+          <div className="v-detail-meta">
+            <div className="v-detail-price">
+              {priceLabel(p)}
+              {(p.price_mode === "exact" || p.price_mode === "from") &&
+                p.sale_price !== null &&
+                p.price !== null && <del>{Number(p.price).toLocaleString("th-TH")} บาท</del>}
+            </div>
+            <span className="v-stock" data-status={p.stock_status}>
+              {STOCK_STATUSES[p.stock_status]}
+            </span>
           </div>
-          <span className="v-stock">{STOCK_STATUSES[p.stock_status]}</span>
           <dl className="v-product-specs">
             {[
               ["รหัสสินค้า", p.sku],
@@ -93,42 +97,52 @@ export default async function Page({
                 </div>
               ))}
           </dl>
-          <a
-            className="v-button v-button-dark"
-            href={goLinePath(p.slug)}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {p.price_mode === "showcase" ? "สอบถามเกี่ยวกับผลงาน" : "สอบถามสินค้า / ติดต่อสั่งซื้อ"}{" "}
-            <span>↗</span>
-          </a>
-          <p className="v-inquiry-note">สอบถามรายละเอียดกับเจ้าหน้าที่ผ่าน LINE</p>
-          <Link
-            href={`/contact?product=${encodeURIComponent(p.slug)}#contact-form`}
-            className="v-text-link"
-          >
-            สอบถามผ่านแบบฟอร์มติดต่อ ↗
-          </Link>
-          <div className="v-detail-copy">
-            <h2>รายละเอียดผลงาน</h2>
-            <p>{p.description_th || p.short_description_th}</p>
+          <div className="v-detail-actions">
+            <a
+              className="v-button v-button-dark"
+              href={goLinePath(p.slug)}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {p.price_mode === "showcase"
+                ? "สอบถามเกี่ยวกับผลงาน"
+                : "สอบถามสินค้า / ติดต่อสั่งซื้อ"}{" "}
+              <span>↗</span>
+            </a>
+            <Link
+              href={`/contact?product=${encodeURIComponent(p.slug)}#contact-form`}
+              className="v-button v-button-outline"
+            >
+              สอบถามผ่านแบบฟอร์มติดต่อ <span>→</span>
+            </Link>
+            <p className="v-inquiry-note">สอบถามรายละเอียดกับเจ้าหน้าที่ผ่าน LINE</p>
           </div>
+          {p.description_th && p.description_th !== p.short_description_th && (
+            <div className="v-detail-copy">
+              <h2>รายละเอียดผลงาน</h2>
+              <p>{p.description_th}</p>
+            </div>
+          )}
         </div>
       </div>
       <section className="v-product-story">
-        <p className="v-eyebrow">THE SKILL BEHIND THE PRODUCT</p>
-        <h2>
-          มากกว่าชิ้นงาน
-          <br />
-          <span>คือทักษะที่ได้ลงมือฝึกฝน</span>
-        </h2>
-        <p>
-          ผลงานจากการฝึกวิชาชีพ สะท้อนการเรียนรู้เรื่องวัสดุ การใช้เครื่องมือ ความละเอียด
-          และความรับผิดชอบในกระบวนการทำงาน
-        </p>
-        <Link href="/vocational" className="v-text-link">
-          รู้จักงานฝึกวิชาชีพ ↗
-        </Link>
+        <div>
+          <p className="v-eyebrow">THE SKILL BEHIND THE PRODUCT</p>
+          <h2>
+            มากกว่าชิ้นงาน
+            <br />
+            <span>คือทักษะที่ได้ลงมือฝึกฝน</span>
+          </h2>
+        </div>
+        <div>
+          <p>
+            ผลงานจากการฝึกวิชาชีพ สะท้อนการเรียนรู้เรื่องวัสดุ การใช้เครื่องมือ ความละเอียด
+            และความรับผิดชอบในกระบวนการทำงาน
+          </p>
+          <Link href="/vocational" className="v-text-link">
+            รู้จักงานฝึกวิชาชีพ ↗
+          </Link>
+        </div>
       </section>
       {related.items.some((r) => r.id !== p.id) && (
         <section className="v-section">

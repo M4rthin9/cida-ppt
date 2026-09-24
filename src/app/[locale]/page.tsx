@@ -9,6 +9,8 @@ import { NewsCard } from "@/components/vocational/NewsCard";
 import { readSequence } from "@/lib/vocational/sequence-assets";
 import { frameUrl } from "@/lib/vocational/sequence";
 import { publicMetadata } from "@/lib/seo/metadata";
+import { getCachedSetting } from "@/lib/settings/cached";
+import { Lines, splitLines } from "@/components/vocational/Lines";
 export const dynamic = "force-dynamic";
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
@@ -27,12 +29,13 @@ export default async function Home() {
    * rather than reserving several viewports of scroll for a canvas that then
    * never paints.
    */
-  const [categories, featured, news, heroSequence, revealSequence] = await Promise.all([
+  const [categories, featured, news, heroSequence, revealSequence, copy] = await Promise.all([
     listCategories(),
     listProducts({ featured: "1", limit: 4 }),
     listNews({ limit: 3 }),
     readSequence("hero"),
     readSequence("reveal"),
+    getCachedSetting("home"),
   ]);
   /**
    * The second movement opens onto the frame the first one ends on. The hero
@@ -42,11 +45,16 @@ export default async function Home() {
    * frame is already on disk and already in the reader's cache by then.
    */
   const apertureStill = heroSequence ? frameUrl(heroSequence, heroSequence.count - 1) : undefined;
-  const words = [...categories.map((c) => c.name_th), "งานฝึกวิชาชีพ", "CRAFTED WITH PURPOSE"];
+  const words = [...categories.map((c) => c.name_th), ...splitLines(copy.marqueeWords)];
   return (
     <main id="content">
-      <CinematicHero sequence={heroSequence} />
-      <ApertureSection sequence={revealSequence} still={apertureStill} categories={categories} />
+      <CinematicHero sequence={heroSequence} copy={copy} />
+      <ApertureSection
+        sequence={revealSequence}
+        still={apertureStill}
+        categories={categories}
+        copy={copy}
+      />
       <div className="v-marquees">
         {/* ARIA forbids naming a generic element, so an aria-label here was
             silently ignored and the marquee reached assistive tech as nothing
@@ -73,35 +81,39 @@ export default async function Home() {
       <section className="v-section v-collections">
         <div className="v-section-heading">
           <div>
-            <p className="v-eyebrow">CRAFT COLLECTIONS</p>
+            {copy.collectionsEyebrow && <p className="v-eyebrow">{copy.collectionsEyebrow}</p>}
             <h2>
-              ทักษะที่หลากหลาย
-              <br />
-              <span>ความตั้งใจเดียวกัน</span>
+              {copy.collectionsTitle}
+              {copy.collectionsTitleAccent && (
+                <>
+                  <br />
+                  <span>{copy.collectionsTitleAccent}</span>
+                </>
+              )}
             </h2>
           </div>
           <div>
-            <p>
-              ค้นพบงานฝีมือจากการเรียนรู้และฝึกฝน
-              <br />
-              ที่ส่งต่อคุณค่า ผ่านรายละเอียดของทุกชิ้นงาน
-            </p>
+            {copy.collectionsIntro && (
+              <p>
+                <Lines text={copy.collectionsIntro} />
+              </p>
+            )}
             <Link className="v-text-link" href="/products">
-              สำรวจผลิตภัณฑ์ทั้งหมด ↗
+              {copy.collectionsCta} ↗
             </Link>
           </div>
         </div>
-        <CategoryBento categories={categories} />
+        <CategoryBento categories={categories} copy={copy} />
       </section>
-      <StorySection />
+      <StorySection copy={copy} />
       <section className="v-section" id="featured">
         <div className="v-section-heading">
           <div>
-            <p className="v-eyebrow">SELECTED WORKS</p>
-            <h2>ผลงานที่อยากให้รู้จัก</h2>
+            {copy.featuredEyebrow && <p className="v-eyebrow">{copy.featuredEyebrow}</p>}
+            <h2>{copy.featuredTitle}</h2>
           </div>
           <Link href="/products?featured=1" className="v-text-link">
-            ชมผลงานแนะนำ ↗
+            {copy.featuredCta} ↗
           </Link>
         </div>
         {featured.items.length ? (
@@ -117,7 +129,7 @@ export default async function Home() {
               <br />
               <span>{categories.map((c) => c.name_th).join(" · ")}</span>
             </p>
-            <Link href="/products">สำรวจหมวดหมู่ ↗</Link>
+            <Link href="/products">{copy.featuredEmptyCta} ↗</Link>
           </div>
         )}
       </section>
@@ -125,15 +137,13 @@ export default async function Home() {
         <section className="v-section v-news-section">
           <div className="v-section-heading">
             <div>
-              <p className="v-eyebrow">NEWS & ACTIVITIES</p>
+              {copy.newsEyebrow && <p className="v-eyebrow">{copy.newsEyebrow}</p>}
               <h2>
-                ความเคลื่อนไหว
-                <br />
-                แห่งการเรียนรู้
+                <Lines text={copy.newsTitle} />
               </h2>
             </div>
             <Link className="v-text-link" href="/news">
-              ข่าวและกิจกรรมทั้งหมด ↗
+              {copy.newsCta} ↗
             </Link>
           </div>
           <div className="v-news-grid">
@@ -144,14 +154,12 @@ export default async function Home() {
         </section>
       )}
       <section className="v-closing">
-        <p className="v-eyebrow">EVERY CRAFT. A NEW POSSIBILITY.</p>
+        {copy.closingEyebrow && <p className="v-eyebrow">{copy.closingEyebrow}</p>}
         <h2>
-          ทุกผลงานมีความหมาย
-          <br />
-          ทุกทักษะคือโอกาสใหม่
+          <Lines text={copy.closingTitle} />
         </h2>
         <Link className="v-button v-button-light" href="/contact">
-          สอบถามผลิตภัณฑ์ <span>↗</span>
+          {copy.closingCta} <span>↗</span>
         </Link>
       </section>
     </main>
