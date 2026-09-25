@@ -36,6 +36,15 @@ import type { Category } from "@/lib/vocational/types";
  *  - `--v-close`      the feather that resolves the stage into the paper the
  *                     rest of the page is set on
  *
+ * Joined to the hero, four more carry the break of light, scored to the
+ * footage (see the tracker):
+ *
+ *  - `--v-dark`       held breath: the edges closing in while the wall holds
+ *  - `--v-light`      exposure: the picture brightening as the light breaks
+ *                     through, then settling part way as the eyes adjust
+ *  - `--v-bloom`      the warm light spilling out of the hole
+ *  - `--v-bloom-grow` how far it has spread, faster than the camera moves
+ *
  * It is also the same shot as the first movement, not a new one. `still` is
  * the hero's final frame, so the aperture parts on the place the hero just
  * arrived at and brings it into focus: the blur the hero exits on is the blur
@@ -92,7 +101,27 @@ export function ApertureSection({
       set("--v-focus", reduced || joined ? 1 : remap(progress, 0.06, 0.38));
       // Joined, the frame arrives under the hero's shading, exactly as the
       // hero left it, and trades it for the column's as the column arrives.
-      set("--v-veil-in", reduced || !joined ? 1 : remap(progress, 0.04, 0.34));
+      set("--v-veil-in", reduced || !joined ? 1 : remap(progress, 0.58, 0.74));
+      // Joined, the timeline is scored to the footage, read off the frames'
+      // own brightness: the wall holds still until ~0.22 (frame 123), the light
+      // breaks through and peaks at ~0.53 (frame 153), and the courtyard has
+      // settled by ~0.62. The signature plays across that: the edges close in
+      // while the wall holds, open as the light breaks, a warm bloom spills out
+      // of the hole faster than the camera moves, and the exposure settles as
+      // the eyes adjust. Off for the fallback, which has no footage to score.
+      const scored = joined && !reduced;
+      const ease = (t: number) => t * t * (3 - 2 * t);
+      const bloom = scored ? band(progress, 0.3, 0.7, 0.18) : 0;
+      set("--v-dark", scored ? remap(progress, 0.02, 0.22) * (1 - remap(progress, 0.22, 0.34)) : 0);
+      set(
+        "--v-light",
+        scored
+          ? ease(remap(progress, 0.22, 0.525)) * (1 - 0.6 * ease(remap(progress, 0.53, 0.7)))
+          : 0,
+      );
+      set("--v-bloom", bloom);
+      set("--v-bloom-grow", scored ? remap(progress, 0.26, 0.66) : 0);
+      pinned.dataset.bloom = bloom > 0 ? "on" : "off";
       // The light travels down the three stages of the craft. A word that has
       // had its turn steps back rather than leaving, so the whole argument
       // stays on screen and only the emphasis moves.
@@ -100,17 +129,22 @@ export function ApertureSection({
       set("--v-w2", reduced ? 1 : band(progress, 0.42, 0.7, 0.07));
       set("--v-w3", reduced ? 1 : band(progress, 0.66, 0.95, 0.07));
       // The column answers the panel in three beats, interleaved with it, so
-      // neither side of the frame is ever the only thing happening.
-      const leave = remap(progress, 0.9, 1);
+      // neither side of the frame is ever the only thing happening. Joined, it
+      // waits for the courtyard instead, so the break of light has the frame
+      // to itself, and then arrives on quicker beats.
+      const [c1, c2, c3, beat, out, close] = joined
+        ? [0.62, 0.68, 0.74, 0.08, 0.94, 0.9]
+        : [0.34, 0.46, 0.58, 0.14, 0.9, 0.86];
+      const leave = remap(progress, out, 1);
       set("--v-copy", reduced ? 1 : 1 - leave);
-      set("--v-copy-in", reduced ? 1 : remap(progress, 0.34, 0.48));
-      set("--v-copy-1", reduced ? 1 : remap(progress, 0.34, 0.48));
-      set("--v-copy-2", reduced ? 1 : remap(progress, 0.46, 0.6));
-      set("--v-copy-3", reduced ? 1 : remap(progress, 0.58, 0.72));
+      set("--v-copy-in", reduced ? 1 : remap(progress, c1, c1 + beat));
+      set("--v-copy-1", reduced ? 1 : remap(progress, c1, c1 + beat));
+      set("--v-copy-2", reduced ? 1 : remap(progress, c2, c2 + beat));
+      set("--v-copy-3", reduced ? 1 : remap(progress, c3, c3 + beat));
       // The scene resolves into the paper the rest of the page is set on, so
       // the stage's bottom edge and the section below it are the same colour
       // by the time the stage unpins.
-      set("--v-close", reduced ? 0 : remap(progress, 0.86, 1));
+      set("--v-close", reduced ? 0 : remap(progress, close, 1));
       // Reduced motion parks the sequence on one frame and downloads no more.
       player?.setPreload(!reduced);
       player?.setProgress(progress);
@@ -142,7 +176,9 @@ export function ApertureSection({
               <canvas ref={canvas} className="v-aperture-canvas" />
               <span className="v-cine-veil" />
               <span className="v-cine-vignette" />
+              <span className="v-aperture-breath" />
               <span className="v-aperture-veil" />
+              <span className="v-aperture-bloom" />
             </div>
           ) : (
             still && (

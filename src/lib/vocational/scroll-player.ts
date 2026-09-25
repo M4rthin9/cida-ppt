@@ -17,6 +17,13 @@ import { frameUrl, type SequenceManifest } from "./sequence";
  * and stops it fetching a sequence that will never play.
  */
 
+/**
+ * Backing-store density ceiling. The frames are 720px tall, so on a 3x phone
+ * the third device pixel only upscales them further while costing 2.25x the
+ * pixels on every paint; the compositor's scaling looks the same.
+ */
+const MAX_DPR = 2;
+
 /** Zero-based, continuous position. Round only when painting. */
 export function frameAt(progress: number, count: number): number {
   return Math.max(0, Math.min(1, progress)) * Math.max(0, count - 1);
@@ -51,7 +58,9 @@ export function startScrollSequence(
   const failures = new Map<number, number>();
   const landmarks = landmarksFor(count);
   const allFrames = Array.from({ length: count }, (_, n) => n);
-  const memoryBudget = (matchMedia("(max-width: 760px)").matches ? 40 : 80) * 1024 * 1024;
+  // About 19 frames of 1280x720 on a phone: enough to stay ahead of the
+  // damped playhead through a flick. At 40MB (10 frames) a flick outran it.
+  const memoryBudget = (matchMedia("(max-width: 760px)").matches ? 72 : 80) * 1024 * 1024;
   let capacity = 24;
   // Assume the reader's stated preference until the stage says otherwise, so
   // the very first pump does not fetch a sequence that will never play.
@@ -174,11 +183,12 @@ export function startScrollSequence(
     }
     if (base === undefined) return;
     const key = `${base}:${over}:${mix}`;
-    if (!dirty && key === lastKey && dpr === devicePixelRatio) return;
+    const ratio = Math.min(MAX_DPR, devicePixelRatio || 1);
+    if (!dirty && key === lastKey && dpr === ratio) return;
     const img = cache.get(base);
     const top = over >= 0 && mix > 0 ? cache.get(over) : undefined;
     if (!img) return;
-    dpr = devicePixelRatio || 1;
+    dpr = ratio;
     const w = Math.max(1, Math.round(width * dpr));
     const h = Math.max(1, Math.round(height * dpr));
     // Resize and paint together; changing the backing buffer clears its contents.
@@ -212,7 +222,9 @@ export function startScrollSequence(
     // Time normalizes easing for different refresh rates; only scrolling moves target.
     const elapsed = lastTime ? Math.min(64, time - lastTime) : 1000 / 60;
     lastTime = time;
-    current = preload ? current + (target - current) * (1 - Math.exp(-elapsed / 85)) : 0;
+    // A 130ms time constant, the damping a continuous flight wants: it is what
+    // turns the uneven arrival of wheel events into a glide instead of judder.
+    current = preload ? current + (target - current) * (1 - Math.exp(-elapsed / 130)) : 0;
     if (Math.abs(target - current) < 0.01) current = target;
     const wanted = Math.round(current);
     if (wanted !== lastWanted) {
