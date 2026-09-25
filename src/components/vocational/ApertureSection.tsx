@@ -5,7 +5,7 @@ import { useEffect, useRef } from "react";
 import { Link } from "@/i18n/navigation";
 import { SiteIcon } from "@/components/site/icons";
 import { startScrollSequence } from "@/lib/vocational/scroll-player";
-import { band, remap, trackStage } from "@/lib/vocational/scroll-stage";
+import { JOIN, band, remap, trackStage } from "@/lib/vocational/scroll-stage";
 import type { SequenceManifest } from "@/lib/vocational/sequence";
 import type { SettingValue } from "@/lib/settings/registry";
 import { splitLines } from "./Lines";
@@ -54,21 +54,26 @@ export function ApertureSection({
   still,
   categories = [],
   copy,
+  joined = false,
 }: {
   sequence?: SequenceManifest;
   /** The hero's last frame, so this movement opens where that one ended. */
   still?: string;
   categories?: Category[];
   copy: SettingValue<"home">;
+  /**
+   * Both sequences imported: this section is the top layer of the hero's
+   * pinned scene rather than a section after it. It stays hidden for the
+   * hero's half of the scroll and switches on at `JOIN` on its first frame,
+   * which is the hero's last, so there is no aperture to open and nothing
+   * slides in. The shot just keeps playing.
+   */
+  joined?: boolean;
 }) {
   const section = useRef<HTMLElement>(null);
   const stage = useRef<HTMLDivElement>(null);
   const canvas = useRef<HTMLCanvasElement>(null);
   const rail = categories.slice(0, 4);
-  // Both sequences present: this stage starts pinned over the hero's held
-  // frame, which is its own first frame, so there is no aperture to open and
-  // no blur to resolve. The shot just keeps playing.
-  const joined = Boolean(sequence && still);
 
   useEffect(() => {
     const host = section.current;
@@ -77,7 +82,9 @@ export function ApertureSection({
     const player =
       sequence && canvas.current ? startScrollSequence(canvas.current, sequence) : null;
     const set = (name: string, value: number) => pinned.style.setProperty(name, value.toFixed(4));
-    const tracker = trackStage(host, pinned, (progress, reduced) => {
+    const tracker = trackStage(host, pinned, (raw, reduced) => {
+      const progress = joined ? remap(raw, JOIN, 1) : raw;
+      host.dataset.live = !joined || reduced || raw >= JOIN ? "on" : "off";
       set("--v-progress", progress);
       // Reduced motion rests fully open: the aperture is the only thing
       // standing between the reader and this section's content.
@@ -121,7 +128,6 @@ export function ApertureSection({
       ref={section}
       className="v-aperture"
       data-sequence={sequence ? "on" : "off"}
-      data-join={joined ? "on" : "off"}
       aria-label="งานฝึกวิชาชีพ"
     >
       <div ref={stage} className="v-aperture-stage">

@@ -46,15 +46,21 @@ export default async function Home() {
    */
   const apertureStill = heroSequence ? frameUrl(heroSequence, heroSequence.count - 1) : undefined;
   const words = [...categories.map((c) => c.name_th), ...splitLines(copy.marqueeWords)];
+  // With both sequences the two movements are one pinned scene: the reveal
+  // picks up on the hero's last frame in place rather than scrolling in.
+  const joined = Boolean(heroSequence && revealSequence);
   return (
     <main id="content">
-      <CinematicHero sequence={heroSequence} copy={copy} />
-      <ApertureSection
-        sequence={revealSequence}
-        still={apertureStill}
-        categories={categories}
-        copy={copy}
-      />
+      <div className="v-journey" data-join={joined ? "on" : "off"}>
+        <CinematicHero sequence={heroSequence} copy={copy} joined={joined} />
+        <ApertureSection
+          sequence={revealSequence}
+          still={apertureStill}
+          categories={categories}
+          copy={copy}
+          joined={joined}
+        />
+      </div>
       <div className="v-marquees">
         {/* ARIA forbids naming a generic element, so an aria-label here was
             silently ignored and the marquee reached assistive tech as nothing

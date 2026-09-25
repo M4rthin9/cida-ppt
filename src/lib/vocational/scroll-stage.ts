@@ -8,6 +8,14 @@
  * not register a second listener to compute a value it already has.
  */
 
+/**
+ * Where the hero hands the shared stage to the reveal when both sequences are
+ * imported. The two sections are then two layers of one pinned scene (see
+ * `.v-journey` in vocational.css): each reads the same scroll and plays its
+ * own half of it, so nothing slides in between them.
+ */
+export const JOIN = 0.5;
+
 /** 0 at the moment the stage pins, 1 when the section has finished scrolling past. */
 export function scrollProgress(top: number, sectionHeight: number, stageHeight: number): number {
   return Math.max(0, Math.min(1, -top / Math.max(1, sectionHeight - stageHeight)));

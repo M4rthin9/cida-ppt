@@ -194,14 +194,14 @@
 /* Asking the page what it opens with, rather than asking the router what it is:
    any page that starts on the cinematic stage gets the glass bar, and a browser
    without :has() simply keeps the solid one. */
-.v-site:has(main > .v-cine:first-child) .v-header {
+.v-site:has(main > :is(.v-cine, .v-journey):first-child) .v-header {
   background: rgb(13 14 17 / 0.5);
 }
 
 /* Past the opening the bar tightens and gains weight, so it stays readable
    over whatever scrolls underneath. */
 .v-header[data-scrolled="true"],
-.v-site:has(main > .v-cine:first-child) .v-header[data-scrolled="true"] {
+.v-site:has(main > :is(.v-cine, .v-journey):first-child) .v-header[data-scrolled="true"] {
   background: rgb(10 11 13 / 0.86);
   padding-block: 7px;
   box-shadow: 0 10px 30px rgb(5 6 7 / 0.34);
@@ -212,7 +212,7 @@
   padding-top: calc(var(--v-header-h) + 20px);
 }
 
-.v-site main:has(> .v-cine:first-child) {
+.v-site main:has(> :is(.v-cine, .v-journey):first-child) {
   padding-top: 0;
 }
 
@@ -492,11 +492,10 @@
 .v-cine {
   position: relative;
   isolation: isolate;
-  /* Four acts need room to arrive and leave without overlapping. The pace is
-     tied to the reveal's: 320svh of scrub for this set's 100 steps is 3.2svh
-     a frame, and the reveal's height below spends the same on each of its
-     own, so the two sets play as one clip. Change them together. The stage
-     inside stays exactly one viewport tall. */
+  /* Four acts need room to arrive and leave without overlapping: 320svh of
+     scrub, 3.2svh for each of the set's 100 frame steps. With the reveal
+     imported too, `.v-journey` sets the height instead, at the same pace.
+     The stage inside stays exactly one viewport tall. */
   min-height: 420svh;
   background: var(--v-cine-ink);
   color: var(--v-cine-paper);
@@ -860,7 +859,8 @@
 .v-aperture {
   position: relative;
   isolation: isolate;
-  /* 99 steps at the hero's 3.2svh a frame, plus the pinned screen. */
+  /* On its own: 99 steps at the hero's 3.2svh a frame, plus the pinned
+     screen. Joined to the hero, `.v-journey` sets the height instead. */
   min-height: 417svh;
   background: var(--v-cine-ink);
   color: var(--v-cine-paper);
@@ -902,15 +902,29 @@
   overflow: clip;
 }
 
-/* One shot across two sections. The reveal starts a screen early, so its
-   stage pins at the moment the hero's would start to leave, over the same
-   held frame; the hero's seam has nothing left to hide. Motion only: with
-   reduced motion neither stage pins and each keeps its own screen. */
+/* One scene across two sections. With both sequences imported, the hero and
+   the reveal fill the same box and their stages pin together for the whole of
+   it. The reveal is the top layer, hidden until JOIN (scroll-stage.ts), and it
+   switches on over the hero's last frame, which is its own first, so nothing
+   slides in between them. 740svh is the pinned screen plus 320svh for each
+   half: 3.2svh a frame step for the hero's 100 and near enough for the
+   reveal's 99. Motion only: with reduced motion neither stage pins and each
+   keeps its own screen. */
 @media (prefers-reduced-motion: no-preference) {
-  .v-aperture[data-join="on"] {
-    margin-top: -100svh;
+  .v-journey[data-join="on"] {
+    position: relative;
+    height: 740svh;
   }
-  .v-cine:has(+ .v-aperture[data-join="on"]) .v-cine-seam {
+  .v-journey[data-join="on"] > .v-cine,
+  .v-journey[data-join="on"] > .v-aperture {
+    position: absolute;
+    inset: 0;
+    min-height: 0;
+  }
+  .v-journey[data-join="on"] > .v-aperture:not([data-live="on"]) {
+    visibility: hidden;
+  }
+  .v-journey[data-join="on"] .v-cine-seam {
     display: none;
   }
 }
