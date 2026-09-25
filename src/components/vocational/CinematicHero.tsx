@@ -5,7 +5,7 @@ import { useEffect, useRef } from "react";
 import { Link } from "@/i18n/navigation";
 import { SiteIcon } from "@/components/site/icons";
 import { startScrollSequence } from "@/lib/vocational/scroll-player";
-import { band, remap, trackStage } from "@/lib/vocational/scroll-stage";
+import { JOIN, band, remap, trackStage } from "@/lib/vocational/scroll-stage";
 import type { SequenceManifest } from "@/lib/vocational/sequence";
 import type { SettingValue } from "@/lib/settings/registry";
 import { splitLines } from "./Lines";
@@ -27,16 +27,15 @@ import { splitLines } from "./Lines";
  *   0.74 - 0.95  the wordmark alone, centre frame. This is the peak
  *   0.88 - 1.00  the last scrims clear, so the last frame arrives clean
  *
- * The frames run the whole range without stopping. The last one is also the
- * reveal's first, the reveal overlaps the end of this section by one screen,
- * and both sections spend the same scroll on each frame (see the heights in
- * vocational.css). When this stage would start to scroll away, the reveal's
- * stage is already pinned over it on the same image and carries on at the
- * same pace, so the two sequences play as one shot.
+ * The frames run the whole range without stopping. `joined` means the reveal
+ * is imported too: this stage and the reveal's then pin together as two
+ * layers of one scene, this one playing the first half of the scroll. Its
+ * last frame is the reveal's first, so when the reveal's layer switches on
+ * over it at `JOIN` the picture does not move; the reveal just carries on.
  *
  * Each act publishes one number for CSS to read, all of them 0-1:
  *
- *  - `--v-progress`  raw position through the pinned range
+ *  - `--v-progress`  position through this stage's own range
  *  - `--v-title`     the title card's presence
  *  - `--v-c1/2/3`    each caption's window (see `band`)
  *  - `--v-mark`      the wordmark resolving
@@ -50,9 +49,11 @@ import { splitLines } from "./Lines";
 export function CinematicHero({
   sequence,
   copy,
+  joined = false,
 }: {
   sequence?: SequenceManifest;
   copy: SettingValue<"home">;
+  joined?: boolean;
 }) {
   const section = useRef<HTMLElement>(null);
   const stage = useRef<HTMLDivElement>(null);
@@ -69,7 +70,8 @@ export function CinematicHero({
     const player =
       sequence && canvas.current ? startScrollSequence(canvas.current, sequence) : null;
     const set = (name: string, value: number) => pinned.style.setProperty(name, value.toFixed(4));
-    const tracker = trackStage(host, pinned, (progress, reduced) => {
+    const tracker = trackStage(host, pinned, (raw, reduced) => {
+      const progress = joined ? remap(raw, 0, JOIN) : raw;
       // No sequence and no motion are the same situation for the copy: there is
       // no scrub to spread it along, so every line is simply present at once.
       const still = reduced || !sequence;
@@ -94,7 +96,7 @@ export function CinematicHero({
       player?.stop();
       titleCard?.removeAttribute("inert");
     };
-  }, [sequence]);
+  }, [sequence, joined]);
 
   // The scroll choreography times exactly three captions.
   const lede = splitLines(copy.heroLede).slice(0, 3);
