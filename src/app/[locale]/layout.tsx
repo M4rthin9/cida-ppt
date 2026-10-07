@@ -11,11 +11,13 @@ import { SiteHeader } from "@/components/site/site-header";
 import { SiteFooter } from "@/components/site/site-footer";
 import { SiteJsonLd } from "@/components/site/site-json-ld";
 import { ConsentGate } from "@/components/site/consent-gate";
+import { VisualEffects } from "@/components/vocational/VisualEffects";
 import { assertEnv } from "@/lib/env";
 import { buildAlternates } from "@/lib/seo/alternates";
 import { DEFAULT_OG_IMAGE, OG_HEIGHT, OG_WIDTH } from "@/lib/seo/metadata";
 import "../globals.css";
 import "../vocational.css";
+import "../effects.css";
 
 /**
  * Root layout for the storefront.
@@ -133,6 +135,7 @@ export default async function LocaleLayout({
           {children}
           <SiteFooter />
           <ConsentGate />
+          <VisualEffects />
         </NextIntlClientProvider>
       </body>
     </html>

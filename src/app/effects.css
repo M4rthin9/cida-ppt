@@ -1,0 +1,198 @@
+/* The existing composition, with light and motion layered over it. */
+@media (prefers-reduced-motion: no-preference) {
+  /* The observer owns reveals where available; native timelines remain the
+     fallback, and the unenhanced document is always readable. */
+  .v-site [data-v-reveal] {
+    animation: none;
+  }
+  .v-site [data-v-reveal="pending"] {
+    opacity: 0;
+  }
+  .v-site [data-v-reveal="pending"]:focus-within {
+    opacity: 1;
+  }
+  .v-section-heading {
+    position: relative;
+  }
+  .v-section-heading::before {
+    content: "";
+    position: absolute;
+    inset: -1px auto auto 0;
+    width: 72px;
+    height: 1px;
+    background: var(--v-ink);
+    transform-origin: left;
+  }
+  .v-section-heading[data-v-reveal="visible"]::before {
+    animation: v-rule-arrive 1.15s var(--v-ease) both;
+  }
+  .v-marquees {
+    mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+  }
+}
+@keyframes v-rule-arrive {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* Native scroll progress, with no animation loop or changes to scrolling. */
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .v-site::before {
+      content: "";
+      position: fixed;
+      inset: 0 0 auto;
+      height: 2px;
+      z-index: 60;
+      pointer-events: none;
+      background: var(--v-accent);
+      transform-origin: left;
+      animation: v-reading-progress linear both;
+      animation-timeline: scroll(root block);
+    }
+  }
+}
+@keyframes v-reading-progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* Light layers ignore hit testing. Photographs, text and the seal stay intact. */
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .v-bento-card,
+  .v-bento-note,
+  .v-product-image,
+  .v-news-image {
+    isolation: isolate;
+    transform: perspective(1100px) rotateX(var(--v-tilt-x, 0deg)) rotateY(var(--v-tilt-y, 0deg));
+    transition:
+      transform 0.65s var(--v-ease),
+      box-shadow 0.65s var(--v-ease);
+  }
+  .v-bento-card:hover,
+  .v-bento-note:hover {
+    transform: perspective(1100px) translateY(-5px) rotateX(var(--v-tilt-x, 0deg))
+      rotateY(var(--v-tilt-y, 0deg));
+    box-shadow: 0 18px 32px -24px rgb(9 10 12 / 0.4);
+  }
+  .v-bento-card::before,
+  .v-bento-note::before,
+  .v-product-image::after,
+  .v-news-image::after,
+  .v-closing::before,
+  .v-cine-media::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    border-radius: inherit;
+    opacity: 0;
+    background: radial-gradient(
+      440px circle at var(--v-light-x, 50%) var(--v-light-y, 50%),
+      rgb(255 255 255 / 0.22),
+      rgb(255 255 255 / 0.05) 38%,
+      transparent 72%
+    );
+    transition: opacity 0.65s var(--v-ease);
+  }
+  .v-bento-note {
+    position: relative;
+  }
+  :is(.v-bento-card, .v-bento-note, .v-closing)[data-v-hover="on"]::before,
+  :is(.v-product-image, .v-news-image)[data-v-hover="on"]::after,
+  .v-cine-stage[data-v-hover="on"] .v-cine-media::after {
+    opacity: 1;
+  }
+  .v-cine-media::after {
+    background: radial-gradient(
+      ellipse 55% 65% at var(--v-light-x, 50%) var(--v-light-y, 40%),
+      rgb(146 154 171 / 0.12),
+      transparent 72%
+    );
+  }
+  .v-closing::before {
+    background: radial-gradient(
+      520px circle at var(--v-light-x, 50%) var(--v-light-y, 50%),
+      rgb(146 154 171 / 0.13),
+      transparent 72%
+    );
+  }
+  .v-pill,
+  .v-button {
+    position: relative;
+    isolation: isolate;
+    translate: var(--v-magnet-x, 0px) var(--v-magnet-y, 0px);
+    transition:
+      translate 0.55s var(--v-ease),
+      background 0.3s,
+      border-color 0.3s,
+      box-shadow 0.4s,
+      transform 0.3s;
+  }
+  .v-pill::before,
+  .v-button::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    background: linear-gradient(
+      115deg,
+      transparent 20%,
+      rgb(255 255 255 / 0.16) 48%,
+      transparent 72%
+    );
+    background-size: 250% 100%;
+    background-position: 150% 0;
+    opacity: 0;
+    transition:
+      background-position 0.85s var(--v-ease),
+      opacity 0.3s;
+  }
+  :is(.v-pill, .v-button):is(:hover, :focus-visible)::before {
+    background-position: -50% 0;
+    opacity: 1;
+  }
+  .v-text-link {
+    position: relative;
+  }
+  .v-text-link::after {
+    content: "";
+    position: absolute;
+    inset: auto 0 -1px;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.5s var(--v-ease);
+  }
+  .v-text-link:is(:hover, :focus-visible)::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+  .v-bento-top > span:last-child,
+  .v-button > span {
+    transition: translate 0.55s var(--v-ease);
+  }
+  .v-bento-card:hover .v-bento-top > span:last-child,
+  .v-button:hover > span {
+    translate: 3px -3px;
+  }
+}
+
+/* Printing and reduced motion show the final, fully readable composition. */
+@media print, (prefers-reduced-motion: reduce) {
+  .v-site [data-v-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

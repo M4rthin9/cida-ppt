@@ -5,6 +5,7 @@ import { FontPreload, sharedViewport } from "@/lib/document-head";
 import "../globals.css";
 import "../vocational.css";
 import "../cms.css";
+import "../cms-refresh.css";
 
 /**
  * Root layout for the admin. Separate from the storefront's because the
