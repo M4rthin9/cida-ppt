@@ -8,8 +8,8 @@ import { routing } from "@/i18n/routing";
 /**
  * Two jobs, split by path.
  *
- * `/admin/*` goes through the Auth.js edge gate, which uses the provider-free
- * config so no native module or database driver is pulled into the edge bundle.
+ * `/admin/*` goes through the Auth.js gate, which uses the provider-free
+ * config so no native module or database driver is needed by the proxy.
  * That gate is a cheap "is there a token" check — the real one is
  * `requireAdmin()`, which runs in the Node runtime.
  *
@@ -34,7 +34,7 @@ const adminGate = auth((request) => {
   return withPathname(NextResponse.next(), request.nextUrl.pathname);
 });
 
-export default function middleware(request: NextRequest) {
+export default function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   if (pathname.startsWith("/admin")) {

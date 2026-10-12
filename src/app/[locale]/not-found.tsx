@@ -13,7 +13,7 @@ export default async function NotFound() {
   const tLine = await getTranslations("line");
 
   return (
-    <main id="content" className="mx-auto max-w-(--container-site) px-4 py-24 md:px-6">
+    <main id="content" className="v-page v-state-page">
       <p className="lat text-sm text-(--color-text-muted)">404</p>
       <h1 className="mt-2 text-3xl font-semibold md:text-[40px]">{t("notFoundTitle")}</h1>
       <div className="mt-4 h-0.5 w-12 rounded-full bg-(--color-brand)" aria-hidden="true" />

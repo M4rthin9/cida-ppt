@@ -1,16 +1,16 @@
-/* A focused workspace, shared by every existing CMS screen. */
+﻿/* A focused workspace, shared by every existing CMS screen. */
 .cms-shell,
 .cms-login {
-  --cms-ink: #202d2b;
-  --cms-muted: #65736f;
-  --cms-brand: #246653;
-  --cms-brand-hover: #194b3c;
-  --cms-tint: #eaf3ee;
-  --cms-line: #e3e9e5;
-  --cms-canvas: #f5f7f5;
+  --cms-ink: #243b32;
+  --cms-muted: #667064;
+  --cms-brand: #294c3c;
+  --cms-brand-hover: #1f3c30;
+  --cms-tint: #e7eee6;
+  --cms-line: #d8dbce;
+  --cms-canvas: #f8f6f0;
   --cms-shadow: 0 2px 4px rgb(24 44 34 / 0.02), 0 8px 28px rgb(24 44 34 / 0.025);
-  --radius-card: 18px;
-  --radius-control: 9px;
+  --radius-card: 8px;
+  --radius-control: 6px;
 }
 .cms-shell {
   grid-template-columns: 256px minmax(0, 1fr);
@@ -23,7 +23,7 @@
 }
 .cms-sidebar {
   padding: 30px 18px 20px;
-  background: #1d2926;
+  background: #1f3c30;
   color: #f2f6f3;
   border: 0;
   gap: 24px;
@@ -103,7 +103,7 @@
   padding: 1px 6px;
   border-radius: 5px;
   background: #b9d6be;
-  color: #1d2926;
+  color: #1f3c30;
 }
 .cms-sidebar-visit {
   margin-top: auto;
@@ -213,7 +213,10 @@
   transform: none;
 }
 .cms-shell :focus-visible {
-  outline-color: #7eb096;
+  outline-color: var(--cms-brand);
+}
+.cms-sidebar :focus-visible {
+  outline-color: #c3d0bd;
 }
 .cms-topbar {
   display: flex;
@@ -271,7 +274,7 @@
 }
 .cms-top-search:focus-within {
   border-color: #74a28a;
-  box-shadow: 0 0 0 3px #2466530a;
+  box-shadow: 0 0 0 3px #294c3c0a;
 }
 .cms-top-search svg {
   flex-shrink: 0;
@@ -297,6 +300,10 @@
   padding: 34px clamp(24px, 3.3vw, 48px) 48px;
   max-width: 1500px;
   flex: 1;
+}
+/* Contain positioned accessibility labels inside horizontally scrollable tables. */
+.cms-main :is(.cms-table-wrap, .overflow-x-auto) {
+  position: relative;
 }
 .cms-main h1 {
   font-size: clamp(25px, 2.2vw, 31px);
@@ -336,7 +343,7 @@
   min-height: 44px;
   padding: 10px 17px;
   font-size: 13px;
-  box-shadow: 0 3px 7px #24665312;
+  box-shadow: 0 3px 7px #294c3c12;
 }
 .cms-primary svg {
   width: 17px;
@@ -667,6 +674,12 @@
 .cms-main textarea {
   min-height: 128px;
 }
+.cms-main input[type="color"] {
+  width: 44px;
+  height: 44px;
+  flex: 0 0 44px;
+  padding: 4px;
+}
 /* Keep the native upload input visually hidden without widening its page. */
 .cms-main input.sr-only {
   width: 1px;
@@ -683,7 +696,7 @@
 .cms-main select:focus,
 .cms-main textarea:focus {
   border-color: #6d9b7d;
-  box-shadow: 0 0 0 3px #2466530a;
+  box-shadow: 0 0 0 3px #294c3c0a;
 }
 .cms-main input[aria-invalid="true"],
 .cms-main textarea[aria-invalid="true"] {
@@ -961,7 +974,7 @@
     right: 0;
     max-height: calc(100svh - 72px);
     overflow: auto;
-    background: #1d2926;
+    background: #1f3c30;
     padding: 20px;
     box-shadow: 0 24px 40px #192b2426;
   }

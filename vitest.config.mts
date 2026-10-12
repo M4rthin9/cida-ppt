@@ -3,10 +3,8 @@ import { fileURLToPath } from "node:url";
 
 export default defineConfig({
   /**
-   * Next requires `jsx: "preserve"` in tsconfig, and Vite refuses to transform
-   * .tsx under that setting. Vite 8 transforms with Oxc rather than esbuild, so
-   * the override goes under `oxc`. Test transform only; the app build is
-   * untouched.
+   * Use the automatic JSX runtime for tests, matching the application.
+   * Vite 8 configures this transform through Oxc.
    */
   oxc: { jsx: "automatic" },
   test: {

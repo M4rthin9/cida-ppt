@@ -3,6 +3,7 @@ import { Link } from "@/i18n/navigation";
 import Image from "next/image";
 import { listCategories } from "@/lib/vocational/data";
 import { Catalog } from "@/components/vocational/Catalog";
+import { CraftMark } from "@/components/vocational/CraftMark";
 import type { PublicSearchParams } from "@/components/vocational/catalog-query";
 import { publicMetadata } from "@/lib/seo/metadata";
 import { decodeSlugParam } from "@/lib/slug";
@@ -47,9 +48,13 @@ export default async function Page({
           {c.name_en && <p lang="en">{c.name_en}</p>}
           <p>{c.description_th || c.short_description_th}</p>
         </div>
-        {c.image_url && (
+        {c.image_url ? (
           <div className="v-category-cover">
             <Image src={c.image_url} fill sizes="(max-width: 760px) 100vw, 45vw" alt={c.name_th} />
+          </div>
+        ) : (
+          <div className="v-category-art">
+            <CraftMark kind={c.icon} />
           </div>
         )}
       </header>

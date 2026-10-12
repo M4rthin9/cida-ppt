@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Link from "@tiptap/extension-link";
@@ -40,7 +40,6 @@ export function RichTextEditor({ name, initialDoc, media, mediaUrlFor, onChange 
   const [json, setJson] = useState(() =>
     JSON.stringify(initialDoc ?? { type: "doc", content: [] }),
   );
-  const [pick, setPick] = useState<string[]>([]);
 
   const editor = useEditor({
     immediatelyRender: false,
@@ -67,9 +66,9 @@ export function RichTextEditor({ name, initialDoc, media, mediaUrlFor, onChange 
     },
   });
 
-  // Insert whatever the picker returns, then clear it so the next pick fires.
-  useEffect(() => {
-    const id = pick[0];
+  // Insert directly from the selection event, including repeated selections.
+  function insertImage(ids: string[]) {
+    const id = ids[0];
     if (!editor || !id) return;
     const item = media.find((m) => m.id === id);
     editor
@@ -80,8 +79,7 @@ export function RichTextEditor({ name, initialDoc, media, mediaUrlFor, onChange 
         attrs: { mediaId: id, alt: item?.alt ?? "", src: mediaUrlFor(id) },
       })
       .run();
-    setPick([]);
-  }, [pick, editor, media, mediaUrlFor]);
+  }
 
   if (!editor)
     return <div className="min-h-64 rounded-(--radius-control) border border-(--color-border)" />;
@@ -174,7 +172,7 @@ export function RichTextEditor({ name, initialDoc, media, mediaUrlFor, onChange 
           ลิงก์
         </button>
         <span className="ms-auto">
-          <MediaPicker items={media} value={pick} onChange={setPick} triggerLabel="แทรกรูปภาพ" />
+          <MediaPicker items={media} value={[]} onChange={insertImage} triggerLabel="แทรกรูปภาพ" />
         </span>
       </div>
 

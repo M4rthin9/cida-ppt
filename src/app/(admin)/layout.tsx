@@ -3,7 +3,6 @@ import { getCachedSetting } from "@/lib/settings/cached";
 import { themeStyle } from "@/lib/settings/theme";
 import { FontPreload, sharedViewport } from "@/lib/document-head";
 import "../globals.css";
-import "../vocational.css";
 import "../cms.css";
 import "../cms-refresh.css";
 
@@ -27,7 +26,7 @@ export default async function AdminRootLayout({ children }: { children: React.Re
   const theme = await getCachedSetting("theme");
 
   return (
-    <html lang="th" dir="ltr" style={themeStyle(theme)}>
+    <html lang="th" dir="ltr" data-scroll-behavior="smooth" style={themeStyle(theme)}>
       <head>
         <FontPreload />
       </head>

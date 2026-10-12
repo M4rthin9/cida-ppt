@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidatePath, revalidateTag } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
 import { db } from "@/db/client";
 import { diffFields, writeAudit } from "@/lib/audit";
 import { requireOwner } from "@/lib/auth/session";
@@ -77,7 +77,7 @@ export async function saveSettingsAction(
   // statically rendered and only regenerate when the tag is invalidated.
   // This pair is what makes a colour change reach the site with no rebuild.
   bustSetting(key);
-  revalidateTag(SETTINGS_TAG);
+  updateTag(SETTINGS_TAG);
   revalidatePath("/", "layout");
 
   return { message: "บันทึกเรียบร้อยแล้ว" };

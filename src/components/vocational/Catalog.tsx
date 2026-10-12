@@ -68,6 +68,7 @@ export async function Catalog({
       <form
         key={catalogHref(base, query)}
         className="v-catalog-filters"
+        id="catalog-search"
         action={getPathname({ locale, href: base })}
         role="search"
       >
@@ -105,7 +106,7 @@ export async function Catalog({
           </select>
         </label>
         <button type="submit" className="v-button v-button-dark">
-          ค้นหา
+          ค้นหา <SiteIcon name="arrow" />
         </button>
         <div className="v-filter-checks">
           <label>

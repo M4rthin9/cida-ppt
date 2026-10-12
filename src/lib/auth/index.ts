@@ -11,7 +11,7 @@ import { burnTimingBudget, verifyPassword } from "./password";
 
 /**
  * Node-runtime Auth.js instance. Imported by server components, server actions
- * and the route handler — never by the middleware, which uses `./config`.
+ * and the route handler — never by the proxy, which uses `./config`.
  */
 export const { handlers, auth, signIn, signOut } = NextAuth({
   ...authConfig,

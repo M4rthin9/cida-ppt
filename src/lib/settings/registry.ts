@@ -1,4 +1,4 @@
-import { z } from "zod";
+﻿import { z } from "zod";
 
 /**
  * The typed settings registry. SPEC.md §6.
@@ -305,19 +305,19 @@ export const SETTINGS = {
     global: themeGlobal,
     // Measured from the institutional seal — docs/DESIGN.md.
     globalDefault: {
-      colorBg: "#f7f7f7",
-      colorSurface: "#eeeeee",
-      colorSurfaceAlt: "#e2e5ea",
-      colorHeading: "#23272e",
-      colorText: "#464c56",
-      colorTextMuted: "#5f6673",
-      colorBrand: "#393e46",
-      colorBrandHover: "#23272e",
-      colorBrandTint: "#e6e8ec",
+      colorBg: "#f8f6f0",
+      colorSurface: "#efede5",
+      colorSurfaceAlt: "#e4e9e0",
+      colorHeading: "#243b32",
+      colorText: "#43544b",
+      colorTextMuted: "#667064",
+      colorBrand: "#294c3c",
+      colorBrandHover: "#243b32",
+      colorBrandTint: "#e7eee6",
       colorAccent: "#0b7a3f",
       colorAccentTint: "#e8f5ec",
       colorAccentInk: "#075c2f",
-      colorBorder: "#d5d8de",
+      colorBorder: "#d8dbce",
       colorSealGold: "#edd357",
       radiusCard: 8,
       radiusControl: 6,
@@ -346,6 +346,24 @@ export const SETTINGS = {
 
 export type SettingKey = keyof typeof SETTINGS;
 
+/** Only the uncustomized original palette is upgraded; operator-selected themes survive. */
+const LEGACY_THEME_COLORS = {
+  colorBg: "#f7f7f7",
+  colorSurface: "#eeeeee",
+  colorSurfaceAlt: "#e2e5ea",
+  colorHeading: "#23272e",
+  colorText: "#464c56",
+  colorTextMuted: "#5f6673",
+  colorBrand: "#393e46",
+  colorBrandHover: "#23272e",
+  colorBrandTint: "#e6e8ec",
+  colorAccent: "#0b7a3f",
+  colorAccentTint: "#e8f5ec",
+  colorAccentInk: "#075c2f",
+  colorBorder: "#d5d8de",
+  colorSealGold: "#edd357",
+} as const;
+
 export const SETTING_KEYS = Object.keys(SETTINGS) as SettingKey[];
 
 export type GlobalValue<K extends SettingKey> = z.infer<(typeof SETTINGS)[K]["global"]>;
@@ -364,6 +382,27 @@ export type SettingValue<K extends SettingKey> = GlobalValue<K> & LocalizedValue
  */
 export function parseGlobal<K extends SettingKey>(key: K, raw: unknown): GlobalValue<K> {
   const def = SETTINGS[key];
+  if (
+    key === "theme" &&
+    raw &&
+    typeof raw === "object" &&
+    Object.entries(LEGACY_THEME_COLORS).every(
+      ([field, value]) => (raw as Record<string, unknown>)[field] === value,
+    )
+  ) {
+    raw = {
+      ...raw,
+      ...SETTINGS.theme.globalDefault,
+      radiusCard:
+        (raw as Record<string, unknown>).radiusCard ?? SETTINGS.theme.globalDefault.radiusCard,
+      radiusControl:
+        (raw as Record<string, unknown>).radiusControl ??
+        SETTINGS.theme.globalDefault.radiusControl,
+      containerWidth:
+        (raw as Record<string, unknown>).containerWidth ??
+        SETTINGS.theme.globalDefault.containerWidth,
+    };
+  }
   const result = def.global.safeParse({ ...def.globalDefault, ...(raw as object) });
   return (result.success ? result.data : def.globalDefault) as GlobalValue<K>;
 }

@@ -4,11 +4,12 @@ import Image from "next/image";
 import { useEffect, useRef } from "react";
 import { Link } from "@/i18n/navigation";
 import { SiteIcon } from "@/components/site/icons";
-import { startScrollSequence } from "@/lib/vocational/scroll-player";
+import { startScrollSequence, type SequencePlayer } from "@/lib/vocational/scroll-player";
 import { JOIN, band, remap, trackStage } from "@/lib/vocational/scroll-stage";
-import type { SequenceManifest } from "@/lib/vocational/sequence";
+import { frameUrl, type SequenceManifest } from "@/lib/vocational/sequence";
 import type { SettingValue } from "@/lib/settings/registry";
 import { splitLines } from "./Lines";
+import { JourneyChrome } from "./JourneyChrome";
 
 /**
  * The opening, scored rather than stacked.
@@ -43,8 +44,8 @@ import { splitLines } from "./Lines";
  *
  * Without an imported sequence, or for a reader who has asked for reduced
  * motion, there is no timeline to run: `data-static` lays the same composition
- * out as one readable screen with every line present, no canvas, no frame
- * requests, and no reserved scroll for a scrub that will never happen.
+ * out as one readable screen with an optimized poster, no sequence downloads,
+ * and no reserved scroll for a scrub that will never happen.
  */
 export function CinematicHero({
   sequence,
@@ -67,16 +68,23 @@ export function CinematicHero({
     // after React may already have swapped the node out.
     const titleCard = card.current;
     if (!host || !pinned) return;
-    const player =
-      sequence && canvas.current ? startScrollSequence(canvas.current, sequence) : null;
+    let player: SequencePlayer | null = null;
     const set = (name: string, value: number) => pinned.style.setProperty(name, value.toFixed(4));
     const tracker = trackStage(host, pinned, (raw, reduced) => {
       const progress = joined ? remap(raw, 0, JOIN) : raw;
       // No sequence and no motion are the same situation for the copy: there is
       // no scrub to spread it along, so every line is simply present at once.
       const still = reduced || !sequence;
+      const visible = host.getBoundingClientRect().bottom > 0;
+      if (!still && visible && !player && canvas.current && sequence && (!joined || raw < JOIN)) {
+        player = startScrollSequence(canvas.current, sequence);
+      } else if ((still || !visible || (joined && raw >= 1)) && player) {
+        player.stop();
+        player = null;
+      }
       pinned.dataset.static = still ? "on" : "off";
       set("--v-progress", progress);
+      set("--v-journey-progress", joined ? raw : progress * JOIN);
       set("--v-title", still ? 1 : 1 - remap(progress, 0.12, 0.24));
       set("--v-c1", still ? 1 : band(progress, 0.24, 0.4));
       set("--v-c2", still ? 1 : band(progress, 0.42, 0.58));
@@ -87,7 +95,8 @@ export function CinematicHero({
       // action on the page would be reachable while invisible. Inert, not
       // pointer-events, because focus order matters as much as clicks here.
       titleCard?.toggleAttribute("inert", !still && progress > 0.26);
-      // Reduced motion parks the sequence on one frame and downloads no more.
+      host.toggleAttribute("inert", joined && !still && raw >= JOIN);
+      // Reduced motion uses the poster; only an active player preloads frames.
       player?.setPreload(!reduced);
       player?.setProgress(progress);
     });
@@ -95,6 +104,7 @@ export function CinematicHero({
       tracker.stop();
       player?.stop();
       titleCard?.removeAttribute("inert");
+      host.removeAttribute("inert");
     };
   }, [sequence, joined]);
 
@@ -107,20 +117,17 @@ export function CinematicHero({
       data-sequence={sequence ? "on" : "off"}
       aria-label="จากการฝึกฝนสู่โอกาสใหม่"
     >
-      <div ref={stage} className="v-cine-stage" data-static={sequence ? "off" : "on"}>
+      <div ref={stage} className="v-cine-stage" data-static="on">
         <div className="v-cine-media" aria-hidden="true">
-          {sequence ? (
-            <canvas ref={canvas} className="v-cine-canvas" />
-          ) : (
-            <Image
-              className="v-cine-still"
-              src="/images/craft-hero.webp"
-              alt=""
-              fill
-              sizes="100vw"
-              priority
-            />
-          )}
+          <Image
+            className="v-cine-still"
+            src={(sequence && frameUrl(sequence, 0)) || "/images/craft-hero.webp"}
+            alt=""
+            fill
+            sizes="100vw"
+            priority
+          />
+          {sequence && <canvas ref={canvas} className="v-cine-canvas" />}
           <span className="v-cine-veil" />
           <span className="v-cine-vignette" />
         </div>
@@ -140,6 +147,9 @@ export function CinematicHero({
             {copy.heroBadge}
             {copy.heroBadgeNote && <small>{copy.heroBadgeNote}</small>}
           </p>
+          <p className="v-cine-kicker" lang="en">
+            EVERY CRAFT. A NEW POSSIBILITY.
+          </p>
           <h1 className="v-cine-title">
             {copy.heroTitle}
             {copy.heroTitleAccent && <span>{copy.heroTitleAccent}</span>}
@@ -147,6 +157,9 @@ export function CinematicHero({
           <Link className="v-pill v-pill-ghost v-cine-action" href="/products">
             {copy.heroCta} <SiteIcon name="arrow" />
           </Link>
+          <p className="v-cine-scroll">
+            เลื่อนเพื่อเริ่มเรื่องราว <span aria-hidden="true">↓</span>
+          </p>
         </div>
 
         {/* The same lede, unchanged as a sentence: one paragraph, three
@@ -171,6 +184,7 @@ export function CinematicHero({
             {copy.heroWordmark}
           </p>
         )}
+        <JourneyChrome chapter={1} />
       </div>
 
       {/* Feathered hand-off: this band scrolls up over the pinned stage at the

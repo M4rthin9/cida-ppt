@@ -1,6 +1,6 @@
 "use server";
 import { randomUUID } from "node:crypto";
-import { revalidatePath, revalidateTag } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
 import { sql } from "@/db/client";
 import { requireAdmin, requireOwner } from "@/lib/auth/session";
 import {
@@ -18,8 +18,8 @@ import { z } from "zod";
 type Tx = import("postgres").TransactionSql;
 function refresh() {
   revalidatePath("/", "layout");
-  revalidateTag("catalog");
-  revalidateTag("public");
+  updateTag("catalog");
+  updateTag("public");
 }
 async function audit(
   tx: Tx,

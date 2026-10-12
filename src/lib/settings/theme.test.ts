@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+﻿import { describe, expect, it } from "vitest";
 import { defaultsFor } from "./registry";
 import { contrastChecks, contrastRatio, themeStyle } from "./theme";
 
@@ -13,7 +13,7 @@ describe("themeStyle", () => {
 
   it("emits the colours Tailwind's utilities resolve through", () => {
     const style = themeStyle(theme);
-    expect(style["--color-brand"]).toBe("#393e46");
+    expect(style["--color-brand"]).toBe("#294c3c");
     expect(style["--color-accent"]).toBe("#0b7a3f");
     expect(style["--color-seal-gold"]).toBe("#edd357");
   });
@@ -22,7 +22,7 @@ describe("themeStyle", () => {
     const style = themeStyle(theme);
     expect(style["--radius-card"]).toBe("8px");
     expect(style["--container-site"]).toBe("1200px");
-    expect(style["--color-bg"]).toBe("#f7f7f7");
+    expect(style["--color-bg"]).toBe("#f8f6f0");
   });
 
   it("reflects an overridden colour, which is what 'no rebuild' rests on", () => {

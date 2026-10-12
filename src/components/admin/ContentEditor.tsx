@@ -57,8 +57,8 @@ function sections(kind: Kind, categories: { id: string; name_th: string }[]): Se
           f("cover_image", "ภาพแบนเนอร์หมวดหมู่", "media", {
             hint: "แสดงบนแบนเนอร์หน้าหมวดหมู่ และใช้เป็นพื้นหลังการ์ดหากไม่ได้ตั้งภาพพื้นหลังไว้",
           }),
-          f("thumbnail_image", "ภาพพื้นหลังการ์ด", "media", {
-            hint: "พื้นหลังการ์ดหมวดหมู่บนหน้าแรก · เลือกแล้วต้องกดบันทึกข้อมูลจึงจะแสดงผล",
+          f("thumbnail_image", "ภาพพื้นหลัง Bento", "media", {
+            hint: "อัปโหลดหรือเลือกภาพสำหรับช่อง Bento ของหมวดหมู่นี้บนหน้าแรก แนะนำภาพอย่างน้อย 1600 × 1200 พิกเซล วางจุดเด่นไว้กลางภาพ เพราะภาพจะถูกครอบตามขนาดหน้าจอ แล้วกดบันทึกข้อมูล หากไม่เลือกจะใช้ภาพแบนเนอร์หรือภาพลายเส้นแทน",
           }),
           f("icon_media_id", "ภาพไอคอน", "media", {
             hint: "สัญลักษณ์ขนาดเล็กมุมบนขวาของการ์ด",
@@ -223,10 +223,12 @@ export function ContentEditor({
     const local = new Date(date.getTime() - date.getTimezoneOffset() * 60000)
       .toISOString()
       .slice(0, 16);
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- Browser timezone is only available after hydration.
     setData((prev) => ({ ...prev, published_at: local }));
   }, [kind, defaults.published_at]);
   useEffect(() => {
     if (state.ok) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- A completed server action acknowledges the saved form.
       setDirty(false);
       if (!id && state.id)
         router.replace(

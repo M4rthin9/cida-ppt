@@ -73,6 +73,7 @@ export default async function UsersPage({
             </thead>
             <tbody>
               {rows.map((row) => {
+                // eslint-disable-next-line react-hooks/purity -- This server-only page reads lockout status at request time.
                 const locked = row.lockedUntil && row.lockedUntil.getTime() > Date.now();
                 return (
                   <tr key={row.id} className="border-b border-(--color-border) last:border-0">

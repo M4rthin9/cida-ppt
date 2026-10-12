@@ -25,7 +25,13 @@ const modules = {
   "/scroll-stage.js": await transpile("src/lib/vocational/scroll-stage.ts"),
   "/sequence.js": await transpile("src/lib/vocational/sequence.ts"),
 };
-const css = await readFile(join(root, "src/app/vocational.css"), "utf8");
+const css = (
+  await Promise.all(
+    ["vocational.css", "cinematic.css"].map((name) =>
+      readFile(join(root, "src/app", name), "utf8").then((source) => source.replace(/^\uFEFF/, "")),
+    ),
+  )
+).join("\n");
 const FRAME_COUNT = 150;
 const fonts = await Promise.all(
   ["anuphan-thai.woff2", "anuphan-latin.woff2"].map(async (name) => [
@@ -73,7 +79,6 @@ function fixture(scenario) {
             <br class="v-break-wide"> สู่ผลงานที่มีคุณค่าและโอกาสในวันข้างหน้า</p>
           <a class="v-pill v-pill-ghost v-cine-action" href="#products">ชมผลิตภัณฑ์ทั้งหมด</a>
         </div>
-        <p class="v-cine-cue"><span class="v-cine-cue-rule"></span>เลื่อนเพื่อสำรวจ</p>
       </div>
       <div class="v-cine-seam"></div>
     </section>
@@ -191,26 +196,54 @@ async function scrollToProgress(page, progress) {
     const stage = document.querySelector(".v-cine-stage");
     const rect = section.getBoundingClientRect();
     window.scrollTo({
-      top: window.scrollY + rect.top + (rect.height - stage.getBoundingClientRect().height) * value,
+      // Round upward so subpixel header heights do not land just below a half-frame boundary.
+      top: Math.ceil(
+        window.scrollY + rect.top + (rect.height - stage.getBoundingClientRect().height) * value,
+      ),
       behavior: "instant",
     });
   }, progress);
 }
 
 async function expectFrame(page, frame, description) {
-  await page.waitForFunction(
-    ({ expected, color }) => {
-      const canvas = document.querySelector("canvas");
-      if (Number(canvas.dataset.frame) !== expected || !canvas.width || !canvas.height)
-        return false;
-      const pixels = canvas
-        .getContext("2d")
-        .getImageData(Math.floor(canvas.width / 2), Math.floor(canvas.height / 2), 1, 1).data;
-      return color.every((channel, index) => pixels[index] === channel);
-    },
-    { expected: frame, color: frameColor(frame) },
-    { timeout: 10_000 },
-  );
+  await page
+    .waitForFunction(
+      ({ expected, color }) => {
+        const canvas = document.querySelector("canvas");
+        if (Number(canvas.dataset.frame) !== expected || !canvas.width || !canvas.height)
+          return false;
+        const pixels = canvas
+          .getContext("2d")
+          .getImageData(Math.floor(canvas.width / 2), Math.floor(canvas.height / 2), 1, 1).data;
+        return color.every((channel, index) => pixels[index] === channel);
+      },
+      { expected: frame, color: frameColor(frame) },
+      { timeout: 10_000 },
+    )
+    .catch(async (error) => {
+      console.error(
+        description,
+        await page.evaluate(() => {
+          const canvas = document.querySelector("canvas");
+          const section = document.querySelector(".v-cine");
+          const stage = document.querySelector(".v-cine-stage");
+          return {
+            frame: canvas.dataset.frame,
+            scroll: scrollY,
+            section: section.getBoundingClientRect().toJSON(),
+            stage: stage.getBoundingClientRect().toJSON(),
+            progress: stage.style.getPropertyValue("--v-progress"),
+            pixels: [
+              ...canvas
+                .getContext("2d")
+                .getImageData(Math.floor(canvas.width / 2), Math.floor(canvas.height / 2), 1, 1)
+                .data,
+            ],
+          };
+        }),
+      );
+      throw error;
+    });
   console.log(`PASS ${description}: frame ${String(frame).padStart(3, "0")} pixels`);
 }
 
@@ -232,7 +265,7 @@ async function assertBackingSize(page, dpr) {
 async function assertContentNotClipped(page) {
   const result = await page.evaluate(() => {
     const stage = document.querySelector(".v-cine-stage").getBoundingClientRect();
-    const nodes = [...document.querySelectorAll(".v-cine-title, .v-cine-action, .v-cine-cue")];
+    const nodes = [...document.querySelectorAll(".v-cine-title, .v-cine-action")];
     const clipped = nodes.filter((node) => {
       const rect = node.getBoundingClientRect();
       return (

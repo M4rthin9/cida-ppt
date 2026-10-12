@@ -1,0 +1,812 @@
+{
+  "source_sha256": "1ae6fa7ae3dc2dad6ab88317886e742e4d0c370e9e6f29deb58c54920aee15e5",
+  "stock_confirmation": "Available now, confirmed by user",
+  "status": "draft",
+  "products": [
+    {
+      "draft_key": "workbook-1ae6fa7ae3dc-row-5",
+      "id": "b7ab9d74-dede-4796-86b2-3d5a813c175b",
+      "name_th": "เศียรยักษ์เล็ก",
+      "source_row": 5,
+      "slug": "เศียรยักษ์เล็ก",
+      "price": 500,
+      "media_ids": [
+        "d8fb15a7-800b-4893-8ccd-d237d91cfc75"
+      ],
+      "review_issues": []
+    },
+    {
+      "draft_key": "workbook-1ae6fa7ae3dc-row-6",
+      "id": "a78534aa-d5e0-401d-885c-aa946c5d5a73",
+      "name_th": "ยักษ์ใหญ่",
+      "source_row": 6,
+      "slug": "ยักษ์ใหญ่",
+      "price": 5000,
+      "media_ids": [
+        "901ebc7f-b598-4a4c-b340-b183f1325ba6"
+      ],
+      "review_issues": []
+    },
+    {
+      "draft_key": "workbook-1ae6fa7ae3dc-row-7",
+      "id": "7688bb9c-087c-4922-a1e6-d0185533a1d4",
+      "name_th": "ยักษ์เล็ก ( การ์ตูน )",
+      "source_row": 7,
+      "slug": "ยักษ์เล็ก-การ์ตูน",
+      "price": 1500,
+      "media_ids": [
+        "322f8908-4701-4ff8-91f0-f4eac341121f"
+      ],
+      "review_issues": []
+    },
+    {
+      "draft_key": "workbook-1ae6fa7ae3dc-row-8",
+      "id": "bbf3e25c-70b3-4298-8e96-90e2cad04cff",
+      "name_th": "พระพิฆเนศ ( ปางนอน )",
+      "source_row": 8,
+      "slug": "พระพิฆเนศ-ปางนอน",
+      "price": 1500,
+      "media_ids": [
+        "a0ecc9db-a46e-4a96-84d0-abee1e6a1485"
+      ],
+      "review_issues": []
+    },
+    {
+      "draft_key": "workbook-1ae6fa7ae3dc-row-9",
+      "id": "1e4b18bf-aa40-4287-ae98-74a210a789dd",
+      "name_th": "พระพิฆเนศ ( ปางนั่ง )",
+      "source_row": 9,
+      "slug": "พระพิฆเนศ-ปางนั่ง",
+      "price": 1500,
+      "media_ids": [
+        "ab75603e-b0bc-4875-bd18-7fdd65bf052a"
+      ],
+      "review_issues": []
+    },
+    {
+      "draft_key": "workbook-1ae6fa7ae3dc-row-10",
+      "id": "043f8b87-638f-46ce-991c-53b565731346",
+      "name_th": "พระพิฆเนศ ( ปางยืน )",
+      "source_row": 10,
+      "slug": "พระพิฆเนศ-ปางยืน",
+      "price": 1500,
+      "media_ids": [
+        "890a5917-7efb-4d6b-a1ae-531888b82bac"
+      ],
+      "review_issues": []
+    },
+    {
+      "draft_key": "workbook-1ae6fa7ae3dc-row-11",
+      "id": "a66bb5bc-d746-445b-8bcb-9d36d763bb2f",
+      "name_th": "พระพิฆเนศวร ( การ์ตูน )",
+      "source_row": 11,
+      "slug": "พระพิฆเนศวร-การ์ตูน",
+      "price": 1500,
+      "media_ids": [
+        "03add05a-5365-4aee-89c8-ef5764e97543"
+      ],
+      "review_issues": []
+    },
+    {
+      "draft_key": "workbook-1ae6fa7ae3dc-row-12",
+      "id": "2575635e-e3b4-4f14-83c8-00025a6ba964",
+      "name_th": "หนุมาน",
+      "source_row": 12,
+      "slug": "หนุมาน",
+      "price": 2000,
+      "media_ids": [
+        "90ed03ce-1469-4f12-a429-ea8c48864002"
+      ],
+      "review_issues": []
+    },
+    {
+      "draft_key": "workbook-1ae6fa7ae3dc-row-13",
+      "id": "937c3f84-cfce-4437-a7bb-13e10b9cb757",
+      "name_th": "นิลพัด",
+      "source_row": 13,
+      "slug": "นิลพัด",
+      "price": 2000,
+      "media_ids": [
+        "4926462f-f8d3-48dd-8f2b-6587c34e3e17"
+      ],
+      "review_issues": [
+        {
+          "field": "photos",
+          "message": "แยกภาพตัวละครสีขาวออกจากนิลพัด เสนอจับคู่ภาพกับหนุมาน (การ์ตูน) ในแถว 14 รอตรวจสอบ"
+        }
+      ]
+    },
+    {
+      "draft_key": "workbook-1ae6fa7ae3dc-row-14",
+      "id": "9e73284e-985d-4855-8570-0cb1de48892b",
+      "name_th": "หนุมาน ( การ์ตูน )",
+      "source_row": 14,
+      "slug": "หนุมาน-การ์ตูน",
+      "price": 1500,
+      "media_ids": [
+        "58b6c998-3714-4079-a1eb-2d6971a8d7a0"
+      ],
+      "review_issues": [
+        {
+          "field": "photos",
+          "message": "เสนอใช้ภาพหนุมานสีขาวจากภาพที่ลอยอยู่ในแถว 13 โปรดยืนยันการจับคู่ก่อนนำขึ้นเว็บไซต์"
+        }
+      ]
+    },
+    {
+      "draft_key": "workbook-1ae6fa7ae3dc-row-15",
+      "id": "d10f7ae3-c1e3-49fe-a61a-ad6e490d3385",
+      "name_th": "นิลพัด ( การ์ตูน )",
+      "source_row": 15,
+      "slug": "นิลพัด-การ์ตูน",
+      "price": 1500,
+      "media_ids": [
+        "fe9f0f63-230e-44fc-b075-87a86237c555"
+      ],
+      "review_issues": []
+    },
+    {
+      "draft_key": "workbook-1ae6fa7ae3dc-row-16",
+      "id": "772451c4-50ea-453d-b1f9-8a0d641b3522",
+      "name_th": "ท้าวเวศสุวรรณ ( การ์ตูน )",
+      "source_row": 16,
+      "slug": "ท้าวเวศสุวรรณ-การ์ตูน",
+      "price": 1500,
+      "media_ids": [
+        "642ac6ef-762f-408b-abf2-c90df68f08b8"
+      ],
+      "review_issues": []
+    },
+    {
+      "draft_key": "workbook-1ae6fa7ae3dc-row-17",
+      "id": "d4d0daed-c8fe-4f3b-8950-9eb08c7116a8",
+      "name_th": "หนุมานมวยไทย",
+      "source_row": 17,
+      "slug": "หนุมานมวยไทย",
+      "price": 1500,
+      "media_ids": [
+        "d7d8904b-8cfa-4e65-83da-13815a7a4fb1"
+      ],
+      "review_issues": []
+    },
+    {
+      "draft_key": "workbook-1ae6fa7ae3dc-row-18",
+      "id": "af616269-2527-4401-a6e6-4b32d0ce2c88",
+      "name_th": "ทศกัณฑ์มวยไทย",
+      "source_row": 18,
+      "slug": "ทศกัณฑ์มวยไทย",
+      "price": 1500,
+      "media_ids": [
+        "8f7da023-f942-4d75-9763-4e3e9f35e004"
+      ],
+      "review_issues": []
+    },
+    {
+      "draft_key": "workbook-1ae6fa7ae3dc-row-19",
+      "id": "485f8441-d697-4afb-bbc4-1f252b3a0af4",
+      "name_th": "แจกัน",
+      "source_row": 19,
+      "slug": "แจกัน",
+      "price": 900,
+      "media_ids": [
+        "6c6d2bd1-51ea-4440-a08d-66279601807b"
+      ],
+      "review_issues": [
+        {
+          "field": "photos",
+          "message": "ไม่นำภาพชุดข้าราชการที่ลอยอยู่ข้างแถวแจกันมาใช้กับสินค้านี้ ภาพดังกล่าวเก็บไว้ในภาพรอตรวจสอบ"
+        }
+      ]
+    },
+    {
+      "draft_key": "workbook-1ae6fa7ae3dc-row-20",
+      "id": "2a498e2c-ae5c-4230-8a4c-abff396a72b2",
+      "name_th": "ART TOY ชุดปฏิบัติการ /ชุดทูโทน",
+      "source_row": 20,
+      "slug": "art-toy-ชุดปฏิบัติการ-ชุดทูโทน",
+      "price": 500,
+      "media_ids": [
+        "9714d004-a91b-4946-adc3-49bb845e1a7d",
+        "916d13fa-f1aa-45c7-bbdd-7e067daf7607"
+      ],
+      "review_issues": [
+        {
+          "field": "sale_unit",
+          "message": "ภาพมีหลายแบบ แต่ต้นฉบับไม่ได้ระบุว่าราคา 500 บาทเป็นราคาต่อชิ้นหรือต่อชุด ต้องยืนยันหน่วยขายและตัวเลือก"
+        }
+      ]
+    },
+    {
+      "draft_key": "workbook-1ae6fa7ae3dc-row-22",
+      "id": "6841c3a4-3682-4001-88dc-8c4f587706d6",
+      "name_th": "ที่ใส่ของรูปช้าง",
+      "source_row": 22,
+      "slug": "ที่ใส่ของรูปช้าง",
+      "price": 450,
+      "media_ids": [
+        "e3f07e16-864d-46f4-afc0-954ab0de6b61"
+      ],
+      "review_issues": []
+    },
+    {
+      "draft_key": "workbook-1ae6fa7ae3dc-row-23",
+      "id": "ccddcfa3-2802-494a-bc38-abe1451024ee",
+      "name_th": "หมีแฟนตาซี",
+      "source_row": 23,
+      "slug": "หมีแฟนตาซี",
+      "price": 500,
+      "media_ids": [
+        "ee5b1a7e-e415-49d1-a2b5-f35fdb356f41"
+      ],
+      "review_issues": []
+    },
+    {
+      "draft_key": "workbook-1ae6fa7ae3dc-row-24",
+      "id": "bb72b7d2-7516-4216-9586-83e07dedb3c5",
+      "name_th": "คณโฑไฟเบอร์กลาส",
+      "source_row": 24,
+      "slug": "คณโฑไฟเบอร์กลาส",
+      "price": 800,
+      "media_ids": [
+        "a70f96f6-1fd1-41da-abd7-c01b9201cece"
+      ],
+      "review_issues": []
+    },
+    {
+      "draft_key": "workbook-1ae6fa7ae3dc-row-26",
+      "id": "55b11042-f2fd-485b-9025-908cd0362c91",
+      "name_th": "กระทิง",
+      "source_row": 26,
+      "slug": "กระทิง",
+      "price": 500,
+      "media_ids": [
+        "f62fa1e6-5e92-4014-858c-46f8d0395f1a"
+      ],
+      "review_issues": []
+    },
+    {
+      "draft_key": "workbook-1ae6fa7ae3dc-row-27",
+      "id": "14a82940-43a2-4915-8b4e-56a9d21ab52b",
+      "name_th": "เศียรหนุมาน",
+      "source_row": 27,
+      "slug": "เศียรหนุมาน",
+      "price": 350,
+      "media_ids": [
+        "63425d66-25bf-49d2-908b-04140e15eeb0"
+      ],
+      "review_issues": []
+    },
+    {
+      "draft_key": "workbook-1ae6fa7ae3dc-row-28",
+      "id": "8fd5e97d-28c8-4377-b795-3683f5455de5",
+      "name_th": "ที่เปิดขวดหนุมาน",
+      "source_row": 28,
+      "slug": "ที่เปิดขวดหนุมาน",
+      "price": 150,
+      "media_ids": [
+        "7d45f57e-714c-49f2-a03c-913070eda4d5"
+      ],
+      "review_issues": []
+    },
+    {
+      "draft_key": "workbook-1ae6fa7ae3dc-row-29",
+      "id": "065b81ec-4cb5-4dc9-a658-3e6e3f4cf46a",
+      "name_th": "ที่เปิดขวดกางเกงมวย",
+      "source_row": 29,
+      "slug": "ที่เปิดขวดกางเกงมวย",
+      "price": 200,
+      "media_ids": [
+        "b07ac53d-e030-42bc-88b0-0f5d1e1d89c6"
+      ],
+      "review_issues": [
+        {
+          "field": "weight",
+          "message": "ต้นฉบับระบุน้ำหนักโดยไม่มีหน่วย ต้องยืนยันหน่วยก่อนแปลงเป็นกิโลกรัม"
+        }
+      ]
+    },
+    {
+      "draft_key": "workbook-1ae6fa7ae3dc-row-30",
+      "id": "c0dc917e-1d13-4fee-a1a8-30f01dd309e1",
+      "name_th": "พวงกุญแจกางเกงมวย",
+      "source_row": 30,
+      "slug": "พวงกุญแจกางเกงมวย",
+      "price": 150,
+      "media_ids": [
+        "50e645be-33eb-434d-a287-d7159c7d58cf"
+      ],
+      "review_issues": []
+    },
+    {
+      "draft_key": "workbook-1ae6fa7ae3dc-row-31",
+      "id": "1a6969ca-4d9f-4cbe-ac92-ebaeee3025f4",
+      "name_th": "พวงกุญแจนวม",
+      "source_row": 31,
+      "slug": "พวงกุญแจนวม",
+      "price": 150,
+      "media_ids": [
+        "5659aa23-4645-4e95-b2f0-6c02a7a8c2ac"
+      ],
+      "review_issues": []
+    },
+    {
+      "draft_key": "workbook-1ae6fa7ae3dc-row-32",
+      "id": "3615401b-e6c5-45bb-ae87-55d72689863e",
+      "name_th": "พวงกุญแจหนุมาน 5 ซม.",
+      "source_row": 32,
+      "slug": "พวงกุญแจหนุมาน-5-ซม",
+      "price": 200,
+      "media_ids": [
+        "0cc2f178-50fe-4701-be07-fc7f7b3bec6f"
+      ],
+      "review_issues": []
+    },
+    {
+      "draft_key": "workbook-1ae6fa7ae3dc-row-33",
+      "id": "20184dca-617f-4c5a-a82e-1e7423a08888",
+      "name_th": "พวงกุญแจหนุมาน 7 ซม.",
+      "source_row": 33,
+      "slug": "พวงกุญแจหนุมาน-7-ซม",
+      "price": 250,
+      "media_ids": [
+        "07475f86-4d8b-4eaa-93c9-d6f873b4bca1"
+      ],
+      "review_issues": []
+    },
+    {
+      "draft_key": "workbook-1ae6fa7ae3dc-row-34",
+      "id": "eb6fc2e2-5623-47ab-baf9-45451590520a",
+      "name_th": "ที่เปิดขวดแม่เหล็กรถตุ๊กๆ ( หน้าตรง )",
+      "source_row": 34,
+      "slug": "ที่เปิดขวดแม่เหล็กรถตุ๊กๆ-หน้าตรง",
+      "price": 150,
+      "media_ids": [
+        "c7ba2cf4-2d57-4612-a973-6f41dab6a76f"
+      ],
+      "review_issues": []
+    },
+    {
+      "draft_key": "workbook-1ae6fa7ae3dc-row-35",
+      "id": "5c6d2958-7bc2-4161-82b5-4acafc6fa5e1",
+      "name_th": "ที่เปิดขวดแม่เหล็กรถตุ๊กๆ ( ด้านข้าง )",
+      "source_row": 35,
+      "slug": "ที่เปิดขวดแม่เหล็กรถตุ๊กๆ-ด้านข้าง",
+      "price": 180,
+      "media_ids": [
+        "d11d5ad8-f4d7-425d-b480-d2b7fd04d692"
+      ],
+      "review_issues": []
+    }
+  ],
+  "media": [
+    {
+      "draft_key": "workbook-1ae6fa7ae3dc-row-5",
+      "source": "originals/image8.jpeg",
+      "file": "presentation/row-5-image8.png",
+      "rotation_degrees": 0,
+      "source_sha256": "c4b2a945b1435dae8b165dfad9c38a1896e8e1325a181b1f1cbe5a33d840a602",
+      "width": 329,
+      "height": 329,
+      "source_pixels_preserved": true,
+      "review_issues": [],
+      "id": "d8fb15a7-800b-4893-8ccd-d237d91cfc75",
+      "storage_key": "2026/10/60f7c793-9021-4127-be4d-89bdaf449b51"
+    },
+    {
+      "draft_key": "workbook-1ae6fa7ae3dc-row-6",
+      "source": "originals/image15.jpeg",
+      "file": "presentation/row-6-image15.png",
+      "rotation_degrees": 90,
+      "source_sha256": "8dbffcce27bfeac777b9e29c729f88703d1d7d419458f6d85a173fff92dedef5",
+      "width": 253,
+      "height": 253,
+      "source_pixels_preserved": true,
+      "review_issues": [],
+      "id": "901ebc7f-b598-4a4c-b340-b183f1325ba6",
+      "storage_key": "2026/10/72dacb57-203c-402a-bf73-0840abee8872"
+    },
+    {
+      "draft_key": "workbook-1ae6fa7ae3dc-row-7",
+      "source": "originals/image5.jpeg",
+      "file": "presentation/row-7-image5.png",
+      "rotation_degrees": 90,
+      "source_sha256": "107566b45f461569b0111a04fe35ea8ff7b99211f5c2b76efc1cc87bd8eed70a",
+      "width": 253,
+      "height": 253,
+      "source_pixels_preserved": true,
+      "review_issues": [],
+      "id": "322f8908-4701-4ff8-91f0-f4eac341121f",
+      "storage_key": "2026/10/c5043fa0-1fc2-4aca-8ee5-046efb650e3e"
+    },
+    {
+      "draft_key": "workbook-1ae6fa7ae3dc-row-8",
+      "source": "originals/image9.jpeg",
+      "file": "presentation/row-8-image9.png",
+      "rotation_degrees": 0,
+      "source_sha256": "1349a0b1267bf1dbbae9c64b66f707eee3133339379f8894c45fa256cfcaa8a3",
+      "width": 311,
+      "height": 311,
+      "source_pixels_preserved": true,
+      "review_issues": [],
+      "id": "a0ecc9db-a46e-4a96-84d0-abee1e6a1485",
+      "storage_key": "2026/10/e8f1fc83-7543-486c-9954-06d96d967d5d"
+    },
+    {
+      "draft_key": "workbook-1ae6fa7ae3dc-row-9",
+      "source": "originals/image2.jpeg",
+      "file": "presentation/row-9-image2.png",
+      "rotation_degrees": 90,
+      "source_sha256": "19c16ec44e93a94defa97336155a91c8989f27adf06d1f45a59f83e9e0f9912d",
+      "width": 253,
+      "height": 253,
+      "source_pixels_preserved": true,
+      "review_issues": [],
+      "id": "ab75603e-b0bc-4875-bd18-7fdd65bf052a",
+      "storage_key": "2026/10/48400cc5-46fe-44fa-8a07-cf1a83711f27"
+    },
+    {
+      "draft_key": "workbook-1ae6fa7ae3dc-row-10",
+      "source": "originals/image3.jpeg",
+      "file": "presentation/row-10-image3.png",
+      "rotation_degrees": 90,
+      "source_sha256": "60713a0a8942a2008c09999b03991a51fabdeedfa794bdffdc2480b8423983dc",
+      "width": 253,
+      "height": 253,
+      "source_pixels_preserved": true,
+      "review_issues": [],
+      "id": "890a5917-7efb-4d6b-a1ae-531888b82bac",
+      "storage_key": "2026/10/d59a1fa9-e447-44a7-a2e6-d714110f377b"
+    },
+    {
+      "draft_key": "workbook-1ae6fa7ae3dc-row-11",
+      "source": "originals/image31.jpeg",
+      "file": "presentation/row-11-image31.png",
+      "rotation_degrees": 90,
+      "source_sha256": "b878fb562376b40c14321482d5f43d483f8718dfd6f32e7a02b1bd1c1b1180ec",
+      "width": 254,
+      "height": 254,
+      "source_pixels_preserved": true,
+      "review_issues": [],
+      "id": "03add05a-5365-4aee-89c8-ef5764e97543",
+      "storage_key": "2026/10/0f7457e5-c520-417d-8569-2dd9a97305c0"
+    },
+    {
+      "draft_key": "workbook-1ae6fa7ae3dc-row-12",
+      "source": "originals/image1.jpeg",
+      "file": "presentation/row-12-image1.png",
+      "rotation_degrees": 0,
+      "source_sha256": "4424d20e4a2df2e4840e2a2bf5a94e531986bb322be4712e6556bd611880b150",
+      "width": 254,
+      "height": 254,
+      "source_pixels_preserved": true,
+      "review_issues": [],
+      "id": "90ed03ce-1469-4f12-a429-ea8c48864002",
+      "storage_key": "2026/10/aa8c1a1d-d054-4ce0-b468-5a5d98f33ab2"
+    },
+    {
+      "draft_key": "workbook-1ae6fa7ae3dc-row-13",
+      "source": "originals/image33.jpeg",
+      "file": "presentation/row-13-image33.png",
+      "rotation_degrees": 0,
+      "source_sha256": "250b1df089663ba83734df8a782d747ee2a1b20efa13d3db27ff6cf9c4b80543",
+      "width": 254,
+      "height": 254,
+      "source_pixels_preserved": true,
+      "review_issues": [
+        {
+          "field": "photos",
+          "message": "แยกภาพตัวละครสีขาวออกจากนิลพัด เสนอจับคู่ภาพกับหนุมาน (การ์ตูน) ในแถว 14 รอตรวจสอบ"
+        }
+      ],
+      "id": "4926462f-f8d3-48dd-8f2b-6587c34e3e17",
+      "storage_key": "2026/10/8065a0cd-38f5-4f4f-98e4-2287241addbc"
+    },
+    {
+      "draft_key": "workbook-1ae6fa7ae3dc-row-14",
+      "source": "originals/image32.png",
+      "file": "presentation/row-14-image32.png",
+      "rotation_degrees": 0,
+      "source_sha256": "e1b589cf91d830a1d48aed92a065cd570a50d03678b6aa8fd44cb82ef912d3d1",
+      "width": 294,
+      "height": 294,
+      "source_pixels_preserved": true,
+      "review_issues": [
+        {
+          "field": "photos",
+          "message": "เสนอใช้ภาพหนุมานสีขาวจากภาพที่ลอยอยู่ในแถว 13 โปรดยืนยันการจับคู่ก่อนนำขึ้นเว็บไซต์"
+        }
+      ],
+      "id": "58b6c998-3714-4079-a1eb-2d6971a8d7a0",
+      "storage_key": "2026/10/ef006632-d403-48d9-82ba-95d2e4805f00"
+    },
+    {
+      "draft_key": "workbook-1ae6fa7ae3dc-row-15",
+      "source": "originals/image22.jpeg",
+      "file": "presentation/row-15-image22.png",
+      "rotation_degrees": 90,
+      "source_sha256": "b436419ff357f674c9ca40380fa9b9b3404741604fbc7387c1e4fbb89034e5c6",
+      "width": 249,
+      "height": 249,
+      "source_pixels_preserved": true,
+      "review_issues": [],
+      "id": "fe9f0f63-230e-44fc-b075-87a86237c555",
+      "storage_key": "2026/10/355c59e3-15a1-4a58-a7f5-f24b3a75f2f5"
+    },
+    {
+      "draft_key": "workbook-1ae6fa7ae3dc-row-16",
+      "source": "originals/image4.jpeg",
+      "file": "presentation/row-16-image4.png",
+      "rotation_degrees": 90,
+      "source_sha256": "606d5e0f8194a43e5c0c5c0f092b03194880b8b52c64899bc6cf782808371d6b",
+      "width": 237,
+      "height": 237,
+      "source_pixels_preserved": true,
+      "review_issues": [],
+      "id": "642ac6ef-762f-408b-abf2-c90df68f08b8",
+      "storage_key": "2026/10/2b84afff-a57e-41e0-b11a-b85ba54ba55a"
+    },
+    {
+      "draft_key": "workbook-1ae6fa7ae3dc-row-17",
+      "source": "originals/image11.jpeg",
+      "file": "presentation/row-17-image11.png",
+      "rotation_degrees": 90,
+      "source_sha256": "b8cec5aa73c5435ec33aee9ee55941c5515159d6fdc67914465ada87cc77357a",
+      "width": 247,
+      "height": 247,
+      "source_pixels_preserved": true,
+      "review_issues": [],
+      "id": "d7d8904b-8cfa-4e65-83da-13815a7a4fb1",
+      "storage_key": "2026/10/9ac8e4cf-50b5-451e-8686-eb1fbdbca384"
+    },
+    {
+      "draft_key": "workbook-1ae6fa7ae3dc-row-18",
+      "source": "originals/image10.jpeg",
+      "file": "presentation/row-18-image10.png",
+      "rotation_degrees": 90,
+      "source_sha256": "4baa83560450f9aa8d3450a27ddef0993a5887117051bf42127cde89ad962859",
+      "width": 252,
+      "height": 252,
+      "source_pixels_preserved": true,
+      "review_issues": [],
+      "id": "8f7da023-f942-4d75-9763-4e3e9f35e004",
+      "storage_key": "2026/10/1c1fde68-cad3-40d5-997e-ee78a1d7fc14"
+    },
+    {
+      "draft_key": "workbook-1ae6fa7ae3dc-row-19",
+      "source": "originals/image7.jpeg",
+      "file": "presentation/row-19-image7.png",
+      "rotation_degrees": 0,
+      "source_sha256": "d4bde7eb019870030447374b205b181199ad563ec144e2ada20ef98366752d6a",
+      "width": 337,
+      "height": 337,
+      "source_pixels_preserved": true,
+      "review_issues": [
+        {
+          "field": "photos",
+          "message": "ไม่นำภาพชุดข้าราชการที่ลอยอยู่ข้างแถวแจกันมาใช้กับสินค้านี้ ภาพดังกล่าวเก็บไว้ในภาพรอตรวจสอบ"
+        }
+      ],
+      "id": "6c6d2bd1-51ea-4440-a08d-66279601807b",
+      "storage_key": "2026/10/084349e3-5f3e-420e-a58c-49c4d77af41a"
+    },
+    {
+      "draft_key": "workbook-1ae6fa7ae3dc-row-20",
+      "source": "originals/image12.jpeg",
+      "file": "presentation/row-20-image12.png",
+      "rotation_degrees": 90,
+      "source_sha256": "f779a45d69d3ddc13c5f0b819a986c63f3abce1fd47d5e0d71390a310edc7734",
+      "width": 253,
+      "height": 253,
+      "source_pixels_preserved": true,
+      "review_issues": [
+        {
+          "field": "sale_unit",
+          "message": "ภาพมีหลายแบบ แต่ต้นฉบับไม่ได้ระบุว่าราคา 500 บาทเป็นราคาต่อชิ้นหรือต่อชุด ต้องยืนยันหน่วยขายและตัวเลือก"
+        }
+      ],
+      "id": "9714d004-a91b-4946-adc3-49bb845e1a7d",
+      "storage_key": "2026/10/283b6eb1-8a60-46ad-a8d7-0ee356a5113f"
+    },
+    {
+      "draft_key": "workbook-1ae6fa7ae3dc-row-20",
+      "source": "originals/image13.jpeg",
+      "file": "presentation/row-20-image13.png",
+      "rotation_degrees": 90,
+      "source_sha256": "11c45b4bce13334b2bb6b5a621fd3b0121979abd39a3f038526644f935ed9bb5",
+      "width": 253,
+      "height": 253,
+      "source_pixels_preserved": true,
+      "review_issues": [
+        {
+          "field": "sale_unit",
+          "message": "ภาพมีหลายแบบ แต่ต้นฉบับไม่ได้ระบุว่าราคา 500 บาทเป็นราคาต่อชิ้นหรือต่อชุด ต้องยืนยันหน่วยขายและตัวเลือก"
+        }
+      ],
+      "id": "916d13fa-f1aa-45c7-bbdd-7e067daf7607",
+      "storage_key": "2026/10/2b99f0b7-c747-42f2-9322-3c831ba58c6a"
+    },
+    {
+      "draft_key": "workbook-1ae6fa7ae3dc-row-22",
+      "source": "originals/image16.jpeg",
+      "file": "presentation/row-22-image16.png",
+      "rotation_degrees": 0,
+      "source_sha256": "cb907548d984d7243c0bf28eed731daf661211cd69d9a948576f0de0603e2b99",
+      "width": 337,
+      "height": 337,
+      "source_pixels_preserved": true,
+      "review_issues": [],
+      "id": "e3f07e16-864d-46f4-afc0-954ab0de6b61",
+      "storage_key": "2026/10/7b80c0c3-b475-4aa7-84ad-067236224efe"
+    },
+    {
+      "draft_key": "workbook-1ae6fa7ae3dc-row-23",
+      "source": "originals/image18.jpeg",
+      "file": "presentation/row-23-image18.png",
+      "rotation_degrees": 0,
+      "source_sha256": "c04f7951eb1d92416a74316b618615d26635ee2b58695befda3b26332b98f825",
+      "width": 337,
+      "height": 337,
+      "source_pixels_preserved": true,
+      "review_issues": [],
+      "id": "ee5b1a7e-e415-49d1-a2b5-f35fdb356f41",
+      "storage_key": "2026/10/e0e0c422-e0d2-48a2-9629-aea344f113c7"
+    },
+    {
+      "draft_key": "workbook-1ae6fa7ae3dc-row-24",
+      "source": "originals/image17.jpeg",
+      "file": "presentation/row-24-image17.png",
+      "rotation_degrees": 0,
+      "source_sha256": "e21ebf24e88d48cbdc84eb26c86dcf82b30295b70413d3d1a57242b8363ef4d6",
+      "width": 337,
+      "height": 337,
+      "source_pixels_preserved": true,
+      "review_issues": [],
+      "id": "a70f96f6-1fd1-41da-abd7-c01b9201cece",
+      "storage_key": "2026/10/0a1d889b-7888-4a57-86be-143311f1eca0"
+    },
+    {
+      "draft_key": "workbook-1ae6fa7ae3dc-row-26",
+      "source": "originals/image20.jpeg",
+      "file": "presentation/row-26-image20.png",
+      "rotation_degrees": 0,
+      "source_sha256": "acfb9e94519720cc86eb311c10d6ce624691c5691c63e5ccbd632ae06bfe638e",
+      "width": 337,
+      "height": 337,
+      "source_pixels_preserved": true,
+      "review_issues": [],
+      "id": "f62fa1e6-5e92-4014-858c-46f8d0395f1a",
+      "storage_key": "2026/10/55823648-3289-4133-9706-b7e8dfa1c4aa"
+    },
+    {
+      "draft_key": "workbook-1ae6fa7ae3dc-row-27",
+      "source": "originals/image23.jpeg",
+      "file": "presentation/row-27-image23.png",
+      "rotation_degrees": 90,
+      "source_sha256": "59e829c513003d358d2b4224e4b586092b2466cbda66179c7b4ca58e94bc8834",
+      "width": 253,
+      "height": 253,
+      "source_pixels_preserved": true,
+      "review_issues": [],
+      "id": "63425d66-25bf-49d2-908b-04140e15eeb0",
+      "storage_key": "2026/10/90d45615-2cc6-424a-8cc3-990ab9fdfdf5"
+    },
+    {
+      "draft_key": "workbook-1ae6fa7ae3dc-row-28",
+      "source": "originals/image21.jpeg",
+      "file": "presentation/row-28-image21.png",
+      "rotation_degrees": 0,
+      "source_sha256": "3a0b9ad7a96012b54f8fe52495bb2d49a44b3fb8598469cd1bc1b186a0ee7c35",
+      "width": 337,
+      "height": 337,
+      "source_pixels_preserved": true,
+      "review_issues": [],
+      "id": "7d45f57e-714c-49f2-a03c-913070eda4d5",
+      "storage_key": "2026/10/86ec439d-aff1-4062-ab51-f4a308c27110"
+    },
+    {
+      "draft_key": "workbook-1ae6fa7ae3dc-row-29",
+      "source": "originals/image26.jpeg",
+      "file": "presentation/row-29-image26.png",
+      "rotation_degrees": 0,
+      "source_sha256": "d5564f6dc5e8ba803b86a0f5e32bb1022cca902ff0c43b42c8a1b3da890a6d75",
+      "width": 342,
+      "height": 342,
+      "source_pixels_preserved": true,
+      "review_issues": [
+        {
+          "field": "weight",
+          "message": "ต้นฉบับระบุน้ำหนักโดยไม่มีหน่วย ต้องยืนยันหน่วยก่อนแปลงเป็นกิโลกรัม"
+        }
+      ],
+      "id": "b07ac53d-e030-42bc-88b0-0f5d1e1d89c6",
+      "storage_key": "2026/10/8c7a0a3f-a24e-4eea-925a-e75bab214e7a"
+    },
+    {
+      "draft_key": "workbook-1ae6fa7ae3dc-row-30",
+      "source": "originals/image25.jpeg",
+      "file": "presentation/row-30-image25.png",
+      "rotation_degrees": 0,
+      "source_sha256": "8141f4026a4e950a20b4fad54ac8dcbdf760295577a34c6dd5716b88b1614ac5",
+      "width": 416,
+      "height": 416,
+      "source_pixels_preserved": true,
+      "review_issues": [],
+      "id": "50e645be-33eb-434d-a287-d7159c7d58cf",
+      "storage_key": "2026/10/ab4a7a2b-c8b3-457d-805f-bd6b3215e613"
+    },
+    {
+      "draft_key": "workbook-1ae6fa7ae3dc-row-31",
+      "source": "originals/image24.jpeg",
+      "file": "presentation/row-31-image24.png",
+      "rotation_degrees": 0,
+      "source_sha256": "127e575f8c73ba3d91aad850d8e51588b8532ce1c517eaa582a56534174d1638",
+      "width": 338,
+      "height": 338,
+      "source_pixels_preserved": true,
+      "review_issues": [],
+      "id": "5659aa23-4645-4e95-b2f0-6c02a7a8c2ac",
+      "storage_key": "2026/10/ad3af2be-d736-42cc-abb0-9fdd3db3b3cb"
+    },
+    {
+      "draft_key": "workbook-1ae6fa7ae3dc-row-32",
+      "source": "originals/image30.jpeg",
+      "file": "presentation/row-32-image30.png",
+      "rotation_degrees": 90,
+      "source_sha256": "a2552a283f57a002949f03fe55f9ffe39df9405b7e8c61ad0a33ffed1fd4a6dd",
+      "width": 333,
+      "height": 333,
+      "source_pixels_preserved": true,
+      "review_issues": [],
+      "id": "0cc2f178-50fe-4701-be07-fc7f7b3bec6f",
+      "storage_key": "2026/10/de43c1ec-a6c2-488a-856f-e6c02dc581be"
+    },
+    {
+      "draft_key": "workbook-1ae6fa7ae3dc-row-33",
+      "source": "originals/image29.jpeg",
+      "file": "presentation/row-33-image29.png",
+      "rotation_degrees": 90,
+      "source_sha256": "24d81ab5b31377f88af31c4e9b2f18b55424c764f37d267239a8635455622cc9",
+      "width": 338,
+      "height": 338,
+      "source_pixels_preserved": true,
+      "review_issues": [],
+      "id": "07475f86-4d8b-4eaa-93c9-d6f873b4bca1",
+      "storage_key": "2026/10/0d984186-107e-4c7c-9161-d6cc2c6afc43"
+    },
+    {
+      "draft_key": "workbook-1ae6fa7ae3dc-row-34",
+      "source": "originals/image28.jpeg",
+      "file": "presentation/row-34-image28.png",
+      "rotation_degrees": 0,
+      "source_sha256": "620aaa65b0b43d55012a3d6dccb4b6f1905b1e7abf1bc3eed981965cf9c89bb8",
+      "width": 336,
+      "height": 336,
+      "source_pixels_preserved": true,
+      "review_issues": [],
+      "id": "c7ba2cf4-2d57-4612-a973-6f41dab6a76f",
+      "storage_key": "2026/10/2da22eb2-255e-43d4-9158-b71c3d2a0618"
+    },
+    {
+      "draft_key": "workbook-1ae6fa7ae3dc-row-35",
+      "source": "originals/image27.jpeg",
+      "file": "presentation/row-35-image27.png",
+      "rotation_degrees": 0,
+      "source_sha256": "e68d451c5aa4600c050636306fb580ffbd8f02ba07e2b72e5a6f9165d27db645",
+      "width": 338,
+      "height": 338,
+      "source_pixels_preserved": true,
+      "review_issues": [],
+      "id": "d11d5ad8-f4d7-425d-b480-d2b7fd04d692",
+      "storage_key": "2026/10/c7a3465f-f602-4324-86c6-4e70181cdf00"
+    }
+  ],
+  "actors": [
+    "2053ed4a-8b49-4c97-9c85-20d48e2b4b5f"
+  ],
+  "excluded_wood_rows": [
+    21,
+    25
+  ],
+  "completed_at": "2026-10-09T09:54:02.210Z",
+  "verified_count": 29
+}

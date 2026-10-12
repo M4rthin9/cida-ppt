@@ -5,11 +5,11 @@ export const LOGIN_PATH = "/admin/login";
 export const ADMIN_HOME = "/admin";
 
 /**
- * Edge-safe half of the Auth.js config.
+ * Provider-free half of the Auth.js config.
  *
- * The middleware runs on the edge runtime, where neither `@node-rs/argon2`
- * (a native module) nor the postgres driver can load. Everything that needs
- * Node lives in `./index.ts`; this file must stay importable from both.
+ * The Next.js proxy only needs JWT verification. Password hashing and the
+ * database provider stay in `./index.ts`, keeping native modules out of the
+ * lightweight routing gate.
  *
  * Sessions are JWT because Auth.js refuses database sessions with the
  * credentials provider — @auth/core asserts "Signing in with credentials only
@@ -27,7 +27,7 @@ export const authConfig = {
      * Cheap gate only: does a syntactically valid token exist? The
      * authoritative check — active user, current session version, role — is
      * `requireAdmin()`, which runs in the Node runtime where the database is
-     * reachable. Middleware exists to avoid rendering an admin shell to an
+     * reachable. The proxy exists to avoid rendering an admin shell to an
      * anonymous visitor, not to be the security boundary.
      */
     authorized({ auth, request }) {

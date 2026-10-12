@@ -1,16 +1,14 @@
 import { Link } from "@/i18n/navigation";
 import { listCategories, listProducts, listNews } from "@/lib/vocational/data";
-import { CinematicHero } from "@/components/vocational/CinematicHero";
-import { ApertureSection } from "@/components/vocational/ApertureSection";
+import { CraftJourney } from "@/components/vocational/CraftJourney";
 import { CategoryBento } from "@/components/vocational/CategoryBento";
 import { StorySection } from "@/components/vocational/StorySection";
 import { ProductCard } from "@/components/vocational/ProductCard";
 import { NewsCard } from "@/components/vocational/NewsCard";
 import { readSequence } from "@/lib/vocational/sequence-assets";
-import { frameUrl } from "@/lib/vocational/sequence";
 import { publicMetadata } from "@/lib/seo/metadata";
 import { getCachedSetting } from "@/lib/settings/cached";
-import { Lines, splitLines } from "@/components/vocational/Lines";
+import { Lines } from "@/components/vocational/Lines";
 export const dynamic = "force-dynamic";
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
@@ -37,54 +35,27 @@ export default async function Home() {
     readSequence("reveal"),
     getCachedSetting("home"),
   ]);
-  /**
-   * The second movement opens onto the frame the first one ends on. The hero
-   * lifts its last frame away blurred behind the seam; the aperture parts on
-   * that same image and resolves it. One shot continuing, rather than two
-   * sections that happen to share a background colour. It costs nothing: the
-   * frame is already on disk and already in the reader's cache by then.
-   */
-  const apertureStill = heroSequence ? frameUrl(heroSequence, heroSequence.count - 1) : undefined;
-  const words = [...categories.map((c) => c.name_th), ...splitLines(copy.marqueeWords)];
-  // With both sequences the two movements are one pinned scene: the reveal
-  // picks up on the hero's last frame in place rather than scrolling in.
-  const joined = Boolean(heroSequence && revealSequence);
   return (
     <main id="content">
-      <div className="v-journey" data-join={joined ? "on" : "off"}>
-        <CinematicHero sequence={heroSequence} copy={copy} joined={joined} />
-        <ApertureSection
-          sequence={revealSequence}
-          still={apertureStill}
-          categories={categories}
-          copy={copy}
-          joined={joined}
-        />
-      </div>
-      <div className="v-marquees">
-        {/* ARIA forbids naming a generic element, so an aria-label here was
-            silently ignored and the marquee reached assistive tech as nothing
-            at all. The visual rows stay aria-hidden (they repeat each word
-            twice for the loop) and this carries the content instead. */}
-        <p className="sr-only">{words.join(" · ")}</p>
-        {[false, true].map((reverse, index) => (
-          <div key={index} className={`v-marquee ${reverse ? "reverse" : ""}`} aria-hidden="true">
-            <div>
-              {[0, 1].map((copy) => (
-                <span key={copy}>
-                  {(reverse ? [...words].reverse() : words).map((word, i) => (
-                    <span key={i}>
-                      {word}
-                      <b>✳</b>
-                    </span>
-                  ))}
-                </span>
-              ))}
-            </div>
-          </div>
+      <CraftJourney
+        hero={heroSequence}
+        reveal={revealSequence}
+        categories={categories}
+        copy={copy}
+      />
+      <nav className="v-collection-index" aria-label="สำรวจหมวดงานฝีมือ">
+        <span className="v-index-label">
+          สำรวจงานฝีมือ <span aria-hidden="true">→</span>
+        </span>
+        {categories.map((category, i) => (
+          <Link key={category.id} href={`/products/category/${category.slug}`}>
+            <span>{String(i + 1).padStart(2, "0")}</span>
+            {category.name_th}
+            <span aria-hidden="true">↗</span>
+          </Link>
         ))}
-      </div>
-      <section className="v-section v-collections">
+      </nav>
+      <section className="v-section v-collections" id="collections">
         <div className="v-section-heading">
           <div>
             {copy.collectionsEyebrow && <p className="v-eyebrow">{copy.collectionsEyebrow}</p>}

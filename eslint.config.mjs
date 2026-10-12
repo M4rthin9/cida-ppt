@@ -1,18 +1,12 @@
-import { createRequire } from "node:module";
-import { dirname } from "node:path";
-import { fileURLToPath } from "node:url";
-import { FlatCompat } from "@eslint/eslintrc";
-
-const require = createRequire(import.meta.url);
-const compat = new FlatCompat({
-  baseDirectory: dirname(fileURLToPath(import.meta.url)),
-  resolvePluginsRelativeTo: dirname(require.resolve("eslint-config-next/package.json")),
-});
+import nextVitals from "eslint-config-next/core-web-vitals";
+import nextTypescript from "eslint-config-next/typescript";
+import prettier from "eslint-config-prettier/flat";
 
 const config = [
   {
     ignores: [
       ".next/**",
+      ".next-production/**",
       "node_modules/**",
       "next-env.d.ts",
       "coverage/**",
@@ -22,7 +16,9 @@ const config = [
       "playwright-report/**",
     ],
   },
-  ...compat.extends("next/core-web-vitals", "next/typescript", "prettier"),
+  ...nextVitals,
+  ...nextTypescript,
+  prettier,
   {
     rules: {
       // CLAUDE.md: no `any`, no non-null assertion without a comment justifying it.

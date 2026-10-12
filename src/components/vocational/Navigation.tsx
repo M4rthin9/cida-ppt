@@ -1,119 +1,172 @@
-"use client";
+﻿"use client";
+
 import { Link, usePathname } from "@/i18n/navigation";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { SiteIcon } from "@/components/site/icons";
+
 const links = [
   ["/", "หน้าแรก"],
   ["/products", "ผลิตภัณฑ์"],
   ["/vocational", "งานฝึกวิชาชีพ"],
   ["/story", "เรื่องราวของเรา"],
   ["/news", "ข่าวและกิจกรรม"],
-  ["/contact", "ติดต่อ"],
-];
-export function Navigation({ categories }: { categories: { name_th: string; slug: string }[] }) {
-  const [open, setOpen] = useState(false),
-    path = usePathname();
-  const menuToggle = useRef<HTMLButtonElement>(null);
-  const [scrolled, setScrolled] = useState(false);
+] as const;
 
-  // The bar floats over the opening frame, where it needs to stay light; once
-  // the reader is past it the glass gains weight so the links keep their
-  // contrast over whatever scrolls underneath.
+export function Navigation({
+  categories,
+  name,
+  organisation,
+}: {
+  categories: { name_th: string; slug: string }[];
+  name: string;
+  organisation?: string;
+}) {
+  const [open, setOpen] = useState(false);
+  const [collectionsOpen, setCollectionsOpen] = useState(false);
+  const path = usePathname();
+  const header = useRef<HTMLElement>(null);
+  const menuToggle = useRef<HTMLButtonElement>(null);
+  const categoryToggle = useRef<HTMLButtonElement>(null);
+
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    function outside(event: PointerEvent) {
+      if (event.target instanceof Node && !header.current?.contains(event.target)) {
+        setOpen(false);
+        setCollectionsOpen(false);
+      }
+    }
+    const desktop = matchMedia("(min-width: 1101px)");
+    function resize() {
+      setOpen(false);
+      setCollectionsOpen(false);
+    }
+    document.addEventListener("pointerdown", outside);
+    desktop.addEventListener("change", resize);
+    return () => {
+      document.removeEventListener("pointerdown", outside);
+      desktop.removeEventListener("change", resize);
+    };
   }, []);
+
   function closeMenus() {
     setOpen(false);
+    setCollectionsOpen(false);
   }
   function active(href: string) {
     return path === href || (href !== "/" && path.startsWith(`${href}/`));
   }
+
   return (
     <header
-      className="v-header"
-      data-scrolled={scrolled}
+      ref={header}
+      className={`v-header${path === "/" ? " v-header-cinematic" : ""}`}
       onKeyDown={(event) => {
         if (event.key !== "Escape") return;
-        // The category menu has no control of its own: it is open because
-        // something inside it has hover or focus, so it closes by giving up
-        // focus rather than by being told to.
-        const focused = document.activeElement;
-        if (focused instanceof HTMLElement && focused.closest(".v-megamenu")) {
-          focused.blur();
+        if (collectionsOpen) {
+          setCollectionsOpen(false);
+          categoryToggle.current?.focus();
         } else if (open) {
           setOpen(false);
           menuToggle.current?.focus();
         }
       }}
     >
-      <Link
-        href="/"
-        className="v-brand"
-        aria-label="ฝ่ายฝึกวิชาชีพผู้ต้องขัง หน้าแรก"
-        onClick={closeMenus}
-      >
-        <Image src="/brand/cida-logo.png" width={52} height={52} alt="ตราทัณฑสถานบำบัดพิเศษกลาง" />
-        <span>
-          <strong>ฝ่ายฝึกวิชาชีพผู้ต้องขัง</strong>
-          <small>ทัณฑสถานบำบัดพิเศษกลาง</small>
-        </span>
-      </Link>
-      <button
-        ref={menuToggle}
-        type="button"
-        className="v-menu-toggle"
-        aria-expanded={open}
-        aria-controls="public-navigation"
-        onClick={() => {
-          if (open) closeMenus();
-          else setOpen(true);
-        }}
-      >
-        {open ? "ปิดเมนู" : "เมนู"} <SiteIcon name={open ? "close" : "menu"} />
-      </button>
-      <nav id="public-navigation" aria-label="เมนูหลัก" className={open ? "open" : ""}>
-        {/* Products carries the category list. There is no disclosure control:
-            pointing at the item opens it, tabbing into it does the same, and
-            the item itself stays a plain link to the products page. The list
-            is a plain group of links rather than a labelled generic, because
-            ARIA ignores a name on an element with no role. */}
-        {links.map(([href, label]) =>
-          href === "/products" ? (
-            <div className="v-products-nav" key={href}>
+      <div className="v-utility">
+        <span>{organisation} · กรมราชทัณฑ์</span>
+        <span lang="en">VOCATIONAL TRAINING & REHABILITATION</span>
+      </div>
+      <div className="v-header-inner">
+        <Link href="/" className="v-brand" aria-label={`${name} หน้าแรก`} onClick={closeMenus}>
+          <Image
+            src="/brand/cida-logo.png"
+            width={52}
+            height={52}
+            alt="ตราทัณฑสถานบำบัดพิเศษกลาง"
+          />
+          <span>
+            <strong>{name}</strong>
+            <small>{organisation}</small>
+          </span>
+        </Link>
+        <button
+          ref={menuToggle}
+          type="button"
+          className="v-menu-toggle"
+          aria-expanded={open}
+          aria-controls="public-navigation"
+          onClick={() => {
+            setOpen(!open);
+            setCollectionsOpen(false);
+          }}
+        >
+          <span>{open ? "ปิดเมนู" : "เมนู"}</span>
+          <SiteIcon name={open ? "close" : "menu"} />
+        </button>
+        <nav id="public-navigation" aria-label="เมนูหลัก" className={open ? "open" : ""}>
+          {links.map(([href, label]) =>
+            href === "/products" ? (
+              <div
+                className="v-products-nav"
+                key={href}
+                onBlur={(event) => {
+                  if (!event.currentTarget.contains(event.relatedTarget as Node | null))
+                    setCollectionsOpen(false);
+                }}
+              >
+                <button
+                  ref={categoryToggle}
+                  className="v-category-toggle"
+                  type="button"
+                  aria-current={active(href) ? "page" : undefined}
+                  aria-controls="collection-navigation"
+                  aria-expanded={collectionsOpen}
+                  onClick={() => setCollectionsOpen(!collectionsOpen)}
+                >
+                  {label}
+                </button>
+                <div id="collection-navigation" className="v-megamenu" hidden={!collectionsOpen}>
+                  <p>หมวดงานฝีมือ</p>
+                  <Link href="/products" onClick={closeMenus}>
+                    สินค้าทั้งหมด <span aria-hidden="true">↗</span>
+                  </Link>
+                  {categories.map((c, i) => (
+                    <Link href={`/products/category/${c.slug}`} key={c.slug} onClick={closeMenus}>
+                      <small>{String(i + 1).padStart(2, "0")}</small>
+                      {c.name_th}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            ) : (
               <Link
+                key={href}
                 href={href}
-                onClick={closeMenus}
                 aria-current={active(href) ? "page" : undefined}
+                onClick={closeMenus}
               >
                 {label}
               </Link>
-              <div className="v-megamenu">
-                <Link href="/products" onClick={closeMenus}>
-                  สินค้าทั้งหมด
-                </Link>
-                {categories.map((c) => (
-                  <Link href={`/products/category/${c.slug}`} key={c.slug} onClick={closeMenus}>
-                    {c.name_th}
-                  </Link>
-                ))}
-              </div>
-            </div>
-          ) : (
-            <Link
-              key={href}
-              href={href ?? "/"}
-              aria-current={active(href ?? "/") ? "page" : undefined}
-              onClick={closeMenus}
-            >
-              {label}
-            </Link>
-          ),
-        )}
-      </nav>
+            ),
+          )}
+          <Link
+            href="/products#catalog-search"
+            className="v-nav-search"
+            aria-label="ค้นหาผลงาน"
+            onClick={closeMenus}
+          >
+            <SiteIcon name="search" />
+          </Link>
+          <Link
+            href="/contact"
+            className="v-nav-contact"
+            aria-current={active("/contact") ? "page" : undefined}
+            onClick={closeMenus}
+          >
+            ติดต่อสอบถาม <span aria-hidden="true">↗</span>
+          </Link>
+        </nav>
+      </div>
     </header>
   );
 }

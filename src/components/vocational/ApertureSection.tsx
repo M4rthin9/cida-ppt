@@ -4,12 +4,13 @@ import Image from "next/image";
 import { useEffect, useRef } from "react";
 import { Link } from "@/i18n/navigation";
 import { SiteIcon } from "@/components/site/icons";
-import { startScrollSequence } from "@/lib/vocational/scroll-player";
+import { startScrollSequence, type SequencePlayer } from "@/lib/vocational/scroll-player";
 import { JOIN, band, remap, trackStage } from "@/lib/vocational/scroll-stage";
-import type { SequenceManifest } from "@/lib/vocational/sequence";
+import { frameUrl, type SequenceManifest } from "@/lib/vocational/sequence";
 import type { SettingValue } from "@/lib/settings/registry";
 import { splitLines } from "./Lines";
 import type { Category } from "@/lib/vocational/types";
+import { JourneyChrome } from "./JourneyChrome";
 
 /**
  * The second movement, and the page's argument.
@@ -81,6 +82,7 @@ export function ApertureSection({
 }) {
   const section = useRef<HTMLElement>(null);
   const stage = useRef<HTMLDivElement>(null);
+  const copyElement = useRef<HTMLDivElement>(null);
   const canvas = useRef<HTMLCanvasElement>(null);
   const rail = categories.slice(0, 4);
 
@@ -88,13 +90,31 @@ export function ApertureSection({
     const host = section.current;
     const pinned = stage.current;
     if (!host || !pinned) return;
-    const player =
-      sequence && canvas.current ? startScrollSequence(canvas.current, sequence) : null;
+    const content = copyElement.current;
+    let player: SequencePlayer | null = null;
     const set = (name: string, value: number) => pinned.style.setProperty(name, value.toFixed(4));
     const tracker = trackStage(host, pinned, (raw, reduced) => {
       const progress = joined ? remap(raw, JOIN, 1) : raw;
+      const visible = host.getBoundingClientRect().bottom > 0;
+      // Prewarm near the hand-off; the opening never downloads both full sequences.
+      if (
+        !reduced &&
+        visible &&
+        raw < 1 &&
+        !player &&
+        sequence &&
+        canvas.current &&
+        (!joined || raw >= 0.32)
+      ) {
+        player = startScrollSequence(canvas.current, sequence);
+      } else if ((reduced || !visible || raw >= 1) && player) {
+        player.stop();
+        player = null;
+      }
+      pinned.dataset.static = reduced ? "on" : "off";
       host.dataset.live = !joined || reduced || raw >= JOIN ? "on" : "off";
       set("--v-progress", progress);
+      set("--v-journey-progress", joined ? raw : JOIN + progress * JOIN);
       // Reduced motion rests fully open: the aperture is the only thing
       // standing between the reader and this section's content.
       set("--v-open", reduced || joined ? 1 : remap(progress, 0, 0.3));
@@ -141,6 +161,7 @@ export function ApertureSection({
       set("--v-copy-1", reduced ? 1 : remap(progress, c1, c1 + beat));
       set("--v-copy-2", reduced ? 1 : remap(progress, c2, c2 + beat));
       set("--v-copy-3", reduced ? 1 : remap(progress, c3, c3 + beat));
+      content?.toggleAttribute("inert", !reduced && (progress < c3 + beat || progress > 0.97));
       // The scene resolves into the paper the rest of the page is set on, so
       // the stage's bottom edge and the section below it are the same colour
       // by the time the stage unpins.
@@ -152,6 +173,7 @@ export function ApertureSection({
     return () => {
       tracker.stop();
       player?.stop();
+      content?.removeAttribute("inert");
     };
   }, [sequence, joined]);
 
@@ -164,7 +186,7 @@ export function ApertureSection({
       data-sequence={sequence ? "on" : "off"}
       aria-label="งานฝึกวิชาชีพ"
     >
-      <div ref={stage} className="v-aperture-stage">
+      <div ref={stage} className="v-aperture-stage" data-static="on">
         <div className="v-aperture-shutter" aria-hidden="true">
           {/* With a clip imported the aperture reveals footage, dimmed and
               veiled so the column keeps its contrast. Without one it reveals
@@ -173,6 +195,13 @@ export function ApertureSection({
               word tops out at half the brightness it asks for. */}
           {sequence ? (
             <div className="v-aperture-media">
+              <Image
+                className="v-aperture-still"
+                src={frameUrl(sequence, sequence.count - 1) || "/images/craft-hero.webp"}
+                alt=""
+                fill
+                sizes="100vw"
+              />
               <canvas ref={canvas} className="v-aperture-canvas" />
               <span className="v-cine-veil" />
               <span className="v-cine-vignette" />
@@ -199,7 +228,15 @@ export function ApertureSection({
         <span className="v-aperture-seam" aria-hidden="true" />
         <span className="v-aperture-close" aria-hidden="true" />
 
-        <div className="v-aperture-copy">
+        <p className="v-reveal-signature" aria-hidden="true">
+          <span lang="en">THE ART OF</span>
+          <strong lang="en">
+            beginning
+            <br />
+            <em>again.</em>
+          </strong>
+        </p>
+        <div ref={copyElement} className="v-aperture-copy">
           {copy.apertureEyebrow && (
             <p className="v-eyebrow" data-k="1">
               {copy.apertureEyebrow}
@@ -229,6 +266,7 @@ export function ApertureSection({
             {copy.apertureCta} <SiteIcon name="arrow" />
           </Link>
         </div>
+        <JourneyChrome chapter={2} />
       </div>
     </section>
   );

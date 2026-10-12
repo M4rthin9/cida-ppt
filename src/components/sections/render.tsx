@@ -36,7 +36,7 @@ function Hero({ block, data }: { block: Extract<Section, { type: "hero" }>; data
       <div className={`site-shell hero-layout${hasVisual ? "" : " hero-without-image"}`}>
         <div className="hero-copy">
           {data.organisation && <p className="hero-kicker site-eyebrow">{data.organisation}</p>}
-          <h1>{block.headline ?? data.siteName}</h1>
+          <h2>{block.headline ?? data.siteName}</h2>
           {(block.body ?? data.tagline) && (
             <p className="hero-body">{block.body ?? data.tagline}</p>
           )}

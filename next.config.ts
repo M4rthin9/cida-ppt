@@ -4,6 +4,8 @@ import type { NextConfig } from "next";
 const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
 
 const nextConfig: NextConfig = {
+  // Isolate production verification from a concurrently running local dev server.
+  distDir: process.env.NEXT_DIST_DIR || ".next",
   // The VPS is 6 GB / 4 cores; a standalone bundle keeps the runtime image small
   // and lets `docker compose pull` replace the app without a rebuild on the box.
   // Windows local builds can skip deployment packaging when symlink creation
@@ -30,6 +32,8 @@ const nextConfig: NextConfig = {
     serverActions: { bodySizeLimit: "24mb" },
   },
   images: {
+    // Local frame posters use a manifest version in their query string.
+    localPatterns: [{ pathname: "/**" }],
     // No hotlinked assets (CLAUDE.md): every image is local or in the media library.
     remotePatterns: [],
     formats: ["image/avif", "image/webp"],

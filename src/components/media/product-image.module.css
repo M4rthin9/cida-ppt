@@ -1,0 +1,87 @@
+/* A paper studio that follows the same CMS palette as the rest of the site. */
+.stage {
+  position: absolute;
+  inset: 0;
+  display: block;
+  overflow: hidden;
+  isolation: isolate;
+  background:
+    radial-gradient(ellipse at 28% 15%, var(--color-bg) 0%, transparent 65%),
+    linear-gradient(145deg, var(--color-surface), var(--color-bg) 55%, var(--color-surface-alt));
+}
+
+.stage::before {
+  content: "";
+  position: absolute;
+  inset: 14px;
+  border: 1px solid color-mix(in srgb, var(--color-brand) 12%, transparent);
+  border-radius: 2px;
+  pointer-events: none;
+}
+
+.stage::after {
+  content: "";
+  position: absolute;
+  inset-inline: 35%;
+  bottom: 14px;
+  height: 2px;
+  background: var(--v-accent, var(--color-border));
+  pointer-events: none;
+}
+
+.photograph {
+  position: absolute;
+  inset: 6%;
+  display: block;
+  mix-blend-mode: multiply;
+}
+
+.photograph img {
+  object-fit: contain;
+  object-position: center;
+  padding: 0;
+}
+
+.empty {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: var(--color-text-muted);
+  font-size: 13px;
+}
+
+.empty svg {
+  width: 28px;
+  height: 28px;
+  color: var(--color-brand);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .photograph {
+    transition: transform 0.45s ease;
+  }
+
+  a:is(:hover, :focus-visible) .photograph {
+    transform: scale(1.025);
+  }
+}
+
+@media (max-width: 600px) {
+  .stage::before {
+    inset: 10px;
+  }
+
+  .stage::after {
+    bottom: 10px;
+  }
+}
+
+@media print {
+  .photograph {
+    mix-blend-mode: normal;
+  }
+}

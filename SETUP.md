@@ -2,7 +2,7 @@
 
 ## Local development
 
-The existing Next.js application needs Node 22+, pnpm 10.33.0 and PostgreSQL 16. Keep a persistent PostgreSQL volume and a writable media directory; the CMS is not backed by browser storage or JSON fixtures.
+The Next.js 16.4.0 / React 19.3.0 application needs Node 22+, pnpm 10.33.0 and PostgreSQL 16. Development and production builds use Turbopack by default. Keep a persistent PostgreSQL volume and a writable media directory; the CMS is not backed by browser storage or JSON fixtures.
 
 For a complete local Docker stack:
 
@@ -28,6 +28,8 @@ Use `postgres://cida:cida@localhost:5432/cida` for this local database; the `db`
 On PowerShell use `pnpm.cmd` if the PowerShell shim is blocked. Supply `ADMIN_PASSWORD` via a secure prompt or your secret manager; do not commit it or put a real password in a command argument.
 
 For a local production build on Windows without symbolic-link permissions, set `$env:NEXT_STANDALONE = 'false'` before `pnpm.cmd build` and keep that value for `pnpm.cmd start`. This builds the normal Next.js server output without the deployment bundle. Leave this variable unset for Linux, Docker and CI, which keep the existing standalone deployment output. No operating-system permission changes are needed for local review.
+
+When a development server is also running, set `$env:NEXT_DIST_DIR = '.next-production'` for both the production build and start commands. This keeps production output separate from the dev server's `.next` folder. The default output directory remains `.next`.
 
 ## Production configuration
 
@@ -77,7 +79,7 @@ Editors can manage products, categories, media, news and inquiries. Owners also 
 
 ## Cinematic assets
 
-The homepage opens on two scroll-driven stages: `CinematicHero`, whose frame sequence is scrubbed by the scroll, and `ApertureSection`, which opens from its centre line onto a second sequence. Both sequences are optional. With none imported the page renders the designed static composition instead — no canvas, no frame requests, and the same page height either way — so the rest of the application can be built and reviewed without any footage.
+The homepage opens with two scroll-driven stages: `CinematicHero` and `ApertureSection`. Optimized posters appear immediately, the first sequence loads automatically, and the second prewarms near the hand-off. The chapter rail includes a shortcut to the collections. Both sequences are optional; missing sets render static compositions. Reduced-motion and JavaScript-free views show readable posters without downloading frame sequences. Check the opening with `node scripts/verify-cinematic-home.mjs` against a local server on port 3001 (or set `DESIGN_QA_URL`).
 
 Import a sequence from a folder of frames or a ZIP, into either named set:
 

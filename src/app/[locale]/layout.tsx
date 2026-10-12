@@ -17,6 +17,9 @@ import { buildAlternates } from "@/lib/seo/alternates";
 import { DEFAULT_OG_IMAGE, OG_HEIGHT, OG_WIDTH } from "@/lib/seo/metadata";
 import "../globals.css";
 import "../vocational.css";
+import "../collections.css";
+import "../cinematic.css";
+import "../cinematic-opening.css";
 import "../effects.css";
 
 /**
@@ -118,7 +121,7 @@ export default async function LocaleLayout({
   const theme = await getCachedSetting("theme");
 
   return (
-    <html lang={locale} dir="ltr" style={themeStyle(theme)}>
+    <html lang={locale} dir="ltr" data-scroll-behavior="smooth" style={themeStyle(theme)}>
       <head>
         <FontPreload />
       </head>

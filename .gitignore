@@ -2,6 +2,7 @@ node_modules/
 .pnpm-store/
 
 .next/
+.next-production/
 out/
 build/
 next-env.d.ts

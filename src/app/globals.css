@@ -1,4 +1,4 @@
-@import "tailwindcss";
+﻿@import "tailwindcss";
 
 /*
  * Anuphan, self-hosted — no Google Fonts CDN (SPEC.md §2, docs/DESIGN.md).
@@ -42,23 +42,23 @@
  * Never hard-code a hex value in a component (CLAUDE.md).
  */
 @theme {
-  --color-bg: #f7f7f7;
-  --color-surface: #eeeeee;
-  --color-surface-alt: #e2e5ea;
+  --color-bg: #f8f6f0;
+  --color-surface: #efede5;
+  --color-surface-alt: #e4e9e0;
 
-  --color-heading: #23272e;
-  --color-text: #464c56;
-  --color-text-muted: #5f6673;
+  --color-heading: #243b32;
+  --color-text: #43544b;
+  --color-text-muted: #667064;
 
-  --color-brand: #393e46;
-  --color-brand-hover: #23272e;
-  --color-brand-tint: #e6e8ec;
+  --color-brand: #294c3c;
+  --color-brand-hover: #243b32;
+  --color-brand-tint: #e7eee6;
 
   --color-accent: #0b7a3f;
   --color-accent-tint: #e8f5ec;
   --color-accent-ink: #075c2f;
 
-  --color-border: #d5d8de;
+  --color-border: #d8dbce;
 
   /* Lives inside the seal artwork only — 1.5:1 on white. Never text, never a surface. */
   --color-seal-gold: #edd357;
@@ -218,7 +218,7 @@ h4 {
 .hero-without-image {
   grid-template-columns: 1fr;
 }
-.hero-without-image .hero-copy h1 {
+.hero-without-image .hero-copy :is(h1, h2) {
   max-width: 24ch;
 }
 .hero-kicker {
@@ -233,7 +233,7 @@ h4 {
   height: 1px;
   background: var(--color-brand);
 }
-.hero-copy h1 {
+.hero-copy :is(h1, h2) {
   font-size: var(--type-display);
   font-weight: 500;
   line-height: 1.5;
@@ -339,7 +339,9 @@ h4 {
   gap: 2rem 1.5rem;
 }
 .product-card-media {
-  border: 0;
+  position: relative;
+  aspect-ratio: 1;
+  border: 1px solid var(--color-border);
 }
 .product-card h3 {
   margin-top: 1.2rem;
@@ -505,7 +507,7 @@ h4 {
     gap: 2rem;
     padding-block: 2rem;
   }
-  .hero-copy h1 {
+  .hero-copy :is(h1, h2) {
     max-width: 16ch;
   }
   .hero-kicker {

@@ -1,22 +1,26 @@
 "use client";
 import { useState } from "react";
-import Image from "next/image";
+import { ProductImage } from "@/components/media/product-image";
 import type { MediaItem } from "@/lib/vocational/types";
 export function ProductGallery({ items, name }: { items: MediaItem[]; name: string }) {
   const [index, setIndex] = useState(0),
     active = items[index];
-  if (!active) return <div className="v-gallery-empty">ยังไม่มีภาพสินค้า</div>;
+  if (!active)
+    return (
+      <div className="v-gallery-empty">
+        <ProductImage alt={name} sizes="(max-width: 900px) 90vw, 50vw" />
+      </div>
+    );
   return (
     <div className="v-gallery">
       <div className="v-gallery-main">
-        <Image
+        <ProductImage
           src={`/media/${active.storage_key}/master.webp`}
           alt={active.alt || name}
-          fill
           sizes="(max-width: 900px) 100vw, 55vw"
-          priority
+          preload
         />
-        <span>
+        <span className="v-gallery-counter" aria-live="polite">
           {index + 1} / {items.length}
         </span>
       </div>
@@ -29,10 +33,9 @@ export function ProductGallery({ items, name }: { items: MediaItem[]; name: stri
               aria-label={`ดูภาพที่ ${i + 1}`}
               aria-pressed={index === i}
             >
-              <Image
+              <ProductImage
                 src={`/media/${m.storage_key}/master.webp`}
-                width={90}
-                height={90}
+                sizes="72px"
                 alt={m.alt || name}
               />
             </button>

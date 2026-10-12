@@ -1,5 +1,92 @@
 # Verification
 
+## Consistent product imagery - 12 October 2026
+
+All public product cards, featured work, gallery images and gallery thumbnails share the same ivory studio treatment, forest-green frame and brass detail. Photographs remain uncropped and the original media files are retained. Catalogue cards now use square proportions and align product names and prices.
+
+TypeScript, focused ESLint, all 234 existing tests and the production build pass. Browser checks cover all 29 published photographs across category pagination, catalogue and gallery layouts at 320, 390, 768 and 1440px, image containment, thumbnail switching and no runtime errors. Screenshots are saved under `test-results/product-theme/`.
+
+## Fiberglass catalogue publication - 9 October 2026
+
+Following the user's explicit publication request, all 29 imported fiberglass products were published through authenticated CMS forms. Stock remains Available now, as previously confirmed. Source prices, dimensions, materials and original-photo galleries are retained. The two wooden workbook entries remain outside this import.
+
+- Reverified all 30 presentation images against their source hashes and saved upload bytes. Fourteen sideways photos have quarter-turn corrections; presentation preparation proves the original pixels are unchanged after reversing orientation and padding. No AI product images are used.
+- Saved descriptive Thai alt text for all 30 photos through the CMS media editor. The ART TOY product retains both photos and includes a request to confirm the model/set before ordering; unspecified weight and quantity remain blank.
+- `scripts/verify-published-fiberglass.mjs` passes on the production preview: 29 public product detail pages, 30 gallery images, original prices, available stock, all 29 entries across category pagination, mobile layouts and no browser runtime errors. All publication actors are disabled after completing their audited changes.
+- Publication state, original draft snapshots and public verification are recorded in `content/fiberglass-drafts/publication.json`, `publication-before.json` and `public-verification.json`. This publishes CMS records in the connected local site; no remote deployment was performed.
+
+## Generated studio category banner - 9 October 2026
+
+Replaced the photo-frame collage with `content/category-banners/fiberglass-hero-v3.png`. The built-in image tool generated only the forest-green studio background and ivory plinth. The workbook's existing transparent Hanuman photograph is composited at native resolution with no product generation, resampling, segmentation or retouching; every opaque foreground RGB pixel matches the original. This preserves the user's requirement for the original character while providing a unified photographic setting.
+
+The new banner was uploaded and assigned through the authenticated category form, preserving the category's other fields. Production browser checks pass at 1440, 390 and 320px for the saved image, text layout and product dropdown. The composition script passes lint. The product drafts and original files remain unchanged.
+
+## Product navigation and fiberglass banner - 9 October 2026
+
+The **ผลิตภัณฑ์** label itself is now the dropdown button; the separate arrow button and duplicate top-level product link are removed. The dropdown retains All products and four live category links, active styling, keyboard activation, Escape focus restoration, outside dismissal and mobile navigation.
+
+The fiberglass category's Bento background was uploaded and assigned through the authenticated CMS form. It combines three original workbook photographs with forest-green artwork and ivory frames; no generated or retouched products are used. The category banner and publishing status were retained. `content/category-banners/cms-assignment.json` records the saved media, and `scripts/build-fiberglass-banner.mjs` reproduces the composition. The fiberglass tile uses contain sizing to preserve the entire composition on narrow screens.
+
+Desktop and mobile browser checks at 1440, 390 and 320px pass label activation, Escape, the All products route, saved background image loading and overflow checks. ESLint and the production build pass.
+
+## Category bento and background uploads - 9 October 2026
+
+The homepage gallery is now a compact bento: a tall feature tile, a wide tile and two smaller tiles, with rounded corners, full-tile images and gradient-protected text. Tablet uses two columns and phones one. Categories without images retain their original craft illustrations. Incomplete groups expand to fill the available columns.
+
+- Each category's existing `thumbnail_image` field supplies its independent bento background, followed by the category banner and illustrated fallback. The CMS control is labelled **ภาพพื้นหลัง Bento** and explains image size, centre cropping and saving. Existing authenticated upload, validation, auditing and original-file storage remain in use.
+- A temporary owner tested the real CMS: upload a PNG, save a category, load the public background, reopen the editor, replace the image, remove it and return to the illustrated fallback. Original upload bytes were verified unchanged. Other categories retained their backgrounds; setting the test category to draft removed its public tile. Temporary account, category, media and audit records were removed; test files were archived under ignored `test-results`.
+- `node scripts/verify-bento-layout.mjs` verifies 320, 390, 700, 768, 1050, 1100, 1440 and 1920px, contained titles/actions, aligned desktop bento geometry, keyboard activation, focus visibility and visible JavaScript-free content. Screenshots are saved under `test-results/bento`.
+- All 234 tests, ESLint and the production build, including TypeScript, pass. The bento browser checks also pass against the production server. The original cinematic scrolling remains enabled and the fiberglass catalogue drafts remain unpublished.
+
+## Next.js 16 upgrade - 9 October 2026
+
+Upgraded Next.js and its ESLint configuration to **16.4.0**, and React/React DOM to **19.3.0**. Both package-manager locks are synchronized; the canonical pnpm frozen install passes. Development and production builds now use Turbopack.
+
+- Migrated middleware to the Node.js proxy convention, preserving authentication and locale routing. CMS mutations use `updateTag` for immediate cache invalidation. Native flat ESLint configuration and scoped React-rule fixes pass lint; TypeScript and all **234 tests across 28 files** pass.
+- The production build passes with isolated `.next-production` output and `NEXT_STANDALONE=false` for local Windows review. Node-only startup validation is runtime-gated; the previous Edge warning no longer appears. The generated Next.js agent guidance is retained in `AGENTS.md`.
+- Both public browser suites pass: cinematic scrolling forward/backward, deferred sequence loading, focus and skip controls, responsive layouts, reduced motion, JavaScript-disabled and failed-frame fallbacks, category navigation, catalogue filters and contact validation. No browser runtime errors were observed.
+- Anonymous CMS access redirects to login and the media API denies access. A temporary owner authenticated through the real login form; authenticated dashboard, catalogue, media, users and editor routes passed. The media file chooser permits multiple files and invalid product submission focuses the required name.
+- A real theme save immediately updated the public container width; saving the original value restored it. The temporary account, its audit records and theme metadata were cleaned up. Existing content and unpublished fiberglass review drafts remain intact.
+- Both document layouts declare their smooth-scroll behavior for Next.js 16 route transitions. The cinematic opening and collection gallery remain enabled. Deployment and real-device/network performance are outside this local verification.
+
+## Collection gallery refinement - 9 October 2026
+
+The homepage categories now form a staggered two-column gallery, with larger framed illustrations, distinct material palettes, clear Thai descriptions and collection links. Category headers repeat the palette and artwork. Uploaded category images still take precedence over illustrations; counts only appear for published products.
+
+- The gallery and all four category destinations pass layout checks at **320, 390, 700, 768, 1050, 1440 and 1920px**: no horizontal overflow, one primary heading and category cards contained within the viewport. A minimum-height/aspect-ratio interaction found at 320px was corrected with an explicit panel width.
+- Keyboard navigation, hover/focus treatment, reduced motion and category navigation pass. Production checks confirm all four destinations and native category links with JavaScript disabled. No browser runtime errors were observed during the gallery checks.
+- The previous public loading boundary could leave streamed content hidden without JavaScript. It was removed so public pages render directly; fallback checks now assert actual visibility rather than only DOM presence and computed opacity.
+- TypeScript, ESLint, formatting and the production build pass. Screenshots: `docs/screenshots/collections-gallery-desktop.png` and `collections-gallery-mobile.png`. The local database has no category photograph uploads, so this visual review covers the original illustration fallback; the uploaded-image path is retained in the component.
+- Category order, visibility, descriptions, routes and product counts still come from the existing public queries. No database content or fiberglass review drafts were changed.
+
+## Animated opening restored and refined - 9 October 2026
+
+The homepage opens automatically with the original two-part scroll sequence again, superseding the optional-film layout below. The new composition uses ivory/gold Thai titles, a dark glass masthead, timed captions, a framed chapter-progress rail and a brighter editorial reveal. The official emblem and catalogue data remain intact.
+
+- All **234 tests across 28 files**, TypeScript, ESLint and changed-source formatting pass. The production build passes with `NEXT_STANDALONE=false` and `NEXT_DIST_DIR=.next-production`. Isolating the output avoids collisions with an existing development server; the default deployment directory is unchanged. The inherited Auth.js/Jose Edge compression warning remains.
+- `node scripts/verify-cinematic-home.mjs` passes against the production server: automatic playback, deferred second-sequence downloads, both scene ranges, reverse scrolling, hidden-control focus gating, the collections shortcut and route cleanup. No browser runtime errors occurred.
+- Opening and final-reveal headings and actions fit at **1920x1080, 1280x720, 768x1024, 390x844, 320x568 and 844x390**, with no horizontal overflow. Clean production screenshots are saved as `docs/screenshots/cinematic-*.png`.
+- Reduced motion and JavaScript-disabled browsing use optimized posters with readable content and no raw sequence downloads. Deliberately failed frame requests preserve the opening poster and product shortcut.
+- Public-route layouts pass at seven widths from 320 to 1920px. Navigation disclosure, Escape/outside dismissal, mobile menus, catalogue filters, contact validation and missing-product recovery pass against production. A hidden decorative wordmark intercepted clicks on the opening title; disabling its pointer events fixed the issue. Opening product actions also navigate successfully at 1440, 390 and 320px. The final production build passes after this correction.
+- The isolated frame-player browser checks pass: exact frame pixels forward/backward, rapid jumps, resize/DPR, cleanup/restart, delayed and missing frames, mobile/landscape and runtime motion-preference changes. The fixture now loads the separated cinematic stylesheet and strips its leading byte-order mark when concatenating CSS.
+- This pass changes presentation and local build isolation. The fiberglass catalogue review drafts remain unpublished. Real-device performance and remote-network throughput are outside these local browser checks.
+
+## Complete visual redesign - 9 October 2026
+
+The public site now uses a warm ivory and forest green craft direction, preserving the official emblem, Thai content, real catalogue data, settings, authentication and server actions. The CMS shares the palette and restrained corner treatments. The original film remains available through an explicit, dynamically loaded experience.
+
+- All **234 tests across 28 files**, TypeScript, ESLint and Prettier pass.
+- Browser checks cover the homepage, catalogue, four real category pages, training, story, news and contact at **320, 390, 768, 1100, 1280, 1440 and 1920px**, with one primary heading and no horizontal document overflow. Intermediate laptop widths and a mobile viewport with JavaScript disabled were also inspected.
+- Catalogue search, stock and featured filters retain state across category transitions and reset correctly. Category disclosure and mobile navigation support Escape, outside dismissal and focus restoration. Failed contact submissions focus the invalid field and retain enquiry text; no enquiry was created during validation checks.
+- The final production screenshot review corrected the contact navigation button's active text colour. Both active and hover states pass WCAG AA text contrast at desktop and mobile widths; the final production build was repeated after this correction.
+- No film frame requests occur before activation. Opening loads the players; closing unmounts them. Film skip links, reduced-motion stills and the mobile layout were checked. Public missing-record recovery renders correctly, with no browser runtime errors.
+- A temporary local owner account authenticated through the real login form. All 20 CMS dashboard, listing, editor and settings routes passed layout checks at **1440, 768, 390 and 320px**. Product validation focuses the invalid name field; the mobile menu closes with Escape. Native colour inputs and positioned table accessibility labels were corrected after tablet/mobile checks. The temporary account and its audit entries were removed; existing accounts and content were retained.
+- The optimized production build passes with `NEXT_STANDALONE=false`, the documented Windows packaging option. Linux/Docker standalone output is unchanged. The inherited Auth.js/Jose Edge compression warning remains. Production login, product validation, mobile menu, theme settings and the users table also pass. The local QA browser maps the configured port-3000 login return URL to the isolated port-3001 server without changing `.env`.
+- The local database has no published products or news. Populated product-detail and news-detail browser flows therefore remain outside this pass; their existing renderers, image handling and business logic are retained. No fabricated content was published.
+- Clean production screenshots are saved under `docs/screenshots/redesign-*.png`; additional review screenshots are under `test-results/redesign/`. The repeatable public check is `node scripts/verify-design.mjs`; `DESIGN_QA_URL` selects the server origin. Next.js streams the missing-product recovery with a `noindex` robots tag; an already streamed response can have HTTP 200 while rendering the 404 state.
+
+The September sections below are historical verification of earlier designs and film configurations.
+
 Implementation verified in isolated test environments, September 2026. Test accounts, products, news and generated frame fixtures are not seeded or committed.
 
 ## Hero refinement — 22 September 2026

@@ -37,6 +37,7 @@ export function ConsentBanner({ ga4Id, gtmId }: { ga4Id: string | null; gtmId: s
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- Read browser-only consent after hydration; SSR must not load analytics.
     setDecision(readDecision());
     setReady(true);
   }, []);

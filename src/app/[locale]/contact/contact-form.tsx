@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useEffect, useRef } from "react";
 import { useFormStatus } from "react-dom";
 import { useTranslations } from "next-intl";
 import { submitContactAction } from "./actions";
@@ -36,6 +36,12 @@ export function ContactForm({
 }) {
   const t = useTranslations("contact");
   const [state, formAction] = useActionState(submitContactAction, INITIAL);
+  const form = useRef<HTMLFormElement>(null);
+  useEffect(() => {
+    if (state.status === "error") {
+      form.current?.querySelector<HTMLElement>('[aria-invalid="true"]')?.focus();
+    }
+  }, [state]);
 
   if (state.status === "success") {
     return (
@@ -49,7 +55,7 @@ export function ContactForm({
   }
 
   return (
-    <form action={formAction} className="flex flex-col gap-5" noValidate>
+    <form ref={form} action={formAction} className="flex flex-col gap-5" noValidate>
       {state.message && (
         <p
           role="alert"

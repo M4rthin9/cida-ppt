@@ -1,20 +1,15 @@
 import { Link } from "@/i18n/navigation";
-import Image from "next/image";
+import { ProductImage } from "@/components/media/product-image";
 import { priceLabel, type Product } from "@/lib/vocational/types";
 export function ProductCard({ product: p }: { product: Product }) {
   return (
     <article className="v-product-card">
       <Link href={`/products/${p.slug}`} className="v-product-image" aria-label={`ดู ${p.name_th}`}>
-        {p.image_url ? (
-          <Image
-            src={p.image_url}
-            alt={p.name_th}
-            fill
-            sizes="(max-width: 600px) 100vw, (max-width: 1000px) 50vw, 33vw"
-          />
-        ) : (
-          <span className="v-no-image">ยังไม่มีภาพสินค้า</span>
-        )}
+        <ProductImage
+          src={p.image_url}
+          alt={p.name_th}
+          sizes="(max-width: 380px) 88vw, (max-width: 1000px) 44vw, 30vw"
+        />
         {p.is_new && <span className="v-product-badge">ใหม่</span>}
         <span className="v-card-arrow">↗</span>
       </Link>

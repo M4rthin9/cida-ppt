@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+﻿import { describe, expect, it } from "vitest";
 import { SETTINGS, SETTING_KEYS, defaultsFor, parseGlobal, parseLocalized } from "./registry";
 
 describe("registry", () => {
@@ -21,14 +21,14 @@ describe("registry", () => {
 
 describe("parseGlobal / parseLocalized", () => {
   it("falls back to the default when the row is missing — a fresh install renders", () => {
-    expect(parseGlobal("theme", undefined).colorBrand).toBe("#393e46");
+    expect(parseGlobal("theme", undefined).colorBrand).toBe("#294c3c");
     expect(parseLocalized("line", undefined).buttonLabel).toBe("สั่งซื้อ / สอบถามทาง LINE");
   });
 
   it("falls back rather than throwing on a corrupt row", () => {
-    expect(parseGlobal("theme", { colorBrand: "not-a-colour" }).colorBrand).toBe("#393e46");
-    expect(parseGlobal("theme", "garbage").colorBrand).toBe("#393e46");
-    expect(parseGlobal("theme", null).colorBrand).toBe("#393e46");
+    expect(parseGlobal("theme", { colorBrand: "not-a-colour" }).colorBrand).toBe("#294c3c");
+    expect(parseGlobal("theme", "garbage").colorBrand).toBe("#294c3c");
+    expect(parseGlobal("theme", null).colorBrand).toBe("#294c3c");
   });
 
   it("keeps stored values that are valid", () => {
@@ -43,6 +43,31 @@ describe("parseGlobal / parseLocalized", () => {
 
   it("normalises a hex colour to lower case", () => {
     expect(parseGlobal("theme", { colorBrand: "#AABBCC" }).colorBrand).toBe("#aabbcc");
+  });
+
+  it("upgrades the original stored palette without changing layout settings", () => {
+    const legacy = {
+      ...defaultsFor("theme"),
+      colorBg: "#f7f7f7",
+      colorSurface: "#eeeeee",
+      colorSurfaceAlt: "#e2e5ea",
+      colorHeading: "#23272e",
+      colorText: "#464c56",
+      colorTextMuted: "#5f6673",
+      colorBrand: "#393e46",
+      colorBrandHover: "#23272e",
+      colorBrandTint: "#e6e8ec",
+      colorBorder: "#d5d8de",
+      containerWidth: 1440,
+      radiusCard: 12,
+    };
+    const upgraded = parseGlobal("theme", legacy);
+    expect(upgraded.colorBg).toBe("#f8f6f0");
+    expect(upgraded.colorBrand).toBe("#294c3c");
+    expect(upgraded.containerWidth).toBe(1440);
+    expect(upgraded.radiusCard).toBe(12);
+    expect(parseGlobal("theme", { ...legacy, colorBrand: "#123456" }).colorBg).toBe("#f7f7f7");
+    expect(parseGlobal("theme", { ...legacy, colorBrand: "#123456" }).colorBrand).toBe("#123456");
   });
 
   it("returns an empty object for a key with no localized half", () => {

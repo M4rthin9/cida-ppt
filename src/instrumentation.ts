@@ -8,14 +8,14 @@
  * Exit instead, so the failure is loud and the restart policy can act on it.
  */
 export async function register(): Promise<void> {
-  if (process.env.NEXT_RUNTIME !== "nodejs") return;
-
-  const { assertEnv } = await import("@/lib/env");
-  try {
-    assertEnv();
-  } catch (error) {
-    const message = error instanceof Error ? error.message : String(error);
-    console.error(`\n[boot] ${message}\n`);
-    process.exit(1);
+  if (process.env.NEXT_RUNTIME === "nodejs") {
+    const { assertEnv } = await import("@/lib/env");
+    try {
+      assertEnv();
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      console.error(`\n[boot] ${message}\n`);
+      process.exit(1);
+    }
   }
 }

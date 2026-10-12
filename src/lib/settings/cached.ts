@@ -14,7 +14,7 @@ import { getSetting } from "./store";
  *    every render, which is what §6 asks for.
  *  - Next's tagged cache lets public pages stay statically rendered. Without
  *    it a settings-driven layout would force every route dynamic and give up
- *    the static-fast rendering §10 requires. `revalidateTag(SETTINGS_TAG)` on
+ *    the static-fast rendering §10 requires. `updateTag(SETTINGS_TAG)` on
  *    write regenerates them, which is how a colour change reaches the public
  *    site with no rebuild.
  */
@@ -24,7 +24,9 @@ export function getCachedSetting<K extends SettingKey>(
   key: K,
   locale: string = DEFAULT_LOCALE,
 ): Promise<SettingValue<K>> {
-  return unstable_cache(() => getSetting(key, locale), [`settings:${key}:${locale}`], {
+  // A design revision changes defaults even when there has been no CMS write.
+  const version = key === "theme" ? ":craft-v2" : "";
+  return unstable_cache(() => getSetting(key, locale), [`settings:${key}:${locale}${version}`], {
     tags: [SETTINGS_TAG],
   })();
 }

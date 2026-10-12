@@ -59,6 +59,7 @@ export function SiteNav({
 
   // Route change closes everything — otherwise the drawer stays over the new page.
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- Synchronize transient menus with external route changes.
     setOpenId(null);
     setOpenDrawer(false);
   }, [pathname]);

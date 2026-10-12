@@ -17,7 +17,7 @@ const COLOUR_FIELDS: { name: keyof Theme; label: string; note?: string }[] = [
   { name: "colorHeading", label: "หัวข้อ" },
   { name: "colorText", label: "ข้อความเนื้อหา" },
   { name: "colorTextMuted", label: "ข้อความรอง" },
-  { name: "colorBrand", label: "สีหลัก (ตราครุยราชทัณฑ์)", note: "ลิงก์ เมนู เส้นใต้หัวข้อ" },
+  { name: "colorBrand", label: "สีหลักของเว็บไซต์", note: "ลิงก์ เมนู เส้นใต้หัวข้อ" },
   { name: "colorBrandHover", label: "สีหลักเมื่อชี้เมาส์" },
   { name: "colorBrandTint", label: "สีหลักอ่อน" },
   { name: "colorAccent", label: "สีปุ่ม LINE", note: "ใช้กับการติดต่อผ่าน LINE เท่านั้น" },
@@ -59,8 +59,12 @@ export function ThemeForm({
   const failures = checks.filter((c) => !c.passes);
 
   return (
-    <form action={formAction} className="grid gap-8 lg:grid-cols-[1fr_20rem]" noValidate>
-      <div className="space-y-6">
+    <form
+      action={formAction}
+      className="cms-theme-form grid gap-8 lg:grid-cols-[minmax(0,1fr)_20rem]"
+      noValidate
+    >
+      <div className="min-w-0 space-y-6">
         {state.message ? (
           <FormBanner kind={state.errors ? "error" : "success"}>{state.message}</FormBanner>
         ) : null}
@@ -72,11 +76,11 @@ export function ThemeForm({
           </FormBanner>
         ) : null}
 
-        <fieldset>
+        <fieldset className="min-w-0">
           <legend className="text-sm font-medium text-(--color-heading)">สี</legend>
           <div className="mt-3 grid gap-4 sm:grid-cols-2">
             {COLOUR_FIELDS.map((f) => (
-              <div key={f.name}>
+              <div key={f.name} className="min-w-0">
                 <label
                   htmlFor={f.name}
                   className="block text-sm font-medium text-(--color-heading)"
@@ -96,7 +100,7 @@ export function ThemeForm({
                     name={f.name}
                     value={String(theme[f.name])}
                     onChange={(e) => set(f.name, e.target.value)}
-                    className="block w-full rounded-(--radius-control) border border-(--color-border) bg-(--color-bg) px-3 py-2.5 font-mono text-sm text-(--color-heading) focus:outline-none focus:ring-2 focus:ring-(--color-brand)"
+                    className="block min-w-0 w-full rounded-(--radius-control) border border-(--color-border) bg-(--color-bg) px-3 py-2.5 font-mono text-sm text-(--color-heading) focus:outline-none focus:ring-2 focus:ring-(--color-brand)"
                   />
                 </div>
                 <FieldError id={`${f.name}-error`} message={state.errors?.[f.name]} />
@@ -106,7 +110,7 @@ export function ThemeForm({
           </div>
         </fieldset>
 
-        <fieldset>
+        <fieldset className="min-w-0">
           <legend className="text-sm font-medium text-(--color-heading)">รูปทรงและความกว้าง</legend>
           <div className="mt-3 grid gap-4 sm:grid-cols-3">
             {NUMBER_FIELDS.map((f) => (
@@ -139,7 +143,7 @@ export function ThemeForm({
       </div>
 
       {/* Live preview: the same custom properties the site renders, scoped to this box. */}
-      <aside className="space-y-4">
+      <aside className="min-w-0 space-y-4">
         <section>
           <h2 className="text-sm font-medium text-(--color-heading)">ตัวอย่าง</h2>
           <div

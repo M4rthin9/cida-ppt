@@ -30,8 +30,8 @@ export function MediaManager({
   useEffect(() => {
     if (!open) return;
     const controller = new AbortController();
-    setLoading(true);
     const timeout = setTimeout(() => {
+      setLoading(true);
       fetch(`/api/admin/media?q=${encodeURIComponent(q)}&page=${page}`, {
         signal: controller.signal,
       })
@@ -54,6 +54,13 @@ export function MediaManager({
       controller.abort();
     };
   }, [open, q, page]);
+  function openFiles(replacement: string | null) {
+    replace.current = replacement;
+    if (!file.current) return;
+    // The native picker must receive its mode before it opens.
+    file.current.multiple = multiple && replacement === null;
+    file.current.click();
+  }
   function choose(id: string) {
     onChange(
       multiple
@@ -145,14 +152,7 @@ export function MediaManager({
         <p>ลากภาพมาวาง หรือเลือกไฟล์จากเครื่อง</p>
         <small>JPEG, PNG, WebP · ไม่เกิน 10 MB ต่อภาพ · เก็บภาพต้นฉบับทุกไฟล์</small>
         <div className="cms-actions">
-          <button
-            type="button"
-            disabled={progress !== null}
-            onClick={() => {
-              replace.current = null;
-              file.current?.click();
-            }}
-          >
+          <button type="button" disabled={progress !== null} onClick={() => openFiles(null)}>
             อัปโหลดภาพ
           </button>
           <button
@@ -169,7 +169,7 @@ export function MediaManager({
           ref={file}
           type="file"
           accept="image/jpeg,image/png,image/webp"
-          multiple={multiple && !replace.current}
+          multiple={multiple}
           className="sr-only"
           aria-label="ไฟล์รูปภาพ"
           onChange={(e) => e.target.files && void upload(e.target.files)}
@@ -220,14 +220,7 @@ export function MediaManager({
                 >
                   →
                 </button>
-                <button
-                  type="button"
-                  disabled={progress !== null}
-                  onClick={() => {
-                    replace.current = id;
-                    file.current?.click();
-                  }}
-                >
+                <button type="button" disabled={progress !== null} onClick={() => openFiles(id)}>
                   แทนที่
                 </button>
                 <button type="button" onClick={() => onChange(value.filter((v) => v !== id))}>

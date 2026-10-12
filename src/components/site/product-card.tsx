@@ -1,13 +1,14 @@
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
-import { MediaPlaceholder, MediaThumb } from "@/components/media/media-thumb";
+import { ProductImage } from "@/components/media/product-image";
+import { mediaUrl } from "@/lib/media/urls";
 import { formatPrice } from "@/lib/format";
 import type { ProductCardData } from "@/lib/public/queries";
 
 /**
  * The most important component on the site (docs/DESIGN.md).
  *
- * Portrait 3:4 image, then name, then price — and nothing else. No badge, no
+ * Square studio image, then name, then price — and nothing else. No badge, no
  * category label, no enquiry control: the LINE button lives on the detail page
  * so the card stays calm. The whole card is one link.
  */
@@ -22,17 +23,12 @@ export function ProductCard({ product }: { product: ProductCardData }) {
         className="block rounded-(--radius-card) focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-(--color-brand)"
       >
         <div className="product-card-media overflow-hidden rounded-(--radius-card) transition-colors">
-          {product.image ? (
-            <MediaThumb
-              media={product.image}
-              aspect="product"
-              width={800}
-              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 280px"
-              className="rounded-none border-0 transition-transform duration-200 group-hover:scale-[1.02]"
-            />
-          ) : (
-            <MediaPlaceholder aspect="product" className="rounded-none" label={t("noImage")} />
-          )}
+          <ProductImage
+            src={product.image ? mediaUrl(product.image.storageKey, "master.webp") : null}
+            alt={product.image?.alt || product.name}
+            sizes="(max-width: 640px) 44vw, (max-width: 1024px) 30vw, 280px"
+            emptyLabel={t("noImage")}
+          />
         </div>
 
         <h3 className="mt-2 line-clamp-2 text-base font-medium text-(--color-heading)">

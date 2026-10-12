@@ -23,7 +23,7 @@ export default function PublicError({
   }, [error]);
 
   return (
-    <main id="content" className="mx-auto max-w-(--container-site) px-4 py-24 md:px-6">
+    <main id="content" className="v-page v-state-page">
       <h1 className="text-3xl font-semibold md:text-[40px]">{t("serverTitle")}</h1>
       <div className="mt-4 h-0.5 w-12 rounded-full bg-(--color-brand)" aria-hidden="true" />
       <p className="mt-6 max-w-prose text-(--color-text)">{t("serverBody")}</p>
