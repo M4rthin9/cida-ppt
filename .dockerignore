@@ -24,3 +24,11 @@ assets
 # The build output is copied explicitly by path in the Dockerfile; excluding the
 # rest of .next keeps the cache and the dev server's artefacts out of the context.
 .next/cache
+.next-*/
+
+# Only the deployable seed belongs in the image build context.
+content/**
+!content/production-seed/
+!content/production-seed/**
+รูปผลิตภัณฑ์/
+/frames/

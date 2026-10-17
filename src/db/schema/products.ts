@@ -33,6 +33,8 @@ export const products = pgTable(
     priceDisplay: priceDisplay("price_display").notNull().default("exact"),
     priceMode: varchar("price_mode", { length: 24 }).notNull().default("contact"),
     salePrice: numeric("sale_price", { precision: 12, scale: 2 }),
+    /** A separate sharing option, never a discount on the outright purchase price. */
+    sharingPrice: numeric("sharing_price", { precision: 12, scale: 2 }),
     stockStatus: varchar("stock_status", { length: 24 }).notNull().default("available"),
     quantity: integer("quantity"),
     madeToOrder: boolean("made_to_order").notNull().default(false),
@@ -72,6 +74,10 @@ export const products = pgTable(
     index("products_catalog_idx").on(t.categoryId, t.status, t.sortOrder),
     index("products_featured_idx").on(t.isFeatured, t.status),
     check("products_prices_nonnegative", sql`${t.price} >= 0 AND ${t.salePrice} >= 0`),
+    check(
+      "products_sharing_price_valid",
+      sql`${t.sharingPrice} IS NULL OR (${t.sharingPrice} >= 0 AND ${t.priceMode} = 'exact' AND ${t.price} IS NOT NULL AND ${t.salePrice} IS NULL)`,
+    ),
     check("products_quantity_nonnegative", sql`${t.quantity} >= 0`),
     check("products_weight_nonnegative", sql`${t.weight} >= 0`),
     check(

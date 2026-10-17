@@ -1,9 +1,9 @@
 import { notFound } from "next/navigation";
 import { Link } from "@/i18n/navigation";
-import Image from "next/image";
 import { listCategories } from "@/lib/vocational/data";
 import { Catalog } from "@/components/vocational/Catalog";
 import { CraftMark } from "@/components/vocational/CraftMark";
+import { CategoryHeroImage } from "@/components/vocational/CategoryHeroImage";
 import type { PublicSearchParams } from "@/components/vocational/catalog-query";
 import { publicMetadata } from "@/lib/seo/metadata";
 import { decodeSlugParam } from "@/lib/slug";
@@ -36,10 +36,13 @@ export default async function Page({
     decoded = decodeSlugParam(slug),
     c = (await listCategories()).find((c) => c.slug === decoded);
   if (!c) notFound();
+  const fullBanner = Boolean(c.image_url);
   return (
     <main id="content" className="v-page">
-      <header className={`v-category-hero v-bento-${c.icon}`}>
-        <div>
+      <header
+        className={`v-category-hero v-bento-${c.icon}${c.image_url ? " has-cover" : ""}${fullBanner ? " v-category-panorama" : ""}`}
+      >
+        <div className="v-category-hero-copy">
           <Link href="/products" className="v-back">
             ← ผลิตภัณฑ์ทั้งหมด
           </Link>
@@ -50,7 +53,7 @@ export default async function Page({
         </div>
         {c.image_url ? (
           <div className="v-category-cover">
-            <Image src={c.image_url} fill sizes="(max-width: 760px) 100vw, 45vw" alt={c.name_th} />
+            <CategoryHeroImage src={c.image_url} alt={c.name_th} />
           </div>
         ) : (
           <div className="v-category-art">

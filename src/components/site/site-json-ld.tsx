@@ -22,9 +22,11 @@ export async function SiteJsonLd() {
     getCachedSetting("line", locale),
   ]);
 
-  const sameAs = [addFriendUrl(line.oaId), contact.facebookUrl, contact.youtubeUrl].filter(
-    (url): url is string => Boolean(url),
-  );
+  const sameAs = [
+    ...(line.mode === "oa" ? [addFriendUrl(line.oaId)] : []),
+    contact.facebookUrl,
+    contact.youtubeUrl,
+  ].filter((url): url is string => Boolean(url));
 
   return (
     <JsonLd

@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment, useActionState } from "react";
+import { Fragment, useActionState, useState } from "react";
 import { Button, FieldError, FormBanner, Hint, Input, Label } from "@/components/ui/field";
 import type { SettingsFormState } from "./actions";
 
@@ -9,7 +9,8 @@ const initial: SettingsFormState = {};
 export type FieldSpec = {
   name: string;
   label: string;
-  type?: "text" | "email" | "url" | "number" | "checkbox" | "textarea" | "color";
+  type?: "text" | "email" | "url" | "number" | "checkbox" | "textarea" | "color" | "select" | "tel";
+  options?: Record<string, string>;
   hint?: string;
   required?: boolean;
   placeholder?: string;
@@ -30,17 +31,25 @@ export function SettingsForm({
   children?: React.ReactNode;
 }) {
   const [state, formAction, pending] = useActionState(action, initial);
+  const [draft, setDraft] = useState(values);
 
   return (
-    <form action={formAction} className="max-w-2xl space-y-5" noValidate>
+    <form
+      action={formAction}
+      onReset={(event) => event.preventDefault()}
+      className="max-w-2xl space-y-5"
+      noValidate
+    >
       {state.message ? (
         <FormBanner kind={state.errors ? "error" : "success"}>{state.message}</FormBanner>
       ) : null}
 
       {fields.map((f) => {
-        const value = values[f.name];
+        const value = draft[f.name];
         const error = state.errors?.[f.name];
-        const field = renderField(f, value, error);
+        const field = renderField(f, value, error, (next) =>
+          setDraft((current) => ({ ...current, [f.name]: next })),
+        );
         return f.section ? (
           <Fragment key={f.name}>
             <h2 className="border-t border-(--color-border) pt-6 text-lg font-semibold text-(--color-heading) first:border-t-0 first:pt-0">
@@ -62,7 +71,37 @@ export function SettingsForm({
   );
 }
 
-function renderField(f: FieldSpec, value: unknown, error: string | undefined) {
+function renderField(
+  f: FieldSpec,
+  value: unknown,
+  error: string | undefined,
+  onChange: (value: string | boolean) => void,
+) {
+  if (f.type === "select")
+    return (
+      <div key={f.name}>
+        <Label htmlFor={f.name} required={f.required}>
+          {f.label}
+        </Label>
+        <select
+          id={f.name}
+          name={f.name}
+          value={String(value ?? "")}
+          onChange={(event) => onChange(event.target.value)}
+          aria-invalid={Boolean(error)}
+          aria-describedby={error ? `${f.name}-error` : undefined}
+          className="mt-1.5 block w-full rounded-(--radius-control) border border-(--color-border) bg-(--color-bg) px-3 py-2.5 text-base text-(--color-heading) focus:outline-none focus:ring-2 focus:ring-(--color-brand)"
+        >
+          {Object.entries(f.options ?? {}).map(([option, label]) => (
+            <option key={option} value={option}>
+              {label}
+            </option>
+          ))}
+        </select>
+        <FieldError id={`${f.name}-error`} message={error} />
+        {f.hint && <Hint>{f.hint}</Hint>}
+      </div>
+    );
   if (f.type === "checkbox") {
     return (
       <div key={f.name} className="flex items-start gap-2.5">
@@ -70,7 +109,8 @@ function renderField(f: FieldSpec, value: unknown, error: string | undefined) {
           id={f.name}
           name={f.name}
           type="checkbox"
-          defaultChecked={Boolean(value)}
+          checked={Boolean(value)}
+          onChange={(event) => onChange(event.target.checked)}
           className="mt-1 size-4 accent-(--color-brand)"
         />
         <label htmlFor={f.name} className="text-sm text-(--color-heading)">
@@ -91,7 +131,8 @@ function renderField(f: FieldSpec, value: unknown, error: string | undefined) {
           id={f.name}
           name={f.name}
           rows={f.rows ?? 3}
-          defaultValue={typeof value === "string" ? value : ""}
+          value={typeof value === "string" ? value : ""}
+          onChange={(event) => onChange(event.target.value)}
           className="mt-1.5 block w-full rounded-(--radius-control) border border-(--color-border) bg-(--color-bg) px-3 py-2.5 text-base leading-[1.8] text-(--color-heading) focus:outline-none focus:ring-2 focus:ring-(--color-brand)"
         />
         <FieldError id={`${f.name}-error`} message={error} />
@@ -110,7 +151,8 @@ function renderField(f: FieldSpec, value: unknown, error: string | undefined) {
         name={f.name}
         type={f.type ?? "text"}
         placeholder={f.placeholder}
-        defaultValue={value === undefined || value === null ? "" : String(value)}
+        value={value === undefined || value === null ? "" : String(value)}
+        onChange={(event) => onChange(event.target.value)}
         error={error}
       />
       <FieldError id={`${f.name}-error`} message={error} />

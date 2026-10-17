@@ -90,7 +90,7 @@ export default async function Page({
         categories={JSON.parse(JSON.stringify(categories))}
         owner={user.role === "owner"}
       />
-      <Pager {...data} base="/admin/products" query={q} />
+      <Pager {...data} base="/admin/products" query={q} localeAware={false} />
     </>
   );
 }

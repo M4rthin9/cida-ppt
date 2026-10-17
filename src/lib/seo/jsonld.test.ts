@@ -28,6 +28,22 @@ describe("productJsonLd", () => {
     const data = productJsonLd({ ...common, priceDisplay: "contact" });
     expect(data.offers).toBeUndefined();
   });
+  it("labels sharing and outright options as separate offers", () => {
+    const data = productJsonLd({
+      ...common,
+      priceDisplay: "exact",
+      price: "4000.00",
+      sharingPrice: "1700.00",
+    });
+    expect(data.offers).toEqual([
+      expect.objectContaining({ name: "ราคาขายขาด", price: "4000.00", priceCurrency: "THB" }),
+      expect.objectContaining({ name: "ราคาแบ่งปัน", price: "1700.00", priceCurrency: "THB" }),
+    ]);
+    expect(JSON.stringify(data)).not.toContain("availability");
+    expect(
+      productJsonLd({ ...common, priceDisplay: "contact", sharingPrice: "1700.00" }).offers,
+    ).toBeUndefined();
+  });
 
   it("emits no offer for a hidden price even when a number exists", () => {
     const data = productJsonLd({ ...common, priceDisplay: "hidden", price: "500.00" });

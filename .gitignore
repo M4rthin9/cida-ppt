@@ -3,6 +3,7 @@ node_modules/
 
 .next/
 .next-production/
+.next-*/
 out/
 build/
 next-env.d.ts
@@ -31,3 +32,12 @@ node_modules
 
 # Python bytecode from the frame tooling
 __pycache__/
+
+# Catalogue preparation files stay local; deploy only the approved seed.
+/content/*
+!/content/production-seed/
+/รูปผลิตภัณฑ์/
+/frames/
+
+# pnpm-lock.yaml is the canonical dependency lockfile.
+/package-lock.json

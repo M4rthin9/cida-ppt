@@ -93,13 +93,16 @@ jobs:
       - name: Migrate
         run: pnpm db:migrate
 
-      # Re-running the seed must retain exactly four initial categories without
-      # adding products or overwriting administrator-authored content.
+      # The approved production catalogue includes four categories, 76 products
+      # and local media. Re-running preserves administrator-authored changes.
       - name: Seed
         run: pnpm db:seed
 
       - name: Seed again — must be idempotent
         run: pnpm db:seed
+
+      - name: Verify fresh seed, image integrity and preservation of CMS edits
+        run: pnpm db:seed:verify
 
       - name: Build
         run: pnpm build

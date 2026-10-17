@@ -3,7 +3,7 @@ import NextLink from "next/link";
 import Image from "next/image";
 import { listCategories } from "@/lib/vocational/data";
 import { getCachedSetting } from "@/lib/settings/cached";
-import { addFriendUrl } from "@/lib/line";
+import { lineContactUrl, lineIdentity } from "@/lib/line";
 export async function SiteFooter() {
   const [categories, contact, general, line] = await Promise.all([
     listCategories(),
@@ -49,8 +49,8 @@ export async function SiteFooter() {
         </div>
         <div>
           <h2>พูดคุยกับเรา</h2>
-          <a href={addFriendUrl(line.oaId)} target="_blank" rel="noopener noreferrer">
-            LINE {line.oaId} ↗
+          <a href={lineContactUrl(line)} target="_blank" rel="noopener noreferrer">
+            LINE {lineIdentity(line)} ↗
           </a>
           {contact.phone && (
             <a href={`tel:${contact.phone.replace(/[^\d+]/g, "")}`}>{contact.phone}</a>

@@ -2,6 +2,9 @@ import { describe, expect, it } from "vitest";
 import {
   addFriendUrl,
   goLinePath,
+  lineContactUrl,
+  lineIdentity,
+  openLineFriendsUrl,
   normaliseOaId,
   oaMessageUrl,
   renderMessageTemplate,
@@ -91,5 +94,19 @@ describe("goLinePath", () => {
     // The header, footer, contact page and category band: still tracked, but
     // there is nothing to pre-fill a message about.
     expect(goLinePath()).toBe("/go/line");
+  });
+});
+
+describe("selected LINE destination", () => {
+  const line = { mode: "oa" as const, oaId: "@store", phone: "0812345678" };
+  it("uses the OA identity and official destination in OA mode", () => {
+    expect(lineIdentity(line)).toBe("@store");
+    expect(lineContactUrl(line)).toBe(addFriendUrl("@store"));
+  });
+  it("uses the phone instructions instead of linking to the saved OA", () => {
+    const phone = { ...line, mode: "phone" as const };
+    expect(lineIdentity(phone)).toBe("0812345678");
+    expect(lineContactUrl(phone)).toBe("/line");
+    expect(openLineFriendsUrl()).toBe("https://line.me/R/nv/addFriends");
   });
 });

@@ -1,0 +1,14 @@
+{
+  "checked_at": "2026-10-12T07:13:13.539Z",
+  "origin": "http://localhost:3001",
+  "saved_through_cms": true,
+  "phone_required_when_selected": true,
+  "number_normalised": true,
+  "phone_redirect_and_product_context": true,
+  "clipboard_verified": true,
+  "phone_contact_and_footer": true,
+  "oa_add_friend_and_product_chat": true,
+  "widths": [320, 390, 768, 1440],
+  "original_settings_restored": true,
+  "browser_errors": []
+}

@@ -3,12 +3,14 @@ import { Link } from "@/i18n/navigation";
 import { listProducts, gallery } from "@/lib/vocational/data";
 import { ProductGallery } from "@/components/vocational/ProductGallery";
 import { ProductCard } from "@/components/vocational/ProductCard";
-import { priceLabel, STOCK_STATUSES } from "@/lib/vocational/types";
+import { STOCK_STATUSES } from "@/lib/vocational/types";
+import { ProductPrice } from "@/components/vocational/ProductPrice";
 import { goLinePath } from "@/lib/line";
 import { publicMetadata } from "@/lib/seo/metadata";
 import { JsonLd, breadcrumbJsonLd, productJsonLd } from "@/lib/seo/jsonld";
 import { assertEnv } from "@/lib/env";
 import { decodeSlugParam } from "@/lib/slug";
+import { getCachedSetting } from "@/lib/settings/cached";
 export const dynamic = "force-dynamic";
 export async function generateMetadata({
   params,
@@ -34,9 +36,10 @@ export default async function Page({
   const { locale, slug } = await params,
     p = (await listProducts({ slug: decodeSlugParam(slug), limit: 1 })).items[0];
   if (!p) notFound();
-  const [images, related] = await Promise.all([
+  const [images, related, line] = await Promise.all([
     gallery(p.id),
     listProducts({ category: p.category_id, limit: 4 }),
+    getCachedSetting("line", locale),
   ]);
   const base = assertEnv().NEXT_PUBLIC_SITE_URL;
   const structured = productJsonLd({
@@ -49,6 +52,7 @@ export default async function Page({
     images: images.map((i) => `/media/${i.storage_key}/master.webp`),
     path: `/products/${p.slug}`,
     price: p.sale_price ?? p.price ?? undefined,
+    sharingPrice: p.sharing_price ?? undefined,
     priceDisplay: p.price_mode === "exact" || p.price_mode === "from" ? p.price_mode : "contact",
   });
   return (
@@ -71,10 +75,7 @@ export default async function Page({
           {p.short_description_th && <p className="v-detail-summary">{p.short_description_th}</p>}
           <div className="v-detail-meta">
             <div className="v-detail-price">
-              {priceLabel(p)}
-              {(p.price_mode === "exact" || p.price_mode === "from") &&
-                p.sale_price !== null &&
-                p.price !== null && <del>{Number(p.price).toLocaleString("th-TH")} บาท</del>}
+              <ProductPrice product={p} />
             </div>
             <span className="v-stock" data-status={p.stock_status}>
               {STOCK_STATUSES[p.stock_status]}
@@ -104,10 +105,7 @@ export default async function Page({
               target="_blank"
               rel="noopener noreferrer"
             >
-              {p.price_mode === "showcase"
-                ? "สอบถามเกี่ยวกับผลงาน"
-                : "สอบถามสินค้า / ติดต่อสั่งซื้อ"}{" "}
-              <span>↗</span>
+              {line.buttonLabel} <span>↗</span>
             </a>
             <Link
               href={`/contact?product=${encodeURIComponent(p.slug)}#contact-form`}
@@ -115,7 +113,11 @@ export default async function Page({
             >
               สอบถามผ่านแบบฟอร์มติดต่อ <span>→</span>
             </Link>
-            <p className="v-inquiry-note">สอบถามรายละเอียดกับเจ้าหน้าที่ผ่าน LINE</p>
+            <p className="v-inquiry-note">
+              {line.mode === "phone"
+                ? "เพิ่มเพื่อน LINE ด้วยเบอร์โทรเพื่อสอบถามเจ้าหน้าที่"
+                : "สอบถามรายละเอียดกับเจ้าหน้าที่ผ่าน LINE OA"}
+            </p>
           </div>
           {p.description_th && p.description_th !== p.short_description_th && (
             <div className="v-detail-copy">

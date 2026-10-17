@@ -1,4 +1,5 @@
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
+import { getCachedSetting } from "@/lib/settings/cached";
 import { goLinePath } from "@/lib/line";
 import { LineLink } from "./line-link";
 
@@ -15,6 +16,7 @@ import { LineLink } from "./line-link";
  */
 export async function LineBand() {
   const t = await getTranslations("line");
+  const line = await getCachedSetting("line", await getLocale());
 
   return (
     <aside className="mt-16 flex flex-wrap items-center justify-between gap-6 rounded-(--radius-card) bg-(--color-accent-tint) px-6 py-6">
@@ -22,7 +24,9 @@ export async function LineBand() {
         <h2 className="text-lg font-medium text-(--color-accent-ink)">{t("categoryCta")}</h2>
         <p className="mt-1 text-sm text-(--color-accent-ink)">{t("categoryCtaBody")}</p>
       </div>
-      <LineLink href={goLinePath()}>{t("openAccount")}</LineLink>
+      <LineLink href={goLinePath()}>
+        {line.mode === "phone" ? "เพิ่มเพื่อนด้วยเบอร์โทร" : t("openAccount")}
+      </LineLink>
     </aside>
   );
 }

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { getCachedSetting } from "@/lib/settings/cached";
 import { publicMetadata } from "@/lib/seo/metadata";
-import { addFriendUrl } from "@/lib/line";
+import { lineContactUrl, lineIdentity } from "@/lib/line";
 import { Breadcrumbs } from "@/components/site/breadcrumbs";
 import { LineLink } from "@/components/site/line-link";
 import { SectionHeading } from "@/components/site/section-heading";
@@ -129,11 +129,11 @@ export default async function ContactPage({
             <div className="grid grid-cols-3 gap-4 py-4">
               <dt className="text-sm text-(--color-text-muted)">{t("line")}</dt>
               <dd className="col-span-2">
-                <p className="lat text-(--color-text)">{tLine("handle", { id: line.oaId })}</p>
-                {/* Straight to the account rather than through /go/line, so
-                    the link a visitor sees and copies is LINE's own. */}
-                <LineLink href={addFriendUrl(line.oaId)} className="mt-3">
-                  {tLine("openAccount")}
+                <p className="lat text-(--color-text)">
+                  {tLine("handle", { id: lineIdentity(line) })}
+                </p>
+                <LineLink href={lineContactUrl(line)} className="mt-3">
+                  {line.mode === "phone" ? "เพิ่มเพื่อนด้วยเบอร์โทร" : tLine("openAccount")}
                 </LineLink>
               </dd>
             </div>

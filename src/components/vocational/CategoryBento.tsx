@@ -30,10 +30,15 @@ export function CategoryBento({
                     src={picture}
                     alt=""
                     fill
+                    quality={90}
                     sizes={
-                      index % 4 < 2
-                        ? "(max-width: 700px) 100vw, (max-width: 1440px) 50vw, 720px"
-                        : "(max-width: 700px) 100vw, (max-width: 1050px) 50vw, 25vw"
+                      // Landscape files on tall cards need enough pixels for
+                      // their covered height, as well as the visible width.
+                      index % 4 === 0
+                        ? "(max-width: 700px) max(100vw, 720px), (max-width: 1050px) max(50vw, 720px), 1500px"
+                        : index % 4 === 1
+                          ? "(max-width: 700px) 100vw, (max-width: 1440px) 50vw, 720px"
+                          : "(max-width: 700px) max(100vw, 600px), (max-width: 1050px) max(50vw, 600px), 600px"
                     }
                   />
                 ) : (

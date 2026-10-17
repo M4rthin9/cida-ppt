@@ -1,0 +1,290 @@
+.showcase {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: clamp(24px, 3.5vw, 52px) var(--v-gutter) 32px;
+  background: linear-gradient(135deg, var(--v-paper), var(--v-sand));
+  border-bottom: 1px solid var(--v-line);
+}
+.inner {
+  max-width: 1320px;
+  margin-inline: auto;
+}
+.heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+.heading h2 {
+  font-size: clamp(28px, 3.3vw, 46px);
+  font-weight: 450;
+  line-height: 1.5;
+}
+.heading :global(.v-eyebrow) {
+  margin-bottom: 8px;
+  color: var(--v-gold-ink);
+}
+.intro {
+  margin-top: 8px;
+  font-size: 15px;
+  color: var(--v-muted);
+}
+.collectionLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 28px;
+  border-bottom: 1px solid var(--v-rule-strong);
+  padding-bottom: 9px;
+  font-size: 14px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.collectionLink span {
+  font-size: 20px;
+  color: var(--v-gold-ink);
+}
+.track {
+  --card-width: min(360px, 36vw);
+  --spread: clamp(210px, 23vw, 320px);
+  position: relative;
+  height: calc(var(--card-width) / 1.08 + 215px);
+  perspective: 1400px;
+  perspective-origin: 50% 45%;
+  touch-action: pan-y pinch-zoom;
+  user-select: none;
+  cursor: grab;
+  margin-bottom: 20px;
+  background: radial-gradient(ellipse at 50% 85%, #213f3412, transparent 62%);
+}
+.slide {
+  position: absolute;
+  top: 16px;
+  left: calc((100% - var(--card-width)) / 2);
+  width: var(--card-width);
+  height: calc(100% - 45px);
+  min-width: 0;
+  transform: translateX(calc(var(--offset) * var(--spread))) translateZ(calc(var(--depth) * -180px))
+    rotateY(calc(var(--offset) * -28deg)) scale(calc(1 - var(--depth) * 0.08));
+  transform-origin: center;
+  backface-visibility: hidden;
+  opacity: calc(1 - var(--depth) * 0.18);
+}
+.slide[data-distance="0"] {
+  opacity: 1;
+}
+.slide:not([data-distance="0"], [data-distance="1"], [data-distance="2"]) {
+  visibility: hidden;
+  pointer-events: none;
+}
+.card {
+  height: 100%;
+}
+.selectCard {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  border: 0;
+  border-radius: 18px;
+  background: transparent;
+  cursor: pointer;
+}
+.selectCard:focus-visible {
+  outline-offset: -6px;
+}
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.slide :global(.v-product-card) {
+  height: 100%;
+  background: var(--v-paper);
+  border: 1px solid var(--v-line);
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 18px 35px #213f341a;
+}
+.slide[data-active="true"] :global(.v-product-card) {
+  border-color: #b89d6880;
+  box-shadow: 0 24px 40px #213f3426;
+}
+.slide :global(.v-product-image) {
+  border: 0;
+  border-radius: 0;
+  aspect-ratio: 1.08;
+}
+.slide :global(.v-product-image:focus-visible) {
+  outline-offset: -5px;
+}
+.slide :global(.v-product-info) {
+  padding: 18px 20px 20px;
+}
+.slide :global(.v-product-info h3) {
+  font-size: 19px;
+}
+.slide :global(.v-product-price) {
+  margin-top: 12px;
+  color: var(--v-ink);
+}
+.cardNumber {
+  position: absolute;
+  right: 16px;
+  top: 16px;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  color: var(--v-gold-ink);
+  border: 1px solid #b89d6855;
+  border-radius: 50%;
+  background: var(--v-paper);
+  font: italic 14px var(--v-serif);
+  pointer-events: none;
+}
+.footer {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding-top: 4px;
+}
+.hint {
+  color: var(--v-muted);
+  font-size: 12px;
+  white-space: nowrap;
+}
+.hint span {
+  color: var(--v-gold-ink);
+  margin-left: 8px;
+}
+.progress {
+  flex: 1;
+  height: 2px;
+  background: var(--v-line);
+  overflow: hidden;
+}
+.progress span {
+  display: block;
+  height: 100%;
+  background: var(--v-gold-ink);
+}
+.counter {
+  color: var(--v-muted);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.counter strong {
+  color: var(--v-ink);
+  font-weight: 500;
+}
+.controls {
+  display: flex;
+  gap: 10px;
+}
+.controls button {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border: 1px solid var(--v-rule-strong);
+  border-radius: 50%;
+  background: var(--v-paper);
+  color: var(--v-ink);
+}
+.controls svg {
+  width: 21px;
+  height: 21px;
+}
+.controls button:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+.controls button:not(:disabled):hover {
+  color: var(--v-paper);
+  background: var(--v-ink);
+  border-color: var(--v-ink);
+}
+@media (max-width: 1100px) {
+  .track {
+    --card-width: min(330px, 40vw);
+    --spread: 27vw;
+  }
+}
+@media (max-width: 760px) {
+  .showcase {
+    padding-top: 22px;
+    padding-bottom: 24px;
+  }
+  .heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+  .heading h2 {
+    font-size: clamp(26px, 6.7vw, 38px);
+  }
+  .intro {
+    font-size: 13px;
+  }
+  .collectionLink {
+    font-size: 12px;
+    gap: 20px;
+    padding-bottom: 5px;
+  }
+  .track {
+    --card-width: min(310px, 74vw);
+    --spread: 55vw;
+    height: calc(var(--card-width) / 1.08 + 195px);
+    perspective: 1000px;
+  }
+  .slide :global(.v-product-info) {
+    padding: 14px 16px 16px;
+  }
+  .slide :global(.v-product-info h3) {
+    font-size: 18px;
+  }
+  .footer {
+    gap: 14px;
+  }
+  .hint {
+    display: none;
+  }
+  .controls button {
+    width: 44px;
+    height: 44px;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .slide {
+    transition:
+      transform 0.65s var(--v-ease),
+      opacity 0.5s;
+  }
+  .slide :global(.v-product-card) {
+    transition:
+      border-color 0.25s,
+      box-shadow 0.25s;
+  }
+  .slide:focus-within :global(.v-product-card),
+  .slide:hover :global(.v-product-card) {
+    border-color: var(--v-rule-strong);
+    box-shadow: 0 10px 28px #213f3412;
+  }
+  .progress span {
+    transition: width 0.2s;
+  }
+  .controls button {
+    transition:
+      color 0.2s,
+      background 0.2s;
+  }
+}

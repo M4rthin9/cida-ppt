@@ -73,6 +73,7 @@ jobs:
         run: pnpm db:seed
         env:
           DATABASE_URL: postgres://cida:cida@localhost:5432/cida
+          MEDIA_DIR: /tmp/release-media
 
       - name: Build
         run: pnpm build
@@ -83,7 +84,7 @@ jobs:
           # Baked into the client bundle, so it must be the real origin even at
           # build time — a localhost value here ships localhost canonicals.
           NEXT_PUBLIC_SITE_URL: ${{ vars.SITE_URL }}
-          MEDIA_DIR: /data/media
+          MEDIA_DIR: /tmp/release-media
           LINE_OA_URL: https://line.me/ti/p/%40355kxfoj
 
       - name: Assert the standalone output is complete

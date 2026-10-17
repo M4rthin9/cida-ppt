@@ -75,6 +75,23 @@ describe("vocational publishing boundaries", () => {
       expect(priceLabel({ price_mode: mode, price: null, sale_price: null })).not.toMatch(/0/);
     }
   });
+  it("stores sharing and outright prices separately without turning either into a discount", () => {
+    const dual = { ...product, price_mode: "exact", price: 4000, sharing_price: 1700 };
+    expect(productInput.parse(dual)).toMatchObject({
+      price: 4000,
+      sharing_price: 1700,
+      sale_price: null,
+    });
+    for (const sharing_price of [-1, 1700.001])
+      expect(productInput.safeParse({ ...dual, sharing_price }).success).toBe(false);
+    for (const patch of [
+      { sale_price: 1700 },
+      { price_mode: "from" },
+      { price_mode: "contact", price: null },
+    ])
+      expect(productInput.safeParse({ ...dual, ...patch }).success).toBe(false);
+    expect(productInput.parse(product).sharing_price).toBeNull();
+  });
   it("preserves only weights that fit the database precision and scale", () => {
     for (const weight of [null, "", "1.125", "999999999.999"])
       expect(productInput.safeParse({ ...product, weight }).success).toBe(true);

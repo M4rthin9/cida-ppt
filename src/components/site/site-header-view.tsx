@@ -5,6 +5,7 @@ import type { EnabledLocale } from "@/lib/public/locales";
 import type { MenuItems } from "@/lib/menus/schema";
 import { Seal } from "./seal";
 import { SiteNav } from "./site-nav";
+import { lineIdentity } from "@/lib/line";
 
 /** Shared presentation for the real storefront and its isolated design preview. */
 export function SiteHeaderView({
@@ -44,7 +45,7 @@ export function SiteHeaderView({
               <span className="lat">{contact.email}</span>
             </a>
           )}
-          <span className="lat">{tLine("handle", { id: line.oaId })}</span>
+          <span className="lat">{tLine("handle", { id: lineIdentity(line) })}</span>
         </div>
       </div>
 
@@ -69,7 +70,7 @@ export function SiteHeaderView({
             items={items}
             locales={locales}
             lineHref={lineHref}
-            lineLabel={tLine("openAccount")}
+            lineLabel={line.mode === "phone" ? "เพิ่มเพื่อนด้วยเบอร์โทร" : tLine("openAccount")}
             pathsByLocale={pathsByLocale}
           />
         </div>

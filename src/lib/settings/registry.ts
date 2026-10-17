@@ -71,23 +71,45 @@ const contactLocalized = z.object({
 
 // --- line ------------------------------------------------------------------
 
-const lineGlobal = z.object({
-  /**
-   * The Official Account handle, e.g. "@355kxfoj" — the single source of truth
-   * (§8). Stored as the handle rather than as §8's literal `oa_url` because the
-   * two links the site needs are derived from it and cannot both be stored as
-   * one URL: line.me/R/ti/p/<id> adds the friend, line.me/R/oaMessage/<id>/?<text>
-   * opens a chat with the pre-filled message §8 requires. Phase 8 owns /go/line
-   * and should confirm this shape.
-   */
-  oaId: z
-    .string()
-    .trim()
-    .min(2, "กรุณากรอกรหัส LINE Official Account")
-    .max(64)
-    .regex(/^@?[A-Za-z0-9._-]+$/, "รหัส LINE ไม่ถูกต้อง")
-    .transform((v) => (v.startsWith("@") ? v : `@${v}`)),
-});
+const lineGlobal = z
+  .object({
+    mode: z.enum(["oa", "phone"]).default("oa"),
+    phone: z
+      .string()
+      .trim()
+      .max(24)
+      .default("")
+      .transform((v) => v.replace(/[\s()-]/g, ""))
+      .refine((v) => v === "" || /^\+?[0-9]{8,15}$/.test(v), "กรุณากรอกเบอร์โทรศัพท์ที่ถูกต้อง"),
+    /**
+     * The Official Account handle, e.g. "@355kxfoj" — the single source of truth
+     * (§8). Stored as the handle rather than as §8's literal `oa_url` because the
+     * two links the site needs are derived from it and cannot both be stored as
+     * one URL: line.me/R/ti/p/<id> adds the friend, line.me/R/oaMessage/<id>/?<text>
+     * opens a chat with the pre-filled message §8 requires. Phase 8 owns /go/line
+     * and should confirm this shape.
+     */
+    oaId: z
+      .string()
+      .trim()
+      .max(64)
+      .regex(/^(?:@?[A-Za-z0-9._-]+)?$/, "รหัส LINE ไม่ถูกต้อง")
+      .transform((v) => (v && !v.startsWith("@") ? `@${v}` : v)),
+  })
+  .superRefine((v, c) => {
+    if (v.mode === "oa" && v.oaId.length < 2)
+      c.addIssue({
+        code: "custom",
+        path: ["oaId"],
+        message: "กรุณากรอกรหัส LINE Official Account",
+      });
+    if (v.mode === "phone" && !v.phone)
+      c.addIssue({
+        code: "custom",
+        path: ["phone"],
+        message: "กรุณากรอกเบอร์โทรสำหรับเพิ่มเพื่อน LINE",
+      });
+  });
 
 const lineLocalized = z.object({
   buttonLabel: z.string().trim().min(1, "กรุณากรอกข้อความบนปุ่ม").max(120),
@@ -293,7 +315,7 @@ export const SETTINGS = {
   line: {
     label: "LINE",
     global: lineGlobal,
-    globalDefault: { oaId: "@355kxfoj" } as z.infer<typeof lineGlobal>,
+    globalDefault: { mode: "oa", phone: "", oaId: "@355kxfoj" } as z.infer<typeof lineGlobal>,
     localized: lineLocalized,
     localizedDefault: {
       buttonLabel: "สั่งซื้อ / สอบถามทาง LINE",

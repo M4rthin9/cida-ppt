@@ -56,6 +56,7 @@ export type ProductCardData = {
   slug: string;
   name: string;
   price: string | null;
+  sharingPrice: string | null;
   priceDisplay: "exact" | "from" | "contact" | "hidden";
   image: PublicMedia | null;
 };
@@ -139,6 +140,7 @@ async function toProductCards(
     id: string;
     categoryId: string;
     price: string | null;
+    sharingPrice: string | null;
     priceDisplay: ProductCardData["priceDisplay"];
   }[],
   locale: string,
@@ -171,6 +173,7 @@ async function toProductCards(
       slug: t.row.slug,
       name: t.row.name,
       price: row.price,
+      sharingPrice: row.sharingPrice,
       priceDisplay: row.priceDisplay,
       image: images.get(row.id) ?? null,
     });
@@ -188,6 +191,7 @@ export async function featuredProducts(
       id: products.id,
       categoryId: products.categoryId,
       price: products.price,
+      sharingPrice: products.sharingPrice,
       priceDisplay: products.priceDisplay,
     })
     .from(products)

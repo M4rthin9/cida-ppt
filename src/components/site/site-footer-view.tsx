@@ -4,6 +4,7 @@ import type { MenuItems } from "@/lib/menus/schema";
 import { MenuLink } from "./menu-link";
 import { Seal } from "./seal";
 import { LineLink } from "./line-link";
+import { lineIdentity } from "@/lib/line";
 
 export function SiteFooterView({
   general,
@@ -114,10 +115,10 @@ export function SiteFooterView({
             {tLine("sectionTitle")}
           </h2>
           <p className="lat mt-4 text-sm text-(--color-text)">
-            {tLine("handle", { id: line.oaId })}
+            {tLine("handle", { id: lineIdentity(line) })}
           </p>
           <LineLink href={lineHref} className="mt-3">
-            {tLine("openAccount")}
+            {line.mode === "phone" ? "เพิ่มเพื่อนด้วยเบอร์โทร" : tLine("openAccount")}
           </LineLink>
 
           {(contact.facebookUrl ?? contact.youtubeUrl) && (

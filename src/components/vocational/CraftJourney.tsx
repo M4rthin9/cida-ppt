@@ -8,7 +8,7 @@ import { frameUrl } from "@/lib/vocational/sequence";
 import { CinematicHero } from "./CinematicHero";
 import { ApertureSection } from "./ApertureSection";
 
-/** The film is the opening. Static HTML stays readable before enhancement. */
+/** The craft film opens the homepage. Static HTML stays readable before enhancement. */
 export function CraftJourney({
   hero,
   reveal,

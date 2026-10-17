@@ -1,0 +1,2 @@
+ALTER TABLE "products" ADD COLUMN "sharing_price" numeric(12, 2);--> statement-breakpoint
+ALTER TABLE "products" ADD CONSTRAINT "products_sharing_price_valid" CHECK ("products"."sharing_price" IS NULL OR ("products"."sharing_price" >= 0 AND "products"."price_mode" = 'exact' AND "products"."price" IS NOT NULL AND "products"."sale_price" IS NULL));

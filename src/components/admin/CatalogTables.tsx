@@ -7,12 +7,12 @@ import {
   PRODUCT_STATUSES,
   CATEGORY_STATUSES,
   STOCK_STATUSES,
-  priceLabel,
   type Category,
   type Product,
   type News,
   type ActionState,
 } from "@/lib/vocational/types";
+import { ProductPrice } from "@/components/vocational/ProductPrice";
 function Notice({ state }: { state: ActionState }) {
   return state.message ? (
     <p role={state.ok ? "status" : "alert"} className={state.ok ? "cms-success" : "cms-error"}>
@@ -141,7 +141,9 @@ export function ProductTable({
                   </small>
                 </td>
                 <td>{p.category_name}</td>
-                <td>{priceLabel(p)}</td>
+                <td>
+                  <ProductPrice product={p} />
+                </td>
                 <td>
                   <span className={`cms-status ${p.status}`}>{PRODUCT_STATUSES[p.status]}</span>
                   <small>{STOCK_STATUSES[p.stock_status]}</small>

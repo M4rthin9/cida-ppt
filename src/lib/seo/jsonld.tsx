@@ -93,6 +93,7 @@ export function productJsonLd(input: {
   images: string[];
   sku?: string;
   price?: string;
+  sharingPrice?: string;
   priceDisplay: "exact" | "from" | "contact" | "hidden";
   categoryName?: string;
 }): Json {
@@ -119,12 +120,29 @@ export function productJsonLd(input: {
     ...(input.categoryName ? { category: input.categoryName } : {}),
     ...(hasPrice
       ? {
-          offers: {
-            "@type": "Offer",
-            price: input.price,
-            priceCurrency: "THB",
-            url: absoluteUrl(input.base, input.locale, encodePath(input.path)),
-          },
+          offers: input.sharingPrice
+            ? [
+                {
+                  "@type": "Offer",
+                  name: "ราคาขายขาด",
+                  price: input.price,
+                  priceCurrency: "THB",
+                  url: absoluteUrl(input.base, input.locale, encodePath(input.path)),
+                },
+                {
+                  "@type": "Offer",
+                  name: "ราคาแบ่งปัน",
+                  price: input.sharingPrice,
+                  priceCurrency: "THB",
+                  url: absoluteUrl(input.base, input.locale, encodePath(input.path)),
+                },
+              ]
+            : {
+                "@type": "Offer",
+                price: input.price,
+                priceCurrency: "THB",
+                url: absoluteUrl(input.base, input.locale, encodePath(input.path)),
+              },
         }
       : {}),
   };

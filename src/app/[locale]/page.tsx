@@ -4,6 +4,7 @@ import { CraftJourney } from "@/components/vocational/CraftJourney";
 import { CategoryBento } from "@/components/vocational/CategoryBento";
 import { StorySection } from "@/components/vocational/StorySection";
 import { ProductCard } from "@/components/vocational/ProductCard";
+import { FeaturedCarousel } from "@/components/vocational/FeaturedCarousel";
 import { NewsCard } from "@/components/vocational/NewsCard";
 import { readSequence } from "@/lib/vocational/sequence-assets";
 import { publicMetadata } from "@/lib/seo/metadata";
@@ -29,12 +30,19 @@ export default async function Home() {
    */
   const [categories, featured, news, heroSequence, revealSequence, copy] = await Promise.all([
     listCategories(),
-    listProducts({ featured: "1", limit: 4 }),
+    listProducts({ featured: "1", limit: 12 }),
     listNews({ limit: 3 }),
     readSequence("hero"),
     readSequence("reveal"),
     getCachedSetting("home"),
   ]);
+  const catalogue = featured.items.length < 12 ? await listProducts({ limit: 12 }) : featured;
+  const selectedProducts = {
+    items: [
+      ...featured.items,
+      ...catalogue.items.filter((p) => !featured.items.some((f) => f.id === p.id)),
+    ].slice(0, 12),
+  };
   return (
     <main id="content">
       <CraftJourney
@@ -43,6 +51,23 @@ export default async function Home() {
         categories={categories}
         copy={copy}
       />
+      {selectedProducts.items.length > 0 && (
+        <FeaturedCarousel
+          title={copy.featuredTitle}
+          eyebrow={copy.featuredEyebrow}
+          cta={copy.featuredCta}
+          href="/products"
+          labels={selectedProducts.items.map((product) => product.name_th)}
+        >
+          {selectedProducts.items.map((product) => (
+            <ProductCard
+              key={product.id}
+              product={product}
+              imageSizes="(max-width: 760px) 74vw, 360px"
+            />
+          ))}
+        </FeaturedCarousel>
+      )}
       <nav className="v-collection-index" aria-label="สำรวจหมวดงานฝีมือ">
         <span className="v-index-label">
           สำรวจงานฝีมือ <span aria-hidden="true">→</span>
@@ -83,23 +108,8 @@ export default async function Home() {
         <CategoryBento categories={categories} copy={copy} />
       </section>
       <StorySection copy={copy} />
-      <section className="v-section" id="featured">
-        <div className="v-section-heading">
-          <div>
-            {copy.featuredEyebrow && <p className="v-eyebrow">{copy.featuredEyebrow}</p>}
-            <h2>{copy.featuredTitle}</h2>
-          </div>
-          <Link href="/products?featured=1" className="v-text-link">
-            {copy.featuredCta} ↗
-          </Link>
-        </div>
-        {featured.items.length ? (
-          <div className="v-product-grid v-featured-grid">
-            {featured.items.map((p) => (
-              <ProductCard key={p.id} product={p} />
-            ))}
-          </div>
-        ) : (
+      {selectedProducts.items.length === 0 && (
+        <section className="v-section" id="featured">
           <div className="v-featured-empty">
             <p>
               ติดตามผลงานจาก {categories.length} หมวดหมู่
@@ -108,8 +118,8 @@ export default async function Home() {
             </p>
             <Link href="/products">{copy.featuredEmptyCta} ↗</Link>
           </div>
-        )}
-      </section>
+        </section>
+      )}
       {news.items.length > 0 && (
         <section className="v-section v-news-section">
           <div className="v-section-heading">

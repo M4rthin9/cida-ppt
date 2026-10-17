@@ -148,6 +148,9 @@ function sections(kind: Kind, categories: { id: string; name_th: string }[]): Se
         f("price_mode", "รูปแบบราคา", "select", { options: PRICE_MODES }),
         f("price", "ราคาปกติ (บาท)", "number"),
         f("sale_price", "ราคาพิเศษ (บาท)", "number"),
+        f("sharing_price", "ราคาแบ่งปัน (บาท)", "number", {
+          hint: "เว้นว่างสำหรับสินค้าทั่วไป หากมีราคาแบ่งปัน ราคาปกติจะแสดงเป็นราคาขายขาด และไม่ใช้ราคาพิเศษ",
+        }),
       ],
     },
     {
@@ -276,6 +279,7 @@ export function ContentEditor({
       if (key === "price_mode" && !["exact", "from"].includes(String(value))) {
         next.price = "";
         next.sale_price = "";
+        next.sharing_price = "";
       }
       return next;
     });
@@ -399,7 +403,7 @@ export function ContentEditor({
                         }
                         min={field.type === "number" ? 0 : undefined}
                         disabled={
-                          ["price", "sale_price"].includes(field.key) &&
+                          ["price", "sale_price", "sharing_price"].includes(field.key) &&
                           !["exact", "from"].includes(String(data.price_mode))
                         }
                       />

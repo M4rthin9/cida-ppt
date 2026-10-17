@@ -1,0 +1,26 @@
+{
+  "checked_at": "2026-10-17T23:49:48.952Z",
+  "isolated_database": true,
+  "migrations_applied": true,
+  "counts": {
+    "locales": 3,
+    "media": 85,
+    "media_i18n": 85,
+    "categories": 4,
+    "category_i18n": 8,
+    "products": 76,
+    "product_i18n": 152,
+    "product_media": 77,
+    "product_specs": 0,
+    "product_spec_i18n": 0,
+    "settings": 21
+  },
+  "files_verified": 702,
+  "byte_identical_images": true,
+  "idempotent": true,
+  "administrator_product_settings_and_gallery_edits_preserved": true,
+  "four_categories_with_desktop_and_mobile_backgrounds": true,
+  "prices_and_white_wreath_priority_verified": true,
+  "no_accounts_or_private_data_seeded": true,
+  "temporary_database_removed": true
+}

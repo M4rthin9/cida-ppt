@@ -64,3 +64,15 @@ export function renderMessageTemplate(template: string, vars: MessageVars): stri
 export function goLinePath(productSlug?: string): string {
   return productSlug ? `/go/line?p=${encodeURIComponent(productSlug)}` : "/go/line";
 }
+
+export type LineDestination = { mode: "oa" | "phone"; oaId: string; phone: string };
+export function lineIdentity(line: LineDestination): string {
+  return line.mode === "phone" ? line.phone : line.oaId;
+}
+export function lineContactUrl(line: LineDestination): string {
+  return line.mode === "phone" ? "/line" : addFriendUrl(line.oaId);
+}
+/** LINE's documented Add friends screen; number searching happens in the app. */
+export function openLineFriendsUrl(): string {
+  return "https://line.me/R/nv/addFriends";
+}

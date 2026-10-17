@@ -70,6 +70,7 @@ export type Product = {
   description_en: string;
   price: string | null;
   sale_price: string | null;
+  sharing_price: string | null;
   price_mode: PriceMode;
   materials: string | null;
   dimensions: string | null;

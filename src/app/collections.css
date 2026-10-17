@@ -75,6 +75,14 @@
   --collection-art: #aac5c9;
   --collection-light: #79989f;
 }
+/* Studio photography shares the site's forest-green and ivory palette. */
+.v-collection-card.has-background,
+.v-category-hero.has-cover {
+  --collection-ground: #213f34;
+  --collection-ink: #f1e5c6;
+  --collection-art: #d6be87;
+  --collection-light: #64816a;
+}
 .v-collection-visual {
   position: absolute;
   inset: 0;
@@ -111,6 +119,11 @@
 .v-collection-card.v-bento-material .v-collection-visual.with-image > img {
   object-fit: contain;
   object-position: center top;
+}
+@media (min-width: 1051px) {
+  .v-collection-card.v-bento-material .v-collection-visual.with-image > img {
+    object-fit: cover;
+  }
 }
 .v-collection-emblem {
   position: absolute;
@@ -326,6 +339,62 @@
   font-size: clamp(30px, 3.7vw, 52px);
   font-weight: 450;
   line-height: 1.5;
+}
+.v-category-hero.v-category-panorama {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  min-height: clamp(380px, 36vw, 520px);
+  background: #102b1e;
+  color: #fff9e9;
+}
+.v-category-panorama .v-category-cover {
+  position: absolute;
+  inset: 0;
+  aspect-ratio: auto;
+  border-radius: 0;
+  z-index: -2;
+}
+.v-category-panorama .v-category-cover img {
+  object-fit: cover;
+  object-position: right center;
+}
+.v-category-panorama::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(90deg, #071b13c9, #071b1380 36%, #071b1300 65%);
+}
+.v-category-panorama .v-category-hero-copy {
+  width: 44%;
+  max-width: 540px;
+}
+.v-category-panorama .v-back {
+  color: #f1e5c6;
+}
+@media (max-width: 760px) {
+  .v-category-hero.v-category-panorama {
+    min-height: max(660px, 165vw);
+    align-items: flex-end;
+    padding: 28px;
+  }
+  .v-category-panorama .v-category-hero-copy {
+    width: 100%;
+    max-width: none;
+  }
+  .v-category-panorama .v-category-cover img {
+    object-position: center top;
+  }
+  .v-category-panorama::after {
+    background: linear-gradient(180deg, #071b1300 35%, #071b1366 55%, #071b13db 75%, #071b13ed);
+  }
+  .v-category-panorama .v-back {
+    margin-bottom: 18px;
+  }
 }
 .v-category-hero .v-category-art {
   display: grid;

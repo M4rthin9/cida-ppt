@@ -4,6 +4,7 @@ import { ProductImage } from "@/components/media/product-image";
 import { mediaUrl } from "@/lib/media/urls";
 import { formatPrice } from "@/lib/format";
 import type { ProductCardData } from "@/lib/public/queries";
+import { ProductPrice } from "@/components/vocational/ProductPrice";
 
 /**
  * The most important component on the site (docs/DESIGN.md).
@@ -39,16 +40,25 @@ export function ProductCard({ product }: { product: ProductCardData }) {
          * Never an empty gap: `contact` renders สอบถามราคา in body colour, which
          * is the state most of this catalog is in.
          */}
-        <p className="product-card-price text-lg text-(--color-heading)">
+        <div className="product-card-price text-lg text-(--color-heading)">
           {product.priceDisplay === "hidden" ? null : product.priceDisplay === "contact" ||
             price === null ? (
             <span className="text-base font-normal text-(--color-text)">
               {t("contactForPrice")}
             </span>
+          ) : product.priceDisplay === "exact" && product.sharingPrice !== null ? (
+            <ProductPrice
+              product={{
+                price_mode: "exact",
+                price: product.price,
+                sale_price: null,
+                sharing_price: product.sharingPrice,
+              }}
+            />
           ) : (
             t("baht", { amount: price })
           )}
-        </p>
+        </div>
       </Link>
     </article>
   );

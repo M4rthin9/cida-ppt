@@ -10,7 +10,7 @@ For a complete local Docker stack:
 docker compose -f docker-compose.dev.yml up --build
 ```
 
-The development image installs locked dependencies; the startup command applies migrations, seeds the four categories, then starts Next.js at http://localhost:3000. Create an owner inside that container using `ADMIN_PASSWORD` supplied through your shell or secret manager. The seed never creates an administrator.
+The development image installs locked dependencies; the startup command applies migrations, seeds the four categories, 76 approved products and their media, then starts Next.js at http://localhost:3000. Create an owner inside that container using `ADMIN_PASSWORD` supplied through your shell or secret manager. The seed never creates an administrator.
 
 For host development, start only PostgreSQL:
 
@@ -64,6 +64,20 @@ Do not leave a production `.env` in the build checkout: Next standalone output m
 
 Apply migrations before starting the new application version. For a fresh database run the seed once; re-running is safe and does not overwrite CMS changes. For an existing populated database, take a database/media backup and review the vocational migration and old content before publishing.
 
+`pnpm db:seed` and `pnpm db:seed:production` now install the approved catalogue and public settings from [content/production-seed](content/production-seed/README.md), including all product photographs, homepage category backgrounds, full-width desktop banners and mobile banners. Set `DATABASE_URL` and `MEDIA_DIR` first. To validate without changing the database or media, run `pnpm db:seed --dry-run`. The earlier category-only seed remains available as `pnpm db:seed:configuration`.
+
+Run `pnpm db:seed:verify` to check migrations, fresh installation, image hashes, repeated runs and preservation of CMS edits in an isolated temporary database. The configured database role needs permission to create that test database. After approving newly published products in the CMS, run `pnpm db:seed:export`, verify the refreshed seed, and commit `content/production-seed/` with its image files. Raw catalogue sources, draft reviews and source animation frames remain local; deployable images and optimized public frames stay tracked. `pnpm-lock.yaml` is the canonical lockfile.
+
+The production Docker image includes the seed and its image files. On a configured deployment host, initialise the database and the persistent media volume before starting the website:
+
+```bash
+docker compose run --rm --no-deps --entrypoint node web scripts/migrate.mjs
+docker compose run --rm --no-deps --entrypoint node web scripts/seed-production.mjs
+docker compose up -d web
+```
+
+The database service must be healthy before these commands. Seeding is explicit; deployment does not reset catalogue content. Existing names, prices, translations, gallery selections, settings and image files are preserved. Existing categories with missing hero or homepage backgrounds acquire those missing images. A conflicting SKU, slug or media identity stops the seed before database changes. No administrator, password, private enquiry, session or audit history is included.
+
 ## Administrator workflow
 
 1. Create the first owner with `pnpm admin:create`, then log in at `/admin`.
@@ -74,6 +88,8 @@ Apply migrations before starting the new application version. For a fresh databa
 6. Archive before permanently deleting a product. Only owners may permanently delete, with typed confirmation. Restore returns it to draft.
 7. To delete a category containing products, choose a replacement category. Archived products move as well.
 8. Add vocational news only. Publication time is shown in the administrator's local timezone.
+
+Owners can choose **LINE Official Account (OA)** or **เพิ่มเพื่อนด้วยเบอร์โทรศัพท์** in `/admin/settings/line`. Enter the OA handle or the LINE-registered phone number for the selected mode. The other value stays available for switching back. OA mode opens the official add-friend/product chat link; phone mode opens a matching page with a copyable number, add-friend steps and a copyable product inquiry. The contact page, footer and product buttons use the selection. The seed retains the current OA selection with an empty phone field; it does not publish an example phone number.
 
 Editors can manage products, categories, media, news and inquiries. Owners also manage users, system settings and permanent product deletion. Disabling accounts or resetting passwords invalidates existing sessions; the server rechecks current database permissions.
 
@@ -88,7 +104,7 @@ Import a sequence from a folder of frames or a ZIP, into either named set:
 
 The importer reads every PNG or JPEG in natural order, samples the set down to exactly 150 frames (`--max` takes 8 to 600), checks that every frame decodes and shares one size, and writes `manifest.json` last so a rejected import leaves the previous sequence intact. It copies the original bytes by default; `--encode` re-encodes for delivery instead (JPEG quality 76 at up to 1280px, tunable with `--quality` and `--width`), which took the supplied 20-second set from 139 MB to 17.3 MB. A sequence that would serve more than 40 MB is refused rather than published, since one that large never keeps up with the scroll; `--allow-large` overrides that deliberately. Starting from a video instead, run `pnpm frames:make` first. Frame delivery can later move to a CDN while keeping the same manifest contract. See [docs/SCROLL-SEQUENCE.md](docs/SCROLL-SEQUENCE.md).
 
-No real product photos, product inventory or vocational news are invented by the seed. Populate these through the CMS before launch. The hero's no-footage fallback is explicitly labeled as a conceptual illustration, and the aperture section falls back to a typographic panel rather than to stock imagery.
+The production seed uses the supplied real product catalogue and the approved studio photographs. Review stock availability and contact information through the CMS before launch, and add genuine vocational news there. The hero's no-footage fallback is explicitly labeled as a conceptual illustration, and the aperture section falls back to a typographic panel rather than to stock imagery.
 
 ## Backups and recovery
 

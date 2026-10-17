@@ -79,7 +79,7 @@ export async function listProducts(o: ProductQuery = {}) {
       (Product & { body: unknown; body_en: unknown })[]
     >`select p.id,p.sku,p.category_id,ct.name category_name,ct.slug category_slug,t.name name_th,coalesce(e.name,'') name_en,t.slug,
  coalesce(t.short_desc,'') short_description_th,coalesce(e.short_desc,'') short_description_en,t.body,e.body body_en,
- p.price,p.sale_price,p.price_mode,p.materials,p.dimensions,p.weight,p.quantity,p.stock_status,p.made_to_order,p.lead_time,p.status,p.sort_order display_order,p.is_featured,p.is_new,p.created_at,p.updated_at,p.deleted_at,
+ p.price,p.sale_price,p.sharing_price,p.price_mode,p.materials,p.dimensions,p.weight,p.quantity,p.stock_status,p.made_to_order,p.lead_time,p.status,p.sort_order display_order,p.is_featured,p.is_new,p.created_at,p.updated_at,p.deleted_at,
  coalesce(t.seo_title,'') seo_title,coalesce(t.seo_description,'') seo_description,
  (select '/media/'||m.storage_key||'/master.webp' from product_media pm join media m on m.id=pm.media_id and m.deleted_at is null where pm.product_id=p.id order by pm.is_primary desc,pm.sort_order limit 1) image_url
  ${joins} ${where} order by ${order} limit ${limit} offset ${(page - 1) * limit}`,

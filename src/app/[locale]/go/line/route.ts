@@ -10,7 +10,7 @@ import { assertEnv } from "@/lib/env";
 import { addFriendUrl, oaMessageUrl, renderMessageTemplate } from "@/lib/line";
 import { pepperedHash } from "@/lib/privacy";
 import { getSetting } from "@/lib/settings/store";
-import { DEFAULT_LOCALE } from "@/lib/slug";
+import { DEFAULT_LOCALE, localePrefix } from "@/lib/slug";
 
 /**
  * `/go/line` — the tracked entry point to the Official Account. SPEC.md §8.
@@ -86,7 +86,11 @@ export async function GET(
    * link, which is the right action when there is nothing to ask about yet.
    */
   let target: string;
-  if (product) {
+  if (line.mode === "phone") {
+    const local = new URL(`${localePrefix(locale)}/line`, request.nextUrl.origin);
+    if (product) local.searchParams.set("p", product.slug);
+    target = local.toString();
+  } else if (product) {
     const template = product.override?.trim() || line.messageTemplate;
     const url = new URL(
       `/products/${encodeURIComponent(product.slug)}`,

@@ -21,7 +21,11 @@
     "db:push": "node --env-file-if-exists=.env node_modules/drizzle-kit/bin.cjs push",
     "frames:import": "node scripts/run-python.mjs import-frames.py",
     "frames:make": "node scripts/run-python.mjs make-frames.py",
-    "db:seed": "node --env-file-if-exists=.env --import tsx src/db/seed.ts",
+    "db:seed": "node --env-file-if-exists=.env scripts/seed-production.mjs",
+    "db:seed:configuration": "node --env-file-if-exists=.env --import tsx src/db/seed.ts",
+    "db:seed:production": "node --env-file-if-exists=.env scripts/seed-production.mjs",
+    "db:seed:export": "node --env-file-if-exists=.env --import tsx scripts/export-production-seed.mjs",
+    "db:seed:verify": "node --env-file-if-exists=.env scripts/verify-production-seed.mjs",
     "admin:create": "node --env-file-if-exists=.env --import tsx scripts/create-admin.ts"
   },
   "dependencies": {

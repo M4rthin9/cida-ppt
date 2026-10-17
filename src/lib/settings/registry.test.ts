@@ -76,6 +76,34 @@ describe("parseGlobal / parseLocalized", () => {
 });
 
 describe("line settings", () => {
+  it("keeps existing OA-only settings compatible", () => {
+    expect(parseGlobal("line", { oaId: "@existing" })).toEqual({
+      mode: "oa",
+      phone: "",
+      oaId: "@existing",
+    });
+  });
+
+  it("accepts phone mode without an OA and normalises formatted numbers", () => {
+    const result = SETTINGS.line.global.parse({
+      mode: "phone",
+      oaId: "",
+      phone: "+66 (81) 234-5678",
+    });
+    expect(result).toEqual({ mode: "phone", oaId: "", phone: "+66812345678" });
+  });
+
+  it("requires the selected destination and rejects malformed phones", () => {
+    for (const value of [
+      { mode: "phone", oaId: "@x", phone: "" },
+      { mode: "phone", oaId: "", phone: "tel:0812345678" },
+      { mode: "phone", oaId: "", phone: "123" },
+      { mode: "oa", oaId: "", phone: "0812345678" },
+      { mode: "other", oaId: "@x", phone: "" },
+    ])
+      expect(SETTINGS.line.global.safeParse(value).success).toBe(false);
+  });
+
   it("stores the OA handle and adds the @ if the operator omits it", () => {
     expect(parseGlobal("line", { oaId: "355kxfoj" }).oaId).toBe("@355kxfoj");
     expect(parseGlobal("line", { oaId: "@355kxfoj" }).oaId).toBe("@355kxfoj");

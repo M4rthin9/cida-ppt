@@ -29,6 +29,13 @@
       "when": 1789979853382,
       "tag": "0003_vocational-catalog",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1791783079163,
+      "tag": "0004_short_penance",
+      "breakpoints": true
     }
   ]
 }

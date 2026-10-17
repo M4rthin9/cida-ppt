@@ -63,6 +63,7 @@ export const productInput = z
     price_mode: z.enum(["exact", "from", "contact", "made_to_order", "showcase"]),
     price: money,
     sale_price: money,
+    sharing_price: money,
     media_ids: z
       .array(id)
       .max(20, "เลือกรูปได้ไม่เกิน 20 รูป")
@@ -82,6 +83,15 @@ export const productInput = z
   })
   .strict()
   .superRefine((v, c) => {
+    if (
+      v.sharing_price !== null &&
+      (v.price_mode !== "exact" || v.price === null || v.sale_price !== null)
+    )
+      c.addIssue({
+        code: "custom",
+        path: ["sharing_price"],
+        message: "ราคาแบ่งปันใช้ร่วมกับราคาขายขาดแบบคงที่ และไม่ใช้ราคาพิเศษ",
+      });
     if (["exact", "from"].includes(v.price_mode) && v.price === null)
       c.addIssue({ code: "custom", path: ["price"], message: "กรุณากรอกราคาสำหรับรูปแบบที่เลือก" });
     if (v.sale_price !== null && (v.price === null || v.sale_price > v.price))

@@ -1023,6 +1023,41 @@
   color: var(--v-muted);
   font-size: 13px;
 }
+.v-price-options {
+  display: grid;
+  gap: 8px;
+  width: 100%;
+  margin: 0;
+}
+.v-price-options > div {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+.v-price-options dt {
+  color: var(--v-muted);
+  font-size: 11px;
+  font-weight: 400;
+}
+.v-price-options dd {
+  margin: 0;
+  white-space: nowrap;
+}
+.v-price-options > div:first-child dd {
+  color: var(--v-coal);
+}
+.v-detail-price .v-price-options {
+  min-width: min(280px, 100%);
+}
+.v-detail-price .v-price-options dt {
+  font-size: 13px;
+}
+.v-detail-price .v-price-options > div + div {
+  padding-top: 10px;
+  border-top: 1px solid var(--v-line);
+  font-size: 20px;
+}
 .v-featured-empty {
   display: flex;
   justify-content: space-between;
@@ -2050,4 +2085,65 @@
   .v-product-detail-info {
     position: static;
   }
+}
+.v-line-page {
+  max-width: 960px;
+}
+.v-line-phone-card {
+  padding: clamp(24px, 5vw, 48px);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 24px;
+}
+.v-line-phone-card label {
+  display: block;
+  margin-bottom: 12px;
+  font-weight: 600;
+}
+.v-line-copy-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.v-line-copy-row input,
+.v-line-message textarea {
+  min-width: 0;
+  width: 100%;
+  padding: 16px;
+  background: var(--color-bg);
+  color: var(--color-heading);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+}
+.v-line-copy-row input {
+  flex: 1 1 200px;
+  font-size: clamp(20px, 4vw, 28px);
+  font-variant-numeric: tabular-nums;
+}
+.v-line-steps {
+  margin: 28px 0;
+  padding-left: 24px;
+  list-style: decimal;
+  line-height: 1.8;
+}
+.v-line-steps li + li {
+  margin-top: 12px;
+}
+.v-line-message {
+  margin-top: 32px;
+  padding-top: 28px;
+  border-top: 1px solid var(--color-border);
+}
+.v-line-message textarea {
+  display: block;
+  margin-bottom: 16px;
+  resize: vertical;
+}
+.v-line-copy-status {
+  margin-top: 16px;
+  min-height: 24px;
+  color: var(--color-brand);
+}
+.v-line-back {
+  margin: 24px 0 64px;
 }

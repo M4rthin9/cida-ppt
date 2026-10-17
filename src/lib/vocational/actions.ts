@@ -141,6 +141,7 @@ export async function saveProduct(
         sku: v.sku || null,
         price: v.price,
         sale_price: v.sale_price,
+        sharing_price: v.sharing_price,
         price_mode: v.price_mode,
         price_display:
           v.price_mode === "showcase"

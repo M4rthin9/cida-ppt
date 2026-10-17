@@ -36,6 +36,8 @@ COPY --chown=nextjs:nodejs ${STATIC} ./.next/static
 COPY --chown=nextjs:nodejs ${PUBLIC} ./public
 COPY --chown=nextjs:nodejs drizzle ./drizzle
 COPY --chown=nextjs:nodejs scripts/migrate.mjs ./scripts/migrate.mjs
+COPY --chown=nextjs:nodejs scripts/seed-production.mjs ./scripts/seed-production.mjs
+COPY --chown=nextjs:nodejs content/production-seed ./content/production-seed
 
 # The media volume is mounted here; the directory must exist and be writable by
 # the app user before the volume is attached, or uploads fail with EACCES.

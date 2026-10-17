@@ -20,7 +20,7 @@ export function ProductImage({
     <span className={styles.stage}>
       {src ? (
         <span className={styles.photograph}>
-          <Image src={src} alt={alt} fill sizes={sizes} preload={preload} />
+          <Image src={src} alt={alt} fill sizes={sizes} preload={preload} quality={90} />
         </span>
       ) : (
         <span className={styles.empty}>

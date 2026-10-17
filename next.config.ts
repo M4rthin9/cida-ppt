@@ -13,7 +13,7 @@ const nextConfig: NextConfig = {
   output: process.env.NEXT_STANDALONE === "false" ? undefined : "standalone",
   // The runtime deployment command uses Drizzle's migrator without drizzle-kit.
   outputFileTracingIncludes: {
-    "/*": ["./node_modules/drizzle-orm/**/*"],
+    "/*": ["./node_modules/drizzle-orm/**/*", "./node_modules/postgres/**/*"],
   },
   // Posts are managed as news; keep old admin links working.
   async redirects() {
@@ -37,6 +37,7 @@ const nextConfig: NextConfig = {
     // No hotlinked assets (CLAUDE.md): every image is local or in the media library.
     remotePatterns: [],
     formats: ["image/avif", "image/webp"],
+    qualities: [75, 90],
   },
 };
 

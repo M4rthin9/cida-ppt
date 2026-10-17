@@ -33,7 +33,7 @@ export default async function Page({
         <Link href="/admin/news?archived=1">รายการที่เก็บถาวร</Link>
       </div>
       <NewsTable items={JSON.parse(JSON.stringify(data.items))} />
-      <Pager {...data} base="/admin/news" query={q} />
+      <Pager {...data} base="/admin/news" query={q} localeAware={false} />
     </>
   );
 }
