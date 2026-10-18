@@ -28,7 +28,8 @@ const tables = [
 assert.equal(seed.version, 1);
 assert.deepEqual(Object.keys(seed.tables), tables);
 assert.equal(seed.tables.categories.length, 4);
-assert.equal(seed.tables.products.length, 76);
+assert.ok(seed.tables.products.length > 0);
+for (const table of tables) assert.equal(seed.tables[table].length, seed.counts[table]);
 const knownMedia = new Set(seed.tables.media.map((m) => m.storage_key));
 assert.equal(knownMedia.size, seed.tables.media.length);
 for (const file of seed.files) {
@@ -79,7 +80,7 @@ try {
       existing[table] = new Set((await tx`select id from ${tx(table)}`).map((r) => r.id));
     if (process.argv.includes("--dry-run")) {
       console.log(
-        `Production seed valid: 4 categories, 76 products, ${seed.files.length} verified image files. No changes made.`,
+        `Production seed valid: ${seed.tables.categories.length} categories, ${seed.tables.products.length} products, ${seed.files.length} verified image files. No changes made.`,
       );
       return;
     }

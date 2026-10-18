@@ -43,17 +43,35 @@ try {
   const counts = await rows();
   assert.deepEqual(counts, seed.counts);
   assert.equal(counts.categories, 4);
-  assert.equal(counts.products, 76);
+  assert.equal(counts.products, 82);
   const catalogue =
     await testSql`select t.slug,p.price,p.sharing_price,p.is_featured,p.sort_order,p.stock_status,c.slug category from products p join product_i18n t on t.product_id=p.id and t.locale='th' join category_i18n c on c.category_id=p.category_id and c.locale='th'`;
-  assert.equal(catalogue.filter((p) => p.category === "sharing-wreaths").length, 11);
+  assert.equal(catalogue.filter((p) => p.category === "sharing-wreaths").length, 17);
+  const premiumSlugs = [
+    "coral",
+    "white-green",
+    "yellow-white",
+    "royal-blue",
+    "thai-red-white",
+    "pink",
+  ].map((key) => `wreath-premium-${key}`);
+  assert.equal(catalogue.filter((p) => premiumSlugs.includes(p.slug)).length, 6);
   for (const wreath of catalogue.filter((p) => p.category === "sharing-wreaths")) {
-    assert.equal(wreath.price, "4000.00");
-    assert.equal(wreath.sharing_price, "1700.00");
+    const premium = premiumSlugs.includes(wreath.slug);
+    assert.equal(wreath.price, premium ? "5000.00" : "4000.00");
+    assert.equal(wreath.sharing_price, premium ? "2000.00" : "1700.00");
+    if (premium) assert.equal(wreath.is_featured, true);
   }
-  const white = catalogue.find((p) => p.is_featured);
-  assert.equal(white.slug, "wreath-khao-phisuth");
-  assert.equal(white.sort_order, 0);
+  const white = catalogue.find((p) => p.slug === "wreath-khao-phisuth");
+  assert.equal(white.is_featured, true);
+  assert.equal(white.sort_order, 6);
+  assert.deepEqual(
+    catalogue
+      .filter((p) => premiumSlugs.includes(p.slug))
+      .sort((a, b) => a.sort_order - b.sort_order)
+      .map((p) => p.slug),
+    premiumSlugs,
+  );
   for (const p of catalogue.filter((p) => p.category === "needlework")) {
     assert.equal(p.price, p.slug === "canvas-tote-waiting-for-opportunity" ? "199.00" : "399.00");
     assert.equal(p.stock_status, "available");
@@ -90,7 +108,7 @@ try {
   );
   const [line] = await testSql`select value from settings where key='line' and locale='*'`;
   assert.equal(line.value.oaId, "@admin-edited");
-  assert.equal((await rows()).products, 76);
+  assert.equal((await rows()).products, 82);
   for (const table of ["users", "sessions", "contact_messages", "audit_log", "line_clicks"]) {
     const [exists] = await testSql`select to_regclass(${`public.${table}`}) name`;
     if (exists.name)
@@ -110,7 +128,7 @@ try {
         idempotent: true,
         administrator_product_settings_and_gallery_edits_preserved: true,
         four_categories_with_desktop_and_mobile_backgrounds: true,
-        prices_and_white_wreath_priority_verified: true,
+        legacy_and_six_featured_wreath_prices_verified: true,
         no_accounts_or_private_data_seeded: true,
         temporary_database_removed: true,
       },

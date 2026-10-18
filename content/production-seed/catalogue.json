@@ -1,16 +1,16 @@
 {
   "version": 1,
-  "generated_at": "2026-10-17T23:49:05.328Z",
+  "generated_at": "2026-10-18T00:18:40.146Z",
   "description": "Approved real catalogue, public website settings and matching media. No accounts, credentials, sessions, inquiries, analytics or audit history.",
   "counts": {
     "locales": 3,
-    "media": 85,
-    "media_i18n": 85,
+    "media": 91,
+    "media_i18n": 91,
     "categories": 4,
     "category_i18n": 8,
-    "products": 76,
-    "product_i18n": 152,
-    "product_media": 77,
+    "products": 82,
+    "product_i18n": 164,
+    "product_media": 83,
     "product_specs": 0,
     "product_spec_i18n": 0,
     "settings": 21
@@ -233,6 +233,22 @@
         "original_kept": true
       },
       {
+        "id": "1e199807-cbc3-415c-852b-e7cdc2472999",
+        "filename": ".png",
+        "storage_key": "2026/10/43694c79-5000-405c-a631-303550fcc60c",
+        "mime": "image/png",
+        "width": 1122,
+        "height": 1402,
+        "bytes": 3138952,
+        "tags": [],
+        "blurhash": "LHMsDzxtugxsZMM{Xkt3?^xuRlNa",
+        "is_seed": true,
+        "deleted_at": null,
+        "focal_x": 50,
+        "focal_y": 50,
+        "original_kept": true
+      },
+      {
         "id": "20f7c513-3ffd-4e25-9427-4ac0e59baf11",
         "filename": "เสื้อยืดปัก ลายบอลลูน Love You.png",
         "storage_key": "2026/10/c521f1de-3e34-42d5-8151-0b2451bea71e",
@@ -361,22 +377,6 @@
         "original_kept": true
       },
       {
-        "id": "31dbafad-83fe-4a62-8e3c-273d31bdd07e",
-        "filename": "พวงหรีดแบ่งปัน - tile.png",
-        "storage_key": "2026/10/7a1c52c6-fdd7-4b4d-a51a-e956f4b9f177",
-        "mime": "image/png",
-        "width": 1536,
-        "height": 1024,
-        "bytes": 2482851,
-        "tags": [],
-        "blurhash": "L697U#_04-X5~B%KInox0Lt5^*xt",
-        "is_seed": true,
-        "deleted_at": null,
-        "focal_x": 50,
-        "focal_y": 50,
-        "original_kept": true
-      },
-      {
         "id": "378918cc-4db4-42f7-89b9-489d12eb48ab",
         "filename": "หนุมาน ( การ์ตูน ) - ภาพสตูดิโอ 1.png",
         "storage_key": "2026/10/a7a88cc8-445f-4630-9d5c-c4888c38792a",
@@ -418,6 +418,22 @@
         "bytes": 1495857,
         "tags": [],
         "blurhash": "LRGa@7t700Rj_Nof9FWB0yWV=yj[",
+        "is_seed": true,
+        "deleted_at": null,
+        "focal_x": 50,
+        "focal_y": 50,
+        "original_kept": true
+      },
+      {
+        "id": "3de4d4e4-e617-4a54-a7c5-e10f31995d1a",
+        "filename": ".png",
+        "storage_key": "2026/10/429df39f-b92b-4b47-b678-5d189ce4c2c9",
+        "mime": "image/png",
+        "width": 1024,
+        "height": 1536,
+        "bytes": 3844620,
+        "tags": [],
+        "blurhash": "LKKnCm~VRR-:%cRijEs.-Y%L?GWE",
         "is_seed": true,
         "deleted_at": null,
         "focal_x": 50,
@@ -594,6 +610,22 @@
         "bytes": 2696366,
         "tags": [],
         "blurhash": "L59G|Jt900V@%ikCMzWU00WA?wWm",
+        "is_seed": true,
+        "deleted_at": null,
+        "focal_x": 50,
+        "focal_y": 50,
+        "original_kept": true
+      },
+      {
+        "id": "675f6957-d835-42be-b3ec-3e972a65b578",
+        "filename": ".png",
+        "storage_key": "2026/10/fd10ea16-77d1-40a8-9bc8-ab3d7aefbc00",
+        "mime": "image/png",
+        "width": 1024,
+        "height": 1536,
+        "bytes": 3642695,
+        "tags": [],
+        "blurhash": "LOIOa|^+~4-:I_Rj-i%1}r%2x]t7",
         "is_seed": true,
         "deleted_at": null,
         "focal_x": 50,
@@ -809,6 +841,22 @@
         "original_kept": true
       },
       {
+        "id": "9a819e68-ffd0-4778-9e4d-9327e417b9aa",
+        "filename": ".png",
+        "storage_key": "2026/10/a087ea3d-e204-4f9c-b677-9e91130c9cfe",
+        "mime": "image/png",
+        "width": 1024,
+        "height": 1536,
+        "bytes": 3106264,
+        "tags": [],
+        "blurhash": "LLK^Wm~UOa%Mx[M{s*xZyZ%M-nog",
+        "is_seed": true,
+        "deleted_at": null,
+        "focal_x": 50,
+        "focal_y": 50,
+        "original_kept": true
+      },
+      {
         "id": "9af5bd37-1f30-4202-87e3-4a1ca6236eeb",
         "filename": "ART TOY ชุดปฏิบัติการ -ชุดทูโทน - ภาพสตูดิโอ 1.png",
         "storage_key": "2026/10/be7a3331-6deb-4fa8-9bad-1b9ebe2e0da3",
@@ -834,6 +882,38 @@
         "bytes": 2078147,
         "tags": [],
         "blurhash": "L8Kd;|_300%M~pof.9t8OsWV8wRj",
+        "is_seed": true,
+        "deleted_at": null,
+        "focal_x": 50,
+        "focal_y": 50,
+        "original_kept": true
+      },
+      {
+        "id": "9e559eea-5b72-4357-8676-5c2346ae988d",
+        "filename": ".png",
+        "storage_key": "2026/10/2c9c6848-bef8-4473-aacc-9d7c457993a8",
+        "mime": "image/png",
+        "width": 1024,
+        "height": 1536,
+        "bytes": 3324579,
+        "tags": [],
+        "blurhash": "LLJG{0^*%}-:V[Ri%Kxt?^-p$*tR",
+        "is_seed": true,
+        "deleted_at": null,
+        "focal_x": 50,
+        "focal_y": 50,
+        "original_kept": true
+      },
+      {
+        "id": "a2962879-a446-4bbb-a19c-3bd9c0d3a225",
+        "filename": "พวงหรีดรุ่นใหม่-tile.png",
+        "storage_key": "2026/10/087e3787-8fb4-4e09-b78c-a38a4e7678a2",
+        "mime": "image/png",
+        "width": 1122,
+        "height": 1402,
+        "bytes": 3442465,
+        "tags": [],
+        "blurhash": "LAG[At.8p0~U~8wgMyxY00;LMdIo",
         "is_seed": true,
         "deleted_at": null,
         "focal_x": 50,
@@ -985,22 +1065,6 @@
         "original_kept": true
       },
       {
-        "id": "ba52c7bb-6129-4713-8acc-123d2ccfd5b9",
-        "filename": "พวงหรีดแบ่งปัน - panorama.png",
-        "storage_key": "2026/10/36a98851-eada-4fc0-9b93-9fcc89266ea9",
-        "mime": "image/png",
-        "width": 2048,
-        "height": 768,
-        "bytes": 3407051,
-        "tags": [],
-        "blurhash": "LDDItJ009tXm~WIUOAni0d^ktRn4",
-        "is_seed": true,
-        "deleted_at": null,
-        "focal_x": 50,
-        "focal_y": 50,
-        "original_kept": true
-      },
-      {
         "id": "bb716399-811a-4d43-a913-9d573f2a096f",
         "filename": "ดอกไม้ประดิษฐ์ - tile.png",
         "storage_key": "2026/10/1e50bae1-3e8e-4ffe-a179-4ce989b89650",
@@ -1010,6 +1074,22 @@
         "bytes": 3092184,
         "tags": [],
         "blurhash": "LHCsHZ^f0LA0~V-OM{JW9]s+=_og",
+        "is_seed": true,
+        "deleted_at": null,
+        "focal_x": 50,
+        "focal_y": 50,
+        "original_kept": true
+      },
+      {
+        "id": "bc8af51d-32b3-44b9-9848-84fbc80dbd6b",
+        "filename": "พวงหรีดรุ่นใหม่-panorama.png",
+        "storage_key": "2026/10/6f6b0e26-7575-4bb7-8c44-d9d9cf34f9a4",
+        "mime": "image/png",
+        "width": 1983,
+        "height": 793,
+        "bytes": 2953740,
+        "tags": [],
+        "blurhash": "L7F}$M0001_L00n,tSjX?t}[t7,:",
         "is_seed": true,
         "deleted_at": null,
         "focal_x": 50,
@@ -1106,6 +1186,22 @@
         "bytes": 2543422,
         "tags": [],
         "blurhash": "LKDAcEt600oM%%oJnMWF8_WBofWY",
+        "is_seed": true,
+        "deleted_at": null,
+        "focal_x": 50,
+        "focal_y": 50,
+        "original_kept": true
+      },
+      {
+        "id": "d1645abc-5672-4ad7-8178-c99dca8a5283",
+        "filename": ".png",
+        "storage_key": "2026/10/f459a39d-2cae-4f0d-a6d4-cc68a787f5da",
+        "mime": "image/png",
+        "width": 1122,
+        "height": 1402,
+        "bytes": 2694168,
+        "tags": [],
+        "blurhash": "LNPX|U?HR4-Vs:t7nPs:_NtReno1",
         "is_seed": true,
         "deleted_at": null,
         "focal_x": 50,
@@ -1463,6 +1559,11 @@
         "alt": "เสื้อยืดปัก ลายสาวไทย"
       },
       {
+        "media_id": "1e199807-cbc3-415c-852b-e7cdc2472999",
+        "locale": "th",
+        "alt": "พวงหรีดแบ่งปัน รุ่นใหม่ โทนคอรัล"
+      },
+      {
         "media_id": "20f7c513-3ffd-4e25-9427-4ac0e59baf11",
         "locale": "th",
         "alt": "เสื้อยืดปัก ลายบอลลูน Love You"
@@ -1503,11 +1604,6 @@
         "alt": "พวงกุญแจนวม - ภาพสตูดิโอ 1"
       },
       {
-        "media_id": "31dbafad-83fe-4a62-8e3c-273d31bdd07e",
-        "locale": "th",
-        "alt": "พวงหรีดแบ่งปัน - tile"
-      },
-      {
         "media_id": "378918cc-4db4-42f7-89b9-489d12eb48ab",
         "locale": "th",
         "alt": "หนุมาน ( การ์ตูน ) - ภาพสตูดิโอ 1"
@@ -1521,6 +1617,11 @@
         "media_id": "3d299fa2-714c-4b48-a2c7-c66c5de691cb",
         "locale": "th",
         "alt": "พวงหรีดแบ่งปัน ชมพูอำไพ"
+      },
+      {
+        "media_id": "3de4d4e4-e617-4a54-a7c5-e10f31995d1a",
+        "locale": "th",
+        "alt": "พวงหรีดแบ่งปัน รุ่นใหม่ ขาวเขียว"
       },
       {
         "media_id": "3fa9db23-4826-432c-bf92-2cbff2256d89",
@@ -1576,6 +1677,11 @@
         "media_id": "5ac2fbee-1566-499c-be5e-7db421c44c45",
         "locale": "th",
         "alt": "ที่เปิดขวดแม่เหล็กรถตุ๊กๆ ( หน้าตรง ) - ภาพสตูดิโอ 1"
+      },
+      {
+        "media_id": "675f6957-d835-42be-b3ec-3e972a65b578",
+        "locale": "th",
+        "alt": "พวงหรีดแบ่งปัน รุ่นใหม่ รอยัลบลู"
       },
       {
         "media_id": "677171da-a7c2-4f34-9ea9-7d86eecb8c90",
@@ -1643,6 +1749,11 @@
         "alt": "ตะกร้าดอกไม้ประดิษฐ์ ส้มอรุณ"
       },
       {
+        "media_id": "9a819e68-ffd0-4778-9e4d-9327e417b9aa",
+        "locale": "th",
+        "alt": "พวงหรีดแบ่งปัน รุ่นใหม่ เหลืองขาว"
+      },
+      {
         "media_id": "9af5bd37-1f30-4202-87e3-4a1ca6236eeb",
         "locale": "th",
         "alt": "ART TOY ชุดปฏิบัติการ -ชุดทูโทน - ภาพสตูดิโอ 1"
@@ -1651,6 +1762,16 @@
         "media_id": "9ca495d1-bfec-428c-99f2-38c274355668",
         "locale": "th",
         "alt": "เสื้อยืดปัก ลายโจรสลัดหมวกฟาง"
+      },
+      {
+        "media_id": "9e559eea-5b72-4357-8676-5c2346ae988d",
+        "locale": "th",
+        "alt": "พวงหรีดแบ่งปัน รุ่นใหม่ แดงขาวทรงไทย"
+      },
+      {
+        "media_id": "a2962879-a446-4bbb-a19c-3bd9c0d3a225",
+        "locale": "th",
+        "alt": "พวงหรีดรุ่นใหม่-tile"
       },
       {
         "media_id": "a6a703d1-460e-457a-8ddd-e85b00c970e9",
@@ -1698,14 +1819,14 @@
         "alt": "ตะกร้าดอกไม้ประดิษฐ์ บัวชมพู"
       },
       {
-        "media_id": "ba52c7bb-6129-4713-8acc-123d2ccfd5b9",
-        "locale": "th",
-        "alt": "พวงหรีดแบ่งปัน - panorama"
-      },
-      {
         "media_id": "bb716399-811a-4d43-a913-9d573f2a096f",
         "locale": "th",
         "alt": "ดอกไม้ประดิษฐ์ - tile"
+      },
+      {
+        "media_id": "bc8af51d-32b3-44b9-9848-84fbc80dbd6b",
+        "locale": "th",
+        "alt": "พวงหรีดรุ่นใหม่-panorama"
       },
       {
         "media_id": "bdd76d79-6a24-475d-b2c4-3cae976b4c79",
@@ -1736,6 +1857,11 @@
         "media_id": "cf943cb1-867a-44a2-8ade-020acc563246",
         "locale": "th",
         "alt": "แจกันดอกไม้ประดิษฐ์ ฟ้าคราม"
+      },
+      {
+        "media_id": "d1645abc-5672-4ad7-8178-c99dca8a5283",
+        "locale": "th",
+        "alt": "พวงหรีดแบ่งปัน รุ่นใหม่ ชมพูขาว"
       },
       {
         "media_id": "d79e0f70-c019-48ef-b73a-981d68f975c0",
@@ -1832,14 +1958,14 @@
       {
         "id": "464c4a20-a118-5fd9-8799-83f48ce8bfb4",
         "parent_id": null,
-        "hero_media_id": "ba52c7bb-6129-4713-8acc-123d2ccfd5b9",
+        "hero_media_id": "bc8af51d-32b3-44b9-9848-84fbc80dbd6b",
         "icon_media_id": null,
         "og_media_id": null,
         "sort_order": 0,
         "is_published": true,
         "is_seed": true,
         "deleted_at": null,
-        "thumbnail_media_id": "31dbafad-83fe-4a62-8e3c-273d31bdd07e",
+        "thumbnail_media_id": "a2962879-a446-4bbb-a19c-3bd9c0d3a225",
         "icon": "wreath",
         "status": "published",
         "is_enabled": true,
@@ -2006,6 +2132,34 @@
         "sharing_price": null
       },
       {
+        "id": "39e9caad-29e8-49fc-8323-857127e233f0",
+        "category_id": "464c4a20-a118-5fd9-8799-83f48ce8bfb4",
+        "price": "5000.00",
+        "price_display": "exact",
+        "sku": null,
+        "badge": null,
+        "line_message_override": null,
+        "sort_order": 0,
+        "is_featured": true,
+        "is_published": true,
+        "published_at": "2026-10-18T00:08:06.779Z",
+        "og_media_id": null,
+        "is_seed": true,
+        "deleted_at": null,
+        "price_mode": "exact",
+        "sale_price": null,
+        "stock_status": "available",
+        "quantity": null,
+        "made_to_order": false,
+        "lead_time": "",
+        "materials": "",
+        "dimensions": "",
+        "weight": null,
+        "is_new": false,
+        "status": "published",
+        "sharing_price": "2000.00"
+      },
+      {
         "id": "8fcc0a5d-4dbe-4c2f-8afc-f485814a1a70",
         "category_id": "fbf6473b-9b90-59d6-a10a-50bbd6e076df",
         "price": "399.00",
@@ -2060,34 +2214,6 @@
         "is_new": false,
         "status": "published",
         "sharing_price": null
-      },
-      {
-        "id": "c6285d1f-4c7c-4d47-8a48-86f203d0b2a2",
-        "category_id": "464c4a20-a118-5fd9-8799-83f48ce8bfb4",
-        "price": "4000.00",
-        "price_display": "exact",
-        "sku": null,
-        "badge": null,
-        "line_message_override": null,
-        "sort_order": 0,
-        "is_featured": true,
-        "is_published": true,
-        "published_at": "2026-10-12T05:42:16.482Z",
-        "og_media_id": null,
-        "is_seed": true,
-        "deleted_at": null,
-        "price_mode": "exact",
-        "sale_price": null,
-        "stock_status": "available",
-        "quantity": null,
-        "made_to_order": false,
-        "lead_time": "",
-        "materials": "",
-        "dimensions": "",
-        "weight": null,
-        "is_new": false,
-        "status": "published",
-        "sharing_price": "1700.00"
       },
       {
         "id": "45ce64f5-1b45-4988-aee2-a193c7063fc2",
@@ -2202,6 +2328,34 @@
         "sharing_price": "1700.00"
       },
       {
+        "id": "d5b16e3d-fb10-44c9-b6b9-c22c5d8387f9",
+        "category_id": "464c4a20-a118-5fd9-8799-83f48ce8bfb4",
+        "price": "5000.00",
+        "price_display": "exact",
+        "sku": null,
+        "badge": null,
+        "line_message_override": null,
+        "sort_order": 1,
+        "is_featured": true,
+        "is_published": true,
+        "published_at": "2026-10-18T00:10:18.372Z",
+        "og_media_id": null,
+        "is_seed": true,
+        "deleted_at": null,
+        "price_mode": "exact",
+        "sale_price": null,
+        "stock_status": "available",
+        "quantity": null,
+        "made_to_order": false,
+        "lead_time": "",
+        "materials": "",
+        "dimensions": "",
+        "weight": null,
+        "is_new": false,
+        "status": "published",
+        "sharing_price": "2000.00"
+      },
+      {
         "id": "199beb35-68b2-4fc7-b329-8366c3cd0249",
         "category_id": "cd642c7b-c9cb-56e1-935b-9c7cbf3a26f2",
         "price": "2000.00",
@@ -2284,6 +2438,34 @@
         "is_new": false,
         "status": "published",
         "sharing_price": null
+      },
+      {
+        "id": "c46bf824-c208-4312-a300-22d6e5823760",
+        "category_id": "464c4a20-a118-5fd9-8799-83f48ce8bfb4",
+        "price": "5000.00",
+        "price_display": "exact",
+        "sku": null,
+        "badge": null,
+        "line_message_override": null,
+        "sort_order": 2,
+        "is_featured": true,
+        "is_published": true,
+        "published_at": "2026-10-18T00:10:16.919Z",
+        "og_media_id": null,
+        "is_seed": true,
+        "deleted_at": null,
+        "price_mode": "exact",
+        "sale_price": null,
+        "stock_status": "available",
+        "quantity": null,
+        "made_to_order": false,
+        "lead_time": "",
+        "materials": "",
+        "dimensions": "",
+        "weight": null,
+        "is_new": false,
+        "status": "published",
+        "sharing_price": "2000.00"
       },
       {
         "id": "d4f70694-55d3-4d84-80d4-12ff0b614256",
@@ -2370,6 +2552,34 @@
         "sharing_price": "1700.00"
       },
       {
+        "id": "a89cb1ae-d632-4014-bfcd-771e869402e5",
+        "category_id": "464c4a20-a118-5fd9-8799-83f48ce8bfb4",
+        "price": "5000.00",
+        "price_display": "exact",
+        "sku": null,
+        "badge": null,
+        "line_message_override": null,
+        "sort_order": 3,
+        "is_featured": true,
+        "is_published": true,
+        "published_at": "2026-10-18T00:10:15.411Z",
+        "og_media_id": null,
+        "is_seed": true,
+        "deleted_at": null,
+        "price_mode": "exact",
+        "sale_price": null,
+        "stock_status": "available",
+        "quantity": null,
+        "made_to_order": false,
+        "lead_time": "",
+        "materials": "",
+        "dimensions": "",
+        "weight": null,
+        "is_new": false,
+        "status": "published",
+        "sharing_price": "2000.00"
+      },
+      {
         "id": "bbf3e25c-70b3-4298-8e96-90e2cad04cff",
         "category_id": "8addfb75-5a74-56e6-86a5-bcb70dda4dc6",
         "price": "1500.00",
@@ -2452,6 +2662,34 @@
         "is_new": false,
         "status": "published",
         "sharing_price": null
+      },
+      {
+        "id": "725b0971-bb97-4c81-9298-993cdaad5bf6",
+        "category_id": "464c4a20-a118-5fd9-8799-83f48ce8bfb4",
+        "price": "5000.00",
+        "price_display": "exact",
+        "sku": null,
+        "badge": null,
+        "line_message_override": null,
+        "sort_order": 4,
+        "is_featured": true,
+        "is_published": true,
+        "published_at": "2026-10-18T00:10:13.949Z",
+        "og_media_id": null,
+        "is_seed": true,
+        "deleted_at": null,
+        "price_mode": "exact",
+        "sale_price": null,
+        "stock_status": "available",
+        "quantity": null,
+        "made_to_order": false,
+        "lead_time": "",
+        "materials": "",
+        "dimensions": "",
+        "weight": null,
+        "is_new": false,
+        "status": "published",
+        "sharing_price": "2000.00"
       },
       {
         "id": "af2b371d-833d-4646-9220-d2fd184cb45f",
@@ -2650,6 +2888,34 @@
         "sharing_price": null
       },
       {
+        "id": "ff1805d6-5e30-45fa-9df7-baafbfc15bd4",
+        "category_id": "464c4a20-a118-5fd9-8799-83f48ce8bfb4",
+        "price": "5000.00",
+        "price_display": "exact",
+        "sku": null,
+        "badge": null,
+        "line_message_override": null,
+        "sort_order": 5,
+        "is_featured": true,
+        "is_published": true,
+        "published_at": "2026-10-18T00:10:12.303Z",
+        "og_media_id": null,
+        "is_seed": true,
+        "deleted_at": null,
+        "price_mode": "exact",
+        "sale_price": null,
+        "stock_status": "available",
+        "quantity": null,
+        "made_to_order": false,
+        "lead_time": "",
+        "materials": "",
+        "dimensions": "",
+        "weight": null,
+        "is_new": false,
+        "status": "published",
+        "sharing_price": "2000.00"
+      },
+      {
         "id": "08872a59-7b3b-4d1b-80c2-146f8f19afcb",
         "category_id": "fbf6473b-9b90-59d6-a10a-50bbd6e076df",
         "price": "399.00",
@@ -2732,6 +2998,34 @@
         "is_new": false,
         "status": "published",
         "sharing_price": null
+      },
+      {
+        "id": "c6285d1f-4c7c-4d47-8a48-86f203d0b2a2",
+        "category_id": "464c4a20-a118-5fd9-8799-83f48ce8bfb4",
+        "price": "4000.00",
+        "price_display": "exact",
+        "sku": null,
+        "badge": null,
+        "line_message_override": null,
+        "sort_order": 6,
+        "is_featured": true,
+        "is_published": true,
+        "published_at": "2026-10-18T00:10:19.866Z",
+        "og_media_id": null,
+        "is_seed": true,
+        "deleted_at": null,
+        "price_mode": "exact",
+        "sale_price": null,
+        "stock_status": "available",
+        "quantity": null,
+        "made_to_order": false,
+        "lead_time": "",
+        "materials": "",
+        "dimensions": "",
+        "weight": null,
+        "is_new": false,
+        "status": "published",
+        "sharing_price": "1700.00"
       },
       {
         "id": "cf856045-9a1e-46df-abf5-a00d63d29f36",
@@ -5034,6 +5328,47 @@
         "seo_description": ""
       },
       {
+        "product_id": "39e9caad-29e8-49fc-8323-857127e233f0",
+        "locale": "en",
+        "slug": "wreath-premium-coral",
+        "name": "",
+        "short_desc": "",
+        "body": {
+          "type": "doc",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": []
+            }
+          ]
+        },
+        "seo_title": "",
+        "seo_description": ""
+      },
+      {
+        "product_id": "39e9caad-29e8-49fc-8323-857127e233f0",
+        "locale": "th",
+        "slug": "wreath-premium-coral",
+        "name": "พวงหรีดแบ่งปัน รุ่นใหม่ โทนคอรัล",
+        "short_desc": "พวงหรีดทรงวงรีโทนคอรัล ชมพู ส้ม และขาว ตกแต่งมาลัย พร้อมขาตั้งสีขาว",
+        "body": {
+          "type": "doc",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "text": "พวงหรีดทรงวงรีโทนคอรัล ชมพู ส้ม และขาว ตกแต่งมาลัย พร้อมขาตั้งสีขาว",
+                  "type": "text"
+                }
+              ]
+            }
+          ]
+        },
+        "seo_title": "",
+        "seo_description": ""
+      },
+      {
         "product_id": "3b58bc7a-c1e5-4bc0-aed6-c0084f3329da",
         "locale": "en",
         "slug": "floral-basket-butsaba-nuan",
@@ -5655,6 +5990,47 @@
               "content": [
                 {
                   "text": "สอบถามขนาดเสื้อที่มีจำหน่ายและความพร้อมในการจัดส่งกับเจ้าหน้าที่ก่อนสั่งซื้อ",
+                  "type": "text"
+                }
+              ]
+            }
+          ]
+        },
+        "seo_title": "",
+        "seo_description": ""
+      },
+      {
+        "product_id": "725b0971-bb97-4c81-9298-993cdaad5bf6",
+        "locale": "en",
+        "slug": "wreath-premium-thai-red-white",
+        "name": "",
+        "short_desc": "",
+        "body": {
+          "type": "doc",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": []
+            }
+          ]
+        },
+        "seo_title": "",
+        "seo_description": ""
+      },
+      {
+        "product_id": "725b0971-bb97-4c81-9298-993cdaad5bf6",
+        "locale": "th",
+        "slug": "wreath-premium-thai-red-white",
+        "name": "พวงหรีดแบ่งปัน รุ่นใหม่ แดงขาวทรงไทย",
+        "short_desc": "พวงหรีดพื้นสีดำ ตกแต่งดอกไม้โทนแดงและขาว ยอดทรงไทย และมาลัย พร้อมขาตั้งสีขาว",
+        "body": {
+          "type": "doc",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "text": "พวงหรีดพื้นสีดำ ตกแต่งดอกไม้โทนแดงและขาว ยอดทรงไทย และมาลัย พร้อมขาตั้งสีขาว",
                   "type": "text"
                 }
               ]
@@ -6913,6 +7289,47 @@
         "seo_description": ""
       },
       {
+        "product_id": "a89cb1ae-d632-4014-bfcd-771e869402e5",
+        "locale": "en",
+        "slug": "wreath-premium-royal-blue",
+        "name": "",
+        "short_desc": "",
+        "body": {
+          "type": "doc",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": []
+            }
+          ]
+        },
+        "seo_title": "",
+        "seo_description": ""
+      },
+      {
+        "product_id": "a89cb1ae-d632-4014-bfcd-771e869402e5",
+        "locale": "th",
+        "slug": "wreath-premium-royal-blue",
+        "name": "พวงหรีดแบ่งปัน รุ่นใหม่ รอยัลบลู",
+        "short_desc": "พวงหรีดพื้นสีน้ำเงิน ประดับดอกไม้โทนฟ้าและขาวพร้อมมาลัย บนขาตั้งสีขาว",
+        "body": {
+          "type": "doc",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "text": "พวงหรีดพื้นสีน้ำเงิน ประดับดอกไม้โทนฟ้าและขาวพร้อมมาลัย บนขาตั้งสีขาว",
+                  "type": "text"
+                }
+              ]
+            }
+          ]
+        },
+        "seo_title": "",
+        "seo_description": ""
+      },
+      {
         "product_id": "af2b371d-833d-4646-9220-d2fd184cb45f",
         "locale": "en",
         "slug": "wreath-chomphu-phrim",
@@ -7435,6 +7852,47 @@
         "seo_description": ""
       },
       {
+        "product_id": "c46bf824-c208-4312-a300-22d6e5823760",
+        "locale": "en",
+        "slug": "wreath-premium-yellow-white",
+        "name": "",
+        "short_desc": "",
+        "body": {
+          "type": "doc",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": []
+            }
+          ]
+        },
+        "seo_title": "",
+        "seo_description": ""
+      },
+      {
+        "product_id": "c46bf824-c208-4312-a300-22d6e5823760",
+        "locale": "th",
+        "slug": "wreath-premium-yellow-white",
+        "name": "พวงหรีดแบ่งปัน รุ่นใหม่ เหลืองขาว",
+        "short_desc": "พวงหรีดทรงวงรีโทนเหลืองและขาว ประดับยอดและมาลัย พร้อมขาตั้งสีขาว",
+        "body": {
+          "type": "doc",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "text": "พวงหรีดทรงวงรีโทนเหลืองและขาว ประดับยอดและมาลัย พร้อมขาตั้งสีขาว",
+                  "type": "text"
+                }
+              ]
+            }
+          ]
+        },
+        "seo_title": "",
+        "seo_description": ""
+      },
+      {
         "product_id": "c6285d1f-4c7c-4d47-8a48-86f203d0b2a2",
         "locale": "en",
         "slug": "wreath-khao-phisuth",
@@ -7929,6 +8387,47 @@
               "content": [
                 {
                   "text": "สอบถามรายละเอียดการแบ่งปัน แบบที่ต้องการ และความพร้อมในการจัดส่งกับเจ้าหน้าที่ก่อนสั่งซื้อ",
+                  "type": "text"
+                }
+              ]
+            }
+          ]
+        },
+        "seo_title": "",
+        "seo_description": ""
+      },
+      {
+        "product_id": "d5b16e3d-fb10-44c9-b6b9-c22c5d8387f9",
+        "locale": "en",
+        "slug": "wreath-premium-white-green",
+        "name": "",
+        "short_desc": "",
+        "body": {
+          "type": "doc",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": []
+            }
+          ]
+        },
+        "seo_title": "",
+        "seo_description": ""
+      },
+      {
+        "product_id": "d5b16e3d-fb10-44c9-b6b9-c22c5d8387f9",
+        "locale": "th",
+        "slug": "wreath-premium-white-green",
+        "name": "พวงหรีดแบ่งปัน รุ่นใหม่ ขาวเขียว",
+        "short_desc": "พวงหรีดทรงวงรีโทนขาวและเขียว ตกแต่งดอกไม้และมาลัย พร้อมขาตั้งสีขาว",
+        "body": {
+          "type": "doc",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "text": "พวงหรีดทรงวงรีโทนขาวและเขียว ตกแต่งดอกไม้และมาลัย พร้อมขาตั้งสีขาว",
                   "type": "text"
                 }
               ]
@@ -8482,6 +8981,47 @@
         },
         "seo_title": "",
         "seo_description": ""
+      },
+      {
+        "product_id": "ff1805d6-5e30-45fa-9df7-baafbfc15bd4",
+        "locale": "en",
+        "slug": "wreath-premium-pink",
+        "name": "",
+        "short_desc": "",
+        "body": {
+          "type": "doc",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": []
+            }
+          ]
+        },
+        "seo_title": "",
+        "seo_description": ""
+      },
+      {
+        "product_id": "ff1805d6-5e30-45fa-9df7-baafbfc15bd4",
+        "locale": "th",
+        "slug": "wreath-premium-pink",
+        "name": "พวงหรีดแบ่งปัน รุ่นใหม่ ชมพูขาว",
+        "short_desc": "พวงหรีดพื้นสีงาช้าง ประดับดอกไม้โทนชมพูและขาวพร้อมมาลัย บนขาตั้งสีขาว",
+        "body": {
+          "type": "doc",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "text": "พวงหรีดพื้นสีงาช้าง ประดับดอกไม้โทนชมพูและขาวพร้อมมาลัย บนขาตั้งสีขาว",
+                  "type": "text"
+                }
+              ]
+            }
+          ]
+        },
+        "seo_title": "",
+        "seo_description": ""
       }
     ],
     "product_media": [
@@ -8588,6 +9128,12 @@
         "is_primary": true
       },
       {
+        "product_id": "39e9caad-29e8-49fc-8323-857127e233f0",
+        "media_id": "1e199807-cbc3-415c-852b-e7cdc2472999",
+        "sort_order": 0,
+        "is_primary": true
+      },
+      {
         "product_id": "3b58bc7a-c1e5-4bc0-aed6-c0084f3329da",
         "media_id": "fdf48892-0ead-43ea-99d8-10fd29a40dfb",
         "sort_order": 0,
@@ -8650,6 +9196,12 @@
       {
         "product_id": "6b38a1fd-58c3-4f33-87b9-0e87b5c4997c",
         "media_id": "af9bf2a4-49f1-41bc-812f-eb702e7fbd2b",
+        "sort_order": 0,
+        "is_primary": true
+      },
+      {
+        "product_id": "725b0971-bb97-4c81-9298-993cdaad5bf6",
+        "media_id": "9e559eea-5b72-4357-8676-5c2346ae988d",
         "sort_order": 0,
         "is_primary": true
       },
@@ -8780,6 +9332,12 @@
         "is_primary": true
       },
       {
+        "product_id": "a89cb1ae-d632-4014-bfcd-771e869402e5",
+        "media_id": "675f6957-d835-42be-b3ec-3e972a65b578",
+        "sort_order": 0,
+        "is_primary": true
+      },
+      {
         "product_id": "af2b371d-833d-4646-9220-d2fd184cb45f",
         "media_id": "4cd5e40b-4d8c-4c8d-b76a-4bbc099a99b7",
         "sort_order": 0,
@@ -8834,6 +9392,12 @@
         "is_primary": true
       },
       {
+        "product_id": "c46bf824-c208-4312-a300-22d6e5823760",
+        "media_id": "9a819e68-ffd0-4778-9e4d-9327e417b9aa",
+        "sort_order": 0,
+        "is_primary": true
+      },
+      {
         "product_id": "c6285d1f-4c7c-4d47-8a48-86f203d0b2a2",
         "media_id": "ee71a282-a52b-4efb-8f09-d26180235767",
         "sort_order": 0,
@@ -8884,6 +9448,12 @@
       {
         "product_id": "d4f70694-55d3-4d84-80d4-12ff0b614256",
         "media_id": "43f071e8-a4c4-4855-aa7a-b2bef803e9f8",
+        "sort_order": 0,
+        "is_primary": true
+      },
+      {
+        "product_id": "d5b16e3d-fb10-44c9-b6b9-c22c5d8387f9",
+        "media_id": "3de4d4e4-e617-4a54-a7c5-e10f31995d1a",
         "sort_order": 0,
         "is_primary": true
       },
@@ -8944,6 +9514,12 @@
       {
         "product_id": "fb6af160-c6f9-491e-99f5-7676bafa8d18",
         "media_id": "d79e0f70-c019-48ef-b73a-981d68f975c0",
+        "sort_order": 0,
+        "is_primary": true
+      },
+      {
+        "product_id": "ff1805d6-5e30-45fa-9df7-baafbfc15bd4",
+        "media_id": "d1645abc-5672-4ad7-8178-c99dca8a5283",
         "sort_order": 0,
         "is_primary": true
       }
@@ -9717,6 +10293,46 @@
       "sha256": "0435002beb75fedfcf8a5694a579bb09621c2b80632d8923f50e31b97525499e"
     },
     {
+      "path": "2026/10/43694c79-5000-405c-a631-303550fcc60c/400.avif",
+      "bytes": 21894,
+      "sha256": "f3844ed70d6743ae3434c19a9d447ed006434012dedb737b5726949dcca20980"
+    },
+    {
+      "path": "2026/10/43694c79-5000-405c-a631-303550fcc60c/400.jpg",
+      "bytes": 42360,
+      "sha256": "32c3049eb269aea064b60a7a4e7807b39bc12b52b4b7c18c72d93de6445c771b"
+    },
+    {
+      "path": "2026/10/43694c79-5000-405c-a631-303550fcc60c/400.webp",
+      "bytes": 38814,
+      "sha256": "1a28e44560cf545eb25c9ee68c39537fe6702f512a58ecf28714f1aff9cb5380"
+    },
+    {
+      "path": "2026/10/43694c79-5000-405c-a631-303550fcc60c/800.avif",
+      "bytes": 64079,
+      "sha256": "0b9dbb84b3ba3084c30ce4d9f88def754ae40b7d40894551f007754168fd73fb"
+    },
+    {
+      "path": "2026/10/43694c79-5000-405c-a631-303550fcc60c/800.jpg",
+      "bytes": 129363,
+      "sha256": "09264287b7274057e8f4e7f27749b044fca992835770005ccefeecb7de3fb105"
+    },
+    {
+      "path": "2026/10/43694c79-5000-405c-a631-303550fcc60c/800.webp",
+      "bytes": 107032,
+      "sha256": "6dc644686bc0599500d8a6d471f29716ea24f7bdddcac542185a014da57d1443"
+    },
+    {
+      "path": "2026/10/43694c79-5000-405c-a631-303550fcc60c/master.webp",
+      "bytes": 221112,
+      "sha256": "636aaabdb7cec04adbb1a8af854f23847a64dd40ec5c7acc59884a6fdb96d5c6"
+    },
+    {
+      "path": "2026/10/43694c79-5000-405c-a631-303550fcc60c/original.png",
+      "bytes": 2514298,
+      "sha256": "72ca0ab40e28b3f840a80610f25e80cf352386e1227b954f80f724af3ae7acf3"
+    },
+    {
       "path": "2026/10/c521f1de-3e34-42d5-8151-0b2451bea71e/400.avif",
       "bytes": 5518,
       "sha256": "c651c6b403c84c4d6f01d8d1e85d3bb5d7c13b9b92f6ab5420f5b9470dee619c"
@@ -10037,46 +10653,6 @@
       "sha256": "09c6402ccaf35453e6af849ddc719a299ae8cbdf43370c0cf1f613a49bea01c6"
     },
     {
-      "path": "2026/10/7a1c52c6-fdd7-4b4d-a51a-e956f4b9f177/400.avif",
-      "bytes": 8644,
-      "sha256": "4be363a021e901f38ebd7dab7d9595d0fdde5ea6ece1841f59b69dd16ad99a82"
-    },
-    {
-      "path": "2026/10/7a1c52c6-fdd7-4b4d-a51a-e956f4b9f177/400.jpg",
-      "bytes": 15634,
-      "sha256": "39f9930790f8baa282b651f6c2947777d7dd6e5e51b1b795b455508e991067d0"
-    },
-    {
-      "path": "2026/10/7a1c52c6-fdd7-4b4d-a51a-e956f4b9f177/400.webp",
-      "bytes": 13374,
-      "sha256": "5f08eb31507a2c312cedb24fc6a12705f6d3c5b5b8b6df00043deb26bb05cc3f"
-    },
-    {
-      "path": "2026/10/7a1c52c6-fdd7-4b4d-a51a-e956f4b9f177/800.avif",
-      "bytes": 26639,
-      "sha256": "b9d6b11389f668ae66fea8b465369f73970ea66a7b9698d1c4ae01c2ee66eaf7"
-    },
-    {
-      "path": "2026/10/7a1c52c6-fdd7-4b4d-a51a-e956f4b9f177/800.jpg",
-      "bytes": 52171,
-      "sha256": "a7efb3bce5e728b7fba57044725cd66e95911860a4fb2354ef996adbd8493556"
-    },
-    {
-      "path": "2026/10/7a1c52c6-fdd7-4b4d-a51a-e956f4b9f177/800.webp",
-      "bytes": 42388,
-      "sha256": "2f7dbfc4083e37aa1ee0c4070d10fcc6fb263bcdb35ff5177d98f17408636fac"
-    },
-    {
-      "path": "2026/10/7a1c52c6-fdd7-4b4d-a51a-e956f4b9f177/master.webp",
-      "bytes": 159662,
-      "sha256": "c664e1449ff19eac09e5310f4d8232faefe67ee0c9a73ca43143ecc830dd3140"
-    },
-    {
-      "path": "2026/10/7a1c52c6-fdd7-4b4d-a51a-e956f4b9f177/original.png",
-      "bytes": 2164339,
-      "sha256": "33de268c0cbc465fe4e4f625d82fb2db3491478b64aeef88a57d23f64724b39e"
-    },
-    {
       "path": "2026/10/a7a88cc8-445f-4630-9d5c-c4888c38792a/400.avif",
       "bytes": 18527,
       "sha256": "60c1379640144af2e9014e21ced6bee398528001ec4ac142aec1750b3cc3a57e"
@@ -10195,6 +10771,46 @@
       "path": "2026/10/6bf76496-de71-4976-b49b-9efe77f88120/original.png",
       "bytes": 1142150,
       "sha256": "33dc0150ba922e909fda7e7725053ab6fdaef57d176fb0490c8c05239889d7d4"
+    },
+    {
+      "path": "2026/10/429df39f-b92b-4b47-b678-5d189ce4c2c9/400.avif",
+      "bytes": 27428,
+      "sha256": "00b0d6a4d3ab3af4f15529319953bf8d6b55e2606181e49f08dbc2227622db01"
+    },
+    {
+      "path": "2026/10/429df39f-b92b-4b47-b678-5d189ce4c2c9/400.jpg",
+      "bytes": 52665,
+      "sha256": "bc2d7e6b5f2990e6aea884757f614067a88bb9931740a89fd932b95d1f8fc73c"
+    },
+    {
+      "path": "2026/10/429df39f-b92b-4b47-b678-5d189ce4c2c9/400.webp",
+      "bytes": 51788,
+      "sha256": "622c035f78bd1fab3b0dc579f2ad06b20ad9954e7513c1249d3c86e57e31514c"
+    },
+    {
+      "path": "2026/10/429df39f-b92b-4b47-b678-5d189ce4c2c9/800.avif",
+      "bytes": 85446,
+      "sha256": "7482c30140f0b8214664090ce4aa6a2b0adc8f2ca016045eee5b912a044520e8"
+    },
+    {
+      "path": "2026/10/429df39f-b92b-4b47-b678-5d189ce4c2c9/800.jpg",
+      "bytes": 167801,
+      "sha256": "1a95e699ac4196f2d8d1ac74c920fb3cd62ab9eb845b6f908e163b05097de27c"
+    },
+    {
+      "path": "2026/10/429df39f-b92b-4b47-b678-5d189ce4c2c9/800.webp",
+      "bytes": 146554,
+      "sha256": "ac18fe50af5cfe3a798a4d2d92419d2f832739de7681ee748d8bf656f4b8e6ac"
+    },
+    {
+      "path": "2026/10/429df39f-b92b-4b47-b678-5d189ce4c2c9/master.webp",
+      "bytes": 304142,
+      "sha256": "8c2755bba7d9cc51c51c9565c6cfa361d1c35e55f0c652abddf27ec761e24299"
+    },
+    {
+      "path": "2026/10/429df39f-b92b-4b47-b678-5d189ce4c2c9/original.png",
+      "bytes": 3008796,
+      "sha256": "846beeaca3f893fde53cb5064d4d5d775fcf88f06ea6fba4a39f41a5f0f4326f"
     },
     {
       "path": "2026/10/3d7d2fc0-5c5b-4325-b075-23c8813f00a8/400.avif",
@@ -10670,6 +11286,46 @@
       "path": "2026/10/06867886-8826-4765-b0a6-1ae4ac9c04dc/original.png",
       "bytes": 2092423,
       "sha256": "53b40e6f4023769a60dc19cccf95bccc20a2644f158d14d312ab5d1df004b511"
+    },
+    {
+      "path": "2026/10/fd10ea16-77d1-40a8-9bc8-ab3d7aefbc00/400.avif",
+      "bytes": 26901,
+      "sha256": "1f9132bdd0782b53eb45e5b7af26ce10d565872371630b669c4b12f8d084f01c"
+    },
+    {
+      "path": "2026/10/fd10ea16-77d1-40a8-9bc8-ab3d7aefbc00/400.jpg",
+      "bytes": 52230,
+      "sha256": "1fcdef4205d40e9744a8e2b37282e3d2f58ff38d488ac87fa5f896d99d8965cc"
+    },
+    {
+      "path": "2026/10/fd10ea16-77d1-40a8-9bc8-ab3d7aefbc00/400.webp",
+      "bytes": 49304,
+      "sha256": "fdc1649b79cd6d87e62bda6f20e3f8798c04a1a1b0309c059779fbea8f3b647a"
+    },
+    {
+      "path": "2026/10/fd10ea16-77d1-40a8-9bc8-ab3d7aefbc00/800.avif",
+      "bytes": 82119,
+      "sha256": "5eb6335c06b27c8bb9343e86d70359a42a3e4b6447390158d6d7795b90bce879"
+    },
+    {
+      "path": "2026/10/fd10ea16-77d1-40a8-9bc8-ab3d7aefbc00/800.jpg",
+      "bytes": 163600,
+      "sha256": "9b4c3d8cc62cb9779d93336dbfeae41162356f2e8cc706143b678465be7b4524"
+    },
+    {
+      "path": "2026/10/fd10ea16-77d1-40a8-9bc8-ab3d7aefbc00/800.webp",
+      "bytes": 139048,
+      "sha256": "0e631bc0daeb652ea8f53e3a21e21112e8b84d0d15faf6fc58ecb2d87af16059"
+    },
+    {
+      "path": "2026/10/fd10ea16-77d1-40a8-9bc8-ab3d7aefbc00/master.webp",
+      "bytes": 294136,
+      "sha256": "5af0e3c84d9d782725447d8781e6d66b4adf251d563e7d9bf2c002eb27f48aa9"
+    },
+    {
+      "path": "2026/10/fd10ea16-77d1-40a8-9bc8-ab3d7aefbc00/original.png",
+      "bytes": 2835357,
+      "sha256": "66e0510e155c7c9f9f03be5c85a7d3e7ec188f691557f82215da322565f7753b"
     },
     {
       "path": "2026/10/6d69cd14-44a9-4c07-bf22-422564274ba4/400.avif",
@@ -11192,6 +11848,46 @@
       "sha256": "70669438bf69df5395939511759fc8f697e261671a43ee66dd0cb06252f9eb33"
     },
     {
+      "path": "2026/10/a087ea3d-e204-4f9c-b677-9e91130c9cfe/400.avif",
+      "bytes": 23872,
+      "sha256": "a4ce2fdf14d5389929073d123d87717a23db031c6f4adf613c9d9bd917fc3bcb"
+    },
+    {
+      "path": "2026/10/a087ea3d-e204-4f9c-b677-9e91130c9cfe/400.jpg",
+      "bytes": 45917,
+      "sha256": "a631a52bcb9d624cd771c48534f512623d8adcdee032ffa23ce17199b4063422"
+    },
+    {
+      "path": "2026/10/a087ea3d-e204-4f9c-b677-9e91130c9cfe/400.webp",
+      "bytes": 40846,
+      "sha256": "61ab250b95f515037bcf0b1e7fde398bd96b84afb91da154b1b360526c1cc65e"
+    },
+    {
+      "path": "2026/10/a087ea3d-e204-4f9c-b677-9e91130c9cfe/800.avif",
+      "bytes": 71539,
+      "sha256": "7ee10606fca789227acabc9961a3c549dffce71dbc98e1af60d1d20fd5702f98"
+    },
+    {
+      "path": "2026/10/a087ea3d-e204-4f9c-b677-9e91130c9cfe/800.jpg",
+      "bytes": 138915,
+      "sha256": "192316cddbe0ecc63894f9d7dca1657d08fb98ae48a2e8075be28decee648555"
+    },
+    {
+      "path": "2026/10/a087ea3d-e204-4f9c-b677-9e91130c9cfe/800.webp",
+      "bytes": 109244,
+      "sha256": "13248ee2714ca395b838dc69e2b9516e4a5594b0f0f6ad8997fbcf37333f4e39"
+    },
+    {
+      "path": "2026/10/a087ea3d-e204-4f9c-b677-9e91130c9cfe/master.webp",
+      "bytes": 217720,
+      "sha256": "55eeb240449db14f7a5bf04dcada247c09a2d4e74f2dfc820dfb0c3f46874373"
+    },
+    {
+      "path": "2026/10/a087ea3d-e204-4f9c-b677-9e91130c9cfe/original.png",
+      "bytes": 2458211,
+      "sha256": "85fbe507c8fe022258798ee06c9aaa357d9f64e5dc38917f63f8ae757d3f9873"
+    },
+    {
       "path": "2026/10/be7a3331-6deb-4fa8-9bad-1b9ebe2e0da3/400.avif",
       "bytes": 15218,
       "sha256": "41b212fd81b359fa3b403d6588bc21eb58c265f626983aafb2717d8af33730a3"
@@ -11270,6 +11966,86 @@
       "path": "2026/10/382100a5-7585-4bf7-b615-95581f727ab4/original.png",
       "bytes": 1766693,
       "sha256": "4a338cd1602b4760ef4d85d9c77958bc76b0cda858b35d9c83b18e2cb33f7ea0"
+    },
+    {
+      "path": "2026/10/2c9c6848-bef8-4473-aacc-9d7c457993a8/400.avif",
+      "bytes": 26068,
+      "sha256": "28819c3a4a06290b5f99d1ee113987e1f08b223d2f2dde2d76e25a4c2e06a86b"
+    },
+    {
+      "path": "2026/10/2c9c6848-bef8-4473-aacc-9d7c457993a8/400.jpg",
+      "bytes": 49283,
+      "sha256": "94cf7686cf6a8b3f448ab81b52a28758da13c47f8cb11acc91280f417b16ace5"
+    },
+    {
+      "path": "2026/10/2c9c6848-bef8-4473-aacc-9d7c457993a8/400.webp",
+      "bytes": 45650,
+      "sha256": "6a197e238d5be48299be6d16ac251c2669c832d80083d0558375972d239bf488"
+    },
+    {
+      "path": "2026/10/2c9c6848-bef8-4473-aacc-9d7c457993a8/800.avif",
+      "bytes": 76555,
+      "sha256": "5e9ce0ab685cd88328047ac9f8eac19bcf5614d881752de9b7e607e8e51f24c2"
+    },
+    {
+      "path": "2026/10/2c9c6848-bef8-4473-aacc-9d7c457993a8/800.jpg",
+      "bytes": 150001,
+      "sha256": "2c94da64dc3b7457de9ba7a9e4f7d49823a74136764f0f4724f836be68826fec"
+    },
+    {
+      "path": "2026/10/2c9c6848-bef8-4473-aacc-9d7c457993a8/800.webp",
+      "bytes": 124600,
+      "sha256": "a09d15d34661b62a93caf46ff8c0790dd21a273d523d8ff52676f53dff23a05e"
+    },
+    {
+      "path": "2026/10/2c9c6848-bef8-4473-aacc-9d7c457993a8/master.webp",
+      "bytes": 240626,
+      "sha256": "dfeb71c07e791a19ff1a4ab26bf3246351093c16848e06ed40995360507c5daa"
+    },
+    {
+      "path": "2026/10/2c9c6848-bef8-4473-aacc-9d7c457993a8/original.png",
+      "bytes": 2611796,
+      "sha256": "a1aba47173f4b0e78228500fe3ecdb9ac78f8eef2330c79ba3cf048edd3f1139"
+    },
+    {
+      "path": "2026/10/087e3787-8fb4-4e09-b78c-a38a4e7678a2/400.avif",
+      "bytes": 22229,
+      "sha256": "8d72c7f109e9f0ad61a42ac681586867cf3e9ffddfe0284664e48569f73d6124"
+    },
+    {
+      "path": "2026/10/087e3787-8fb4-4e09-b78c-a38a4e7678a2/400.jpg",
+      "bytes": 43749,
+      "sha256": "9ae82228e0cf9e7848dc87803f123ca0f367e3e657feb35551ac1d81ad7cb78e"
+    },
+    {
+      "path": "2026/10/087e3787-8fb4-4e09-b78c-a38a4e7678a2/400.webp",
+      "bytes": 40732,
+      "sha256": "a4b2b355e2779b5c1ee7a2348aad49d5db039eaedc71e1464e3e8db557dbb9a3"
+    },
+    {
+      "path": "2026/10/087e3787-8fb4-4e09-b78c-a38a4e7678a2/800.avif",
+      "bytes": 67697,
+      "sha256": "885051c6d582d24928ab128ce49fac92963266c14590a1252bfa9321a9757e9a"
+    },
+    {
+      "path": "2026/10/087e3787-8fb4-4e09-b78c-a38a4e7678a2/800.jpg",
+      "bytes": 139304,
+      "sha256": "b5dd715d693adfb267f6e6d928e5be719c650223005c553fd7b4153dedc431c6"
+    },
+    {
+      "path": "2026/10/087e3787-8fb4-4e09-b78c-a38a4e7678a2/800.webp",
+      "bytes": 121916,
+      "sha256": "5035e91cd2f8483c26b11e38d2afa9b1bf1c7426ec2febeae8e0174bc8bd21a1"
+    },
+    {
+      "path": "2026/10/087e3787-8fb4-4e09-b78c-a38a4e7678a2/master.webp",
+      "bytes": 271478,
+      "sha256": "44ea8e626d9295e12e622ad58b100065937737aebaeb8e45532d7685aa53df84"
+    },
+    {
+      "path": "2026/10/087e3787-8fb4-4e09-b78c-a38a4e7678a2/original.png",
+      "bytes": 2735360,
+      "sha256": "5ec0e4584b267af88f72a63fc1ced3ac8c7af8fe88f771163a2dbef08a9254f4"
     },
     {
       "path": "2026/10/9c60c5d2-a160-4f89-826e-900096df7c0f/400.avif",
@@ -11657,71 +12433,6 @@
       "sha256": "e9dcf62621943ca8de9b08a1de203a32d57e7cb00f6fb87fe9e32fc100b9dd0b"
     },
     {
-      "path": "2026/10/36a98851-eada-4fc0-9b93-9fcc89266ea9/1600.avif",
-      "bytes": 72686,
-      "sha256": "0e15a0129ec888b78ebd1877083f7d606f89adbb096e025c85a1cc004cc1cbad"
-    },
-    {
-      "path": "2026/10/36a98851-eada-4fc0-9b93-9fcc89266ea9/1600.jpg",
-      "bytes": 145362,
-      "sha256": "e77dfb9d6b9dd694588fc53be0f37ca535ee26a0c29cff882bb7756173f4eade"
-    },
-    {
-      "path": "2026/10/36a98851-eada-4fc0-9b93-9fcc89266ea9/1600.webp",
-      "bytes": 124634,
-      "sha256": "fb64c3745a6b50341dc38b623d07da695d75c88c53d1cd3b51b952d66c926b13"
-    },
-    {
-      "path": "2026/10/36a98851-eada-4fc0-9b93-9fcc89266ea9/400.avif",
-      "bytes": 7658,
-      "sha256": "00654af57daf09648035c589880c8099f4b357136fe98d6bcc901b09ec37061b"
-    },
-    {
-      "path": "2026/10/36a98851-eada-4fc0-9b93-9fcc89266ea9/400.jpg",
-      "bytes": 13608,
-      "sha256": "d1460eb3845e2be1bd8598dab8749f844817318b0d8fc2eee26a98a9153a5e15"
-    },
-    {
-      "path": "2026/10/36a98851-eada-4fc0-9b93-9fcc89266ea9/400.webp",
-      "bytes": 13068,
-      "sha256": "32c365c6d9495246f34e5ca9250291c840a446104a413aff2a1d79d29fe8c2a8"
-    },
-    {
-      "path": "2026/10/36a98851-eada-4fc0-9b93-9fcc89266ea9/800.avif",
-      "bytes": 24076,
-      "sha256": "884b9750a699c8556e0083001efd696844d884279d87f466504272e8eee49717"
-    },
-    {
-      "path": "2026/10/36a98851-eada-4fc0-9b93-9fcc89266ea9/800.jpg",
-      "bytes": 45457,
-      "sha256": "38a9e95c2f577a92ab009fa6558115b67e8d4f5a1e69ef1af1722354aa2c7f09"
-    },
-    {
-      "path": "2026/10/36a98851-eada-4fc0-9b93-9fcc89266ea9/800.webp",
-      "bytes": 42454,
-      "sha256": "74c306b710a7955443d6693a1eecbea386beca64818c37acb7b049785d3c6fb7"
-    },
-    {
-      "path": "2026/10/36a98851-eada-4fc0-9b93-9fcc89266ea9/category-mobile-v2-original.png",
-      "bytes": 2460335,
-      "sha256": "66424f6a539b1b1d00e339811322ab696fab6c0f3a624beec77fde008b18fcf7"
-    },
-    {
-      "path": "2026/10/36a98851-eada-4fc0-9b93-9fcc89266ea9/category-mobile-v2.webp",
-      "bytes": 449270,
-      "sha256": "0ba8327705ff156e922162dcac9c7ec6d0164977025663b29dcf2d01ad96d7db"
-    },
-    {
-      "path": "2026/10/36a98851-eada-4fc0-9b93-9fcc89266ea9/master.webp",
-      "bytes": 255594,
-      "sha256": "37a502151dfb3becabd58686fdb8199095e38d212e78e1b1102883fb43151081"
-    },
-    {
-      "path": "2026/10/36a98851-eada-4fc0-9b93-9fcc89266ea9/original.png",
-      "bytes": 2662454,
-      "sha256": "a7ac6c4b202302760770554af420dee148363434fded4f679078ec2d639be1c3"
-    },
-    {
       "path": "2026/10/1e50bae1-3e8e-4ffe-a179-4ce989b89650/400.avif",
       "bytes": 11153,
       "sha256": "60105fbc36dceb816b3ee5f1561dc581227bc383f66bc8cf1020068747f6c9e9"
@@ -11760,6 +12471,71 @@
       "path": "2026/10/1e50bae1-3e8e-4ffe-a179-4ce989b89650/original.png",
       "bytes": 2630519,
       "sha256": "be1f140cda7305755bb15ea19e46394791c8e87b2430dfd07696e77282117b5e"
+    },
+    {
+      "path": "2026/10/6f6b0e26-7575-4bb7-8c44-d9d9cf34f9a4/1600.avif",
+      "bytes": 61149,
+      "sha256": "de7f84ea9a47862079df6f884e44c5216cca2e010e82ad9bb713089d1404f133"
+    },
+    {
+      "path": "2026/10/6f6b0e26-7575-4bb7-8c44-d9d9cf34f9a4/1600.jpg",
+      "bytes": 132205,
+      "sha256": "21b21610902d85d088fe26b63169ec035b3a120d89135cf7c1c75b9e8579d86f"
+    },
+    {
+      "path": "2026/10/6f6b0e26-7575-4bb7-8c44-d9d9cf34f9a4/1600.webp",
+      "bytes": 104142,
+      "sha256": "14a0a29db2ba5993238f6b29244d66391a7de713da8479cddce1987510384ca7"
+    },
+    {
+      "path": "2026/10/6f6b0e26-7575-4bb7-8c44-d9d9cf34f9a4/400.avif",
+      "bytes": 7536,
+      "sha256": "ffe06108c64fc39174a9a1fc472ee1e3762a704f4f07251e87437110c5a5c704"
+    },
+    {
+      "path": "2026/10/6f6b0e26-7575-4bb7-8c44-d9d9cf34f9a4/400.jpg",
+      "bytes": 13404,
+      "sha256": "d2ddc0c4172b9b9b589db7506219eedca431aa70246a891e121f4eb6179bfa5a"
+    },
+    {
+      "path": "2026/10/6f6b0e26-7575-4bb7-8c44-d9d9cf34f9a4/400.webp",
+      "bytes": 12336,
+      "sha256": "57ce02f3e16190cdbe8995e6e0ed36254f28927f5f35554f3beb855887513a99"
+    },
+    {
+      "path": "2026/10/6f6b0e26-7575-4bb7-8c44-d9d9cf34f9a4/800.avif",
+      "bytes": 21675,
+      "sha256": "896989551001bdece4f5499e1b75ab48fc65ba2a32e29478af5f092d758e22bd"
+    },
+    {
+      "path": "2026/10/6f6b0e26-7575-4bb7-8c44-d9d9cf34f9a4/800.jpg",
+      "bytes": 42641,
+      "sha256": "85ce482c2b4cc734aae566a2a8726223db9e36c588f1bc513af01f483f9c4d09"
+    },
+    {
+      "path": "2026/10/6f6b0e26-7575-4bb7-8c44-d9d9cf34f9a4/800.webp",
+      "bytes": 37788,
+      "sha256": "4b90de5d470c308e2734cdd126b5aabd3ea73450253f8330002287535bdcd302"
+    },
+    {
+      "path": "2026/10/6f6b0e26-7575-4bb7-8c44-d9d9cf34f9a4/category-mobile-v2-original.png",
+      "bytes": 2591683,
+      "sha256": "13a5b778dad8e4254477a0b547e20cf12f9d1713ca6408360ff91fb40fad853f"
+    },
+    {
+      "path": "2026/10/6f6b0e26-7575-4bb7-8c44-d9d9cf34f9a4/category-mobile-v2.webp",
+      "bytes": 495064,
+      "sha256": "6baf58495224a7d726fd95f04101f81cc2a715bcb95d15412e1789b0a55fb0e6"
+    },
+    {
+      "path": "2026/10/6f6b0e26-7575-4bb7-8c44-d9d9cf34f9a4/master.webp",
+      "bytes": 194578,
+      "sha256": "b70550d437c355e84a82218e91a89b3d804494a077c49b9550691317a76897d2"
+    },
+    {
+      "path": "2026/10/6f6b0e26-7575-4bb7-8c44-d9d9cf34f9a4/original.png",
+      "bytes": 2326286,
+      "sha256": "f4f3856d200adfd1e94f28565fe8bb40218284efcbc6c9c7d8a3a6a2e2bb824a"
     },
     {
       "path": "2026/10/f8da3065-426f-4e99-9b31-84f023031a6f/400.avif",
@@ -12025,6 +12801,46 @@
       "path": "2026/10/c6842f84-1291-462b-8f23-b9ac362ebddb/original.png",
       "bytes": 1917252,
       "sha256": "a04115ae132349cf6f4791946bbc454e17060ab0a2cf246d13fc5236e3771bf2"
+    },
+    {
+      "path": "2026/10/f459a39d-2cae-4f0d-a6d4-cc68a787f5da/400.avif",
+      "bytes": 16728,
+      "sha256": "50471546990ae7f7797c6b12f9a6cb103a7585fa9895e591730051946ed5e831"
+    },
+    {
+      "path": "2026/10/f459a39d-2cae-4f0d-a6d4-cc68a787f5da/400.jpg",
+      "bytes": 30638,
+      "sha256": "8445bdaefd10ff66f6a8f2830c8c707fcc4602324184f041201aaf8ce580669f"
+    },
+    {
+      "path": "2026/10/f459a39d-2cae-4f0d-a6d4-cc68a787f5da/400.webp",
+      "bytes": 26896,
+      "sha256": "0e07b73cc792b04b384e055e57e227450ce1187acf333d8d5754dbe8c630470e"
+    },
+    {
+      "path": "2026/10/f459a39d-2cae-4f0d-a6d4-cc68a787f5da/800.avif",
+      "bytes": 47988,
+      "sha256": "a0a1325b05753a71a11372b082bb795e23dbaee9c01655d00330a67769c55771"
+    },
+    {
+      "path": "2026/10/f459a39d-2cae-4f0d-a6d4-cc68a787f5da/800.jpg",
+      "bytes": 94756,
+      "sha256": "23e496cffff87a4370fc28b5aea0658afd27c37834658217e3034f12a8f0457f"
+    },
+    {
+      "path": "2026/10/f459a39d-2cae-4f0d-a6d4-cc68a787f5da/800.webp",
+      "bytes": 76000,
+      "sha256": "54ce70798ced13fd38af250b1a06bc9887c8784eb403cf409b12b3b745276f55"
+    },
+    {
+      "path": "2026/10/f459a39d-2cae-4f0d-a6d4-cc68a787f5da/master.webp",
+      "bytes": 161430,
+      "sha256": "1d69dbe63a6fc71e812e28666505feeae9812eca92085ce179b478e2e79bf32e"
+    },
+    {
+      "path": "2026/10/f459a39d-2cae-4f0d-a6d4-cc68a787f5da/original.png",
+      "bytes": 2239732,
+      "sha256": "8fc8530f472fec7098e5f67adc770f991a1bd99fafd33be6d6c7645cfd735e4c"
     },
     {
       "path": "2026/10/e330cb27-24e8-4b37-a5d8-6aab79060f37/400.avif",

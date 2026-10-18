@@ -1,0 +1,134 @@
+{
+  "version": 1,
+  "updated_at": "2026-10-18T00:15:48.809Z",
+  "product_photos": "Supplied original PNGs; bytes preserved. No generation or editing of product photographs.",
+  "category_covers": "Composed with the built-in image_gen tool from a six-photo reference board.",
+  "price_scope": "Six new wreaths: sharing 2000 THB and outright purchase 5000 THB. Eleven earlier wreaths keep their existing prices.",
+  "products": [
+    {
+      "slug": "wreath-premium-coral",
+      "name": "พวงหรีดแบ่งปัน รุ่นใหม่ โทนคอรัล",
+      "sharing_price": 2000,
+      "outright_price": 5000,
+      "featured": true,
+      "source_filename": "Vibrant Coral Oval Floral Wreath.png",
+      "sha256": "72ca0ab40e28b3f840a80610f25e80cf352386e1227b954f80f724af3ae7acf3",
+      "file": "media/2026/10/43694c79-5000-405c-a631-303550fcc60c/original.png"
+    },
+    {
+      "slug": "wreath-premium-white-green",
+      "name": "พวงหรีดแบ่งปัน รุ่นใหม่ ขาวเขียว",
+      "sharing_price": 2000,
+      "outright_price": 5000,
+      "featured": true,
+      "source_filename": "Elegant White and Green Floral Wreath.png",
+      "sha256": "846beeaca3f893fde53cb5064d4d5d775fcf88f06ea6fba4a39f41a5f0f4326f",
+      "file": "media/2026/10/429df39f-b92b-4b47-b678-5d189ce4c2c9/original.png"
+    },
+    {
+      "slug": "wreath-premium-yellow-white",
+      "name": "พวงหรีดแบ่งปัน รุ่นใหม่ เหลืองขาว",
+      "sharing_price": 2000,
+      "outright_price": 5000,
+      "featured": true,
+      "source_filename": "Ceremonial Yellow and White Floral Wreath.png",
+      "sha256": "85fbe507c8fe022258798ee06c9aaa357d9f64e5dc38917f63f8ae757d3f9873",
+      "file": "media/2026/10/a087ea3d-e204-4f9c-b677-9e91130c9cfe/original.png"
+    },
+    {
+      "slug": "wreath-premium-royal-blue",
+      "name": "พวงหรีดแบ่งปัน รุ่นใหม่ รอยัลบลู",
+      "sharing_price": 2000,
+      "outright_price": 5000,
+      "featured": true,
+      "source_filename": "Royal Blue Floral Wreath Display.png",
+      "sha256": "66e0510e155c7c9f9f03be5c85a7d3e7ec188f691557f82215da322565f7753b",
+      "file": "media/2026/10/fd10ea16-77d1-40a8-9bc8-ab3d7aefbc00/original.png"
+    },
+    {
+      "slug": "wreath-premium-thai-red-white",
+      "name": "พวงหรีดแบ่งปัน รุ่นใหม่ แดงขาวทรงไทย",
+      "sharing_price": 2000,
+      "outright_price": 5000,
+      "featured": true,
+      "source_filename": "Thai Floral Wreath on White Easel.png",
+      "sha256": "a1aba47173f4b0e78228500fe3ecdb9ac78f8eef2330c79ba3cf048edd3f1139",
+      "file": "media/2026/10/2c9c6848-bef8-4473-aacc-9d7c457993a8/original.png"
+    },
+    {
+      "slug": "wreath-premium-pink",
+      "name": "พวงหรีดแบ่งปัน รุ่นใหม่ ชมพูขาว",
+      "sharing_price": 2000,
+      "outright_price": 5000,
+      "featured": true,
+      "source_filename": "Elegant Pink Floral Wreath on Easel.png",
+      "sha256": "8fc8530f472fec7098e5f67adc770f991a1bd99fafd33be6d6c7645cfd735e4c",
+      "file": "media/2026/10/f459a39d-2cae-4f0d-a6d4-cc68a787f5da/original.png"
+    }
+  ],
+  "covers": [
+    {
+      "kind": "panorama",
+      "file": "media/2026/10/6f6b0e26-7575-4bb7-8c44-d9d9cf34f9a4/original.png",
+      "sha256": "f4f3856d200adfd1e94f28565fe8bb40218284efcbc6c9c7d8a3a6a2e2bb824a",
+      "prompt": "Use case: compositing. Create a refined desktop category hero photograph for a Thai craft catalogue. Input 1 is the current studio banner to redesign; input 2 is the six-product identity reference board (top row coral, white-green, yellow-white; bottom row royal blue, Thai red-white, pink). Deliver a landscape image with EXACTLY 2.5:1 aspect ratio, ideally 2560x1024. The LEFT 44% must be completely empty very dark forest-green wall and subdued floor, with no product, step edge or light patch in that text-safe area. Place all SIX exact wreath designs from the reference board in the RIGHT 56% on elegant very low broad ivory limestone steps, with the same rich green paneled studio and soft warm daylight as input 1. The six products should form a compact carefully spaced display in staggered shallow rows, all distinct and visible, retaining their exact colours, oval boards, floral and garland patterns and ceremonial finials. Every full white easel and hanging garland and crown must be entirely visible. Keep all product tips at least 9% below the image top and all feet at least 9% above its bottom. No text, labels, prices, logo, donor names, new wreath designs or watermarks. This must be one seamless realistic studio photograph. Design only this image; no UI."
+    },
+    {
+      "kind": "portrait",
+      "file": "media/2026/10/6f6b0e26-7575-4bb7-8c44-d9d9cf34f9a4/category-mobile-v2-original.png",
+      "sha256": "13a5b778dad8e4254477a0b547e20cf12f9d1713ca6408360ff91fb40fad853f",
+      "prompt": "Use case: compositing. Asset type: premium Thai vocational-craft wreath catalogue category cover. The input is a six-photo reference board. Its six cells are exact product identity references, ordered left-to-right across the top row, then the bottom row: coral orange/pink full floral oval with black centre; white and green full floral oval with ivory centre; ceremonial yellow-white oval with pointed yellow-white crown; royal-blue oval with blue-white lower floral garlands; red-white Thai ceremonial oval with three red finials and black centre; pink-white oval with ivory centre. Use these exact six wreath designs and their white easels without redesigning their flowers, colours, silhouettes, garland strands, oval boards or ceremonial crowns. All six must remain recognisable, realistic and distinct. Re-stage into one continuous sophisticated forest-green photographic studio, deep green wall, warm ivory limestone floor and low broad display steps, soft warm side light, accurate subtle floor shadows. Premium restrained institutional craft exhibition; no added objects, no other wreaths, no lettering, labels, logos, prices or watermarks. Keep the entire wreaths including their white easel feet and finial tips visible with generous framing. Deliver a 1:2 vertical portrait composition, ideally 1024x2048. Arrange all SIX distinct wreaths in a restrained studio group across the UPPER 65% of the frame, two shallow stepped rows of three, every full wreath and stand entirely visible. Keep outermost products inside central 85% width. Reserve BOTTOM 30% as dark forest-green uncluttered negative space and subtle shaded floor for a mobile website title overlay. This is one realistic continuous studio photograph, not a collage. No image text."
+    },
+    {
+      "kind": "tile",
+      "file": "media/2026/10/087e3787-8fb4-4e09-b78c-a38a4e7678a2/original.png",
+      "sha256": "5ec0e4584b267af88f72a63fc1ced3ac8c7af8fe88f771163a2dbef08a9254f4",
+      "prompt": "Use case: compositing. Asset type: premium Thai vocational-craft wreath catalogue category cover. The input is a six-photo reference board. Its six cells are exact product identity references, ordered left-to-right across the top row, then the bottom row: coral orange/pink full floral oval with black centre; white and green full floral oval with ivory centre; ceremonial yellow-white oval with pointed yellow-white crown; royal-blue oval with blue-white lower floral garlands; red-white Thai ceremonial oval with three red finials and black centre; pink-white oval with ivory centre. Use these exact six wreath designs and their white easels without redesigning their flowers, colours, silhouettes, garland strands, oval boards or ceremonial crowns. All six must remain recognisable, realistic and distinct. Re-stage into one continuous sophisticated forest-green photographic studio, deep green wall, warm ivory limestone floor and low broad display steps, soft warm side light, accurate subtle floor shadows. Premium restrained institutional craft exhibition; no added objects, no other wreaths, no lettering, labels, logos, prices or watermarks. Keep the entire wreaths including their white easel feet and finial tips visible with generous framing. Deliver a 4:5 upright category-card composition, ideally 1536x1920. Group all SIX wreaths in the UPPER 68% of the frame in two elegantly staggered rows of three on shallow ivory steps. Keep the entire group within the central 80% width so it survives responsive cropping. Reserve BOTTOM 25% as very dark forest-green unobtrusive floor and backdrop for website text overlay. All full stands and tips inside the frame. One realistic studio photograph, not a collage. No image text."
+    }
+  ],
+  "verification": {
+    "checked_at": "2026-10-18T00:19:57.510Z",
+    "six_featured_products": true,
+    "sharing_price": 2000,
+    "outright_price": 5000,
+    "legacy_wreath_prices_preserved": true,
+    "originals_byte_identical": [
+      {
+        "slug": "wreath-premium-coral",
+        "sha256": "72ca0ab40e28b3f840a80610f25e80cf352386e1227b954f80f724af3ae7acf3"
+      },
+      {
+        "slug": "wreath-premium-white-green",
+        "sha256": "846beeaca3f893fde53cb5064d4d5d775fcf88f06ea6fba4a39f41a5f0f4326f"
+      },
+      {
+        "slug": "wreath-premium-yellow-white",
+        "sha256": "85fbe507c8fe022258798ee06c9aaa357d9f64e5dc38917f63f8ae757d3f9873"
+      },
+      {
+        "slug": "wreath-premium-royal-blue",
+        "sha256": "66e0510e155c7c9f9f03be5c85a7d3e7ec188f691557f82215da322565f7753b"
+      },
+      {
+        "slug": "wreath-premium-thai-red-white",
+        "sha256": "a1aba47173f4b0e78228500fe3ecdb9ac78f8eef2330c79ba3cf048edd3f1139"
+      },
+      {
+        "slug": "wreath-premium-pink",
+        "sha256": "8fc8530f472fec7098e5f67adc770f991a1bd99fafd33be6d6c7645cfd735e4c"
+      }
+    ],
+    "utf8_thai_names": true,
+    "structured_offers_verified": true,
+    "desktop_mobile_and_homepage_covers": true,
+    "widths": [
+      320,
+      390,
+      768,
+      1440,
+      1920
+    ],
+    "browser_errors": [],
+    "temporary_accounts_disabled": true
+  }
+}

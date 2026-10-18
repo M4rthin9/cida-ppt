@@ -10,7 +10,7 @@ For a complete local Docker stack:
 docker compose -f docker-compose.dev.yml up --build
 ```
 
-The development image installs locked dependencies; the startup command applies migrations, seeds the four categories, 76 approved products and their media, then starts Next.js at http://localhost:3000. Create an owner inside that container using `ADMIN_PASSWORD` supplied through your shell or secret manager. The seed never creates an administrator.
+The development image installs locked dependencies; the startup command applies migrations, seeds the four categories, 82 approved products and their media, then starts Next.js at http://localhost:3000. Create an owner inside that container using `ADMIN_PASSWORD` supplied through your shell or secret manager. The seed never creates an administrator.
 
 For host development, start only PostgreSQL:
 

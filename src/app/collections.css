@@ -115,6 +115,17 @@
 .v-collection-visual > img {
   object-fit: cover;
 }
+/* Leave a separate caption area beneath the complete six-wreath display. */
+.v-collection-card.v-bento-wreath.has-background {
+  --collection-ground: #152b20;
+}
+.v-collection-card.v-bento-wreath .v-collection-visual.with-image {
+  bottom: 30%;
+}
+.v-collection-card.v-bento-wreath .v-collection-visual.with-image > img {
+  object-fit: contain;
+  object-position: center top;
+}
 /* Keep every product in the fiberglass photo composition visible on narrow tiles. */
 .v-collection-card.v-bento-material .v-collection-visual.with-image > img {
   object-fit: contain;
@@ -373,6 +384,12 @@
   width: 44%;
   max-width: 540px;
 }
+@media (min-width: 761px) {
+  .v-category-panorama.v-bento-wreath .v-category-hero-copy {
+    width: 32%;
+    max-width: 420px;
+  }
+}
 .v-category-panorama .v-back {
   color: #f1e5c6;
 }
@@ -388,6 +405,12 @@
   }
   .v-category-panorama .v-category-cover img {
     object-position: center top;
+  }
+  .v-category-panorama.v-bento-wreath .v-category-cover img {
+    object-fit: contain;
+  }
+  .v-category-panorama.v-bento-wreath .v-category-cover {
+    background: #152b20;
   }
   .v-category-panorama::after {
     background: linear-gradient(180deg, #071b1300 35%, #071b1366 55%, #071b13db 75%, #071b13ed);

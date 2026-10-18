@@ -97,15 +97,12 @@ try {
     };
   });
   assert.equal(data.categories.length, 4);
-  assert.equal(data.products.length, 76);
+  assert.ok(data.products.length > 0, "The approved catalogue must contain products");
   assert.ok(data.categories.every((c) => c.hero_media_id && c.thumbnail_media_id));
-  assert.equal(data.products.filter((p) => p.is_featured).length, 1);
-  const featured = data.products.find((p) => p.is_featured);
-  assert.ok(
-    data.product_i18n.some(
-      (p) => p.product_id === featured.id && p.locale === "th" && p.slug === "wreath-khao-phisuth",
-    ),
-  );
+  for (const product of data.products) {
+    assert.ok(data.product_i18n.some((p) => p.product_id === product.id && p.locale === "th"));
+    assert.ok(data.product_media.some((m) => m.product_id === product.id));
+  }
   const files = [];
   for (const media of data.media) {
     assert.match(media.storage_key, /^\d{4}\/\d{2}\/[a-f0-9-]{36}$/);

@@ -93,7 +93,7 @@ jobs:
       - name: Migrate
         run: pnpm db:migrate
 
-      # The approved production catalogue includes four categories, 76 products
+      # The approved production catalogue includes four categories, 82 products
       # and local media. Re-running preserves administrator-authored changes.
       - name: Seed
         run: pnpm db:seed

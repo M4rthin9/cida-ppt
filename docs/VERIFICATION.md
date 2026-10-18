@@ -1,5 +1,13 @@
 # Verification
 
+## Six new featured wreaths and category covers - 18 October 2026
+
+Added the six supplied coral, white/green, yellow/white, royal-blue, Thai red/white and pink wreath photographs as separate published products through authenticated CMS forms. Each new product is featured, has a 2,000 THB sharing option and a separate 5,000 THB outright purchase option, with no sale-price strikethrough. Their display order is 0–5; the earlier white wreath remains featured at order 6. Earlier product prices and galleries remain intact. The supplied PNG bytes are retained unchanged, and the Thai product titles, descriptions and media alt text are stored as UTF-8. Temporary import accounts are disabled after use.
+
+The built-in image generator composed all six designs into forest-green and ivory studio covers for the desktop category header, mobile header and homepage category tile. The desktop banner was refined to reserve space for the heading. Wreath-specific CSS keeps full easels visible on narrow screens and separates the homepage caption from the group photograph. Source hashes, final installed paths and complete cover prompts are recorded in `content/production-seed/wreath-update.json`.
+
+Browser verification covers all six detail pages, original image bytes, Thai names, both prices, named structured offers, the first six carousel positions, responsive covers and homepage tiles at 320, 390, 768, 1440 and 1920px, with no browser errors or horizontal overflow. Screenshots are in `test-results/premium-wreaths/`. The production seed now contains 82 products, 91 media records and 750 image files. Export and installation support catalogue growth without a hard-coded 76-product limit. Fresh-database verification covers the new and earlier wreath prices, featured order, every image hash, repeated runs and preservation of CMS edits. Typecheck, lint, formatting, 241 unit tests and the optimized production build passed locally.
+
 ## GitHub preparation and complete product seed - 18 October 2026
 
 Compared the current database against the production fixture: all 76 active, published products are included, with no missing or extra product identities (29 fiberglass/wood, 13 artificial flowers, 11 sharing wreaths and 23 needlework). Refreshed the export from the current database and media directory. All exported products, categories and media are marked `is_seed`; every product has a Thai translation and gallery image. The fixture includes 85 media records and 702 image files, with no accounts or private operational tables.
