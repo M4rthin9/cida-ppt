@@ -121,13 +121,7 @@
     "utf8_thai_names": true,
     "structured_offers_verified": true,
     "desktop_mobile_and_homepage_covers": true,
-    "widths": [
-      320,
-      390,
-      768,
-      1440,
-      1920
-    ],
+    "widths": [320, 390, 768, 1440, 1920],
     "browser_errors": [],
     "temporary_accounts_disabled": true
   }
