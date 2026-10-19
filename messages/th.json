@@ -84,7 +84,7 @@
     "email": "อีเมล",
     "address": "ที่อยู่",
     "hours": "เวลาทำการ",
-    "line": "LINE Official Account",
+    "line": "LINE",
     "map": "แผนที่",
     "formTitle": "ส่งข้อความถึงเรา",
     "name": "ชื่อ-นามสกุล",
@@ -103,10 +103,10 @@
   "line": {
     "sectionTitle": "ติดต่อทาง LINE",
     "openAccount": "เพิ่มเพื่อนทาง LINE",
-    "handle": "LINE ID {id}",
+    "handle": "LINE {id}",
     "ctaHint": "เปิดแชท LINE พร้อมข้อความสอบถามสินค้านี้",
     "categoryCta": "สอบถามสินค้าในหมวดนี้ทาง LINE",
-    "categoryCtaBody": "เจ้าหน้าที่พร้อมให้คำแนะนำและแจ้งราคาผ่าน LINE Official Account"
+    "categoryCtaBody": "เจ้าหน้าที่พร้อมให้คำแนะนำและแจ้งราคาผ่าน LINE"
   },
   "footer": {
     "about": "เกี่ยวกับหน่วยงาน",

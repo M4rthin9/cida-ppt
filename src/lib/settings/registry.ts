@@ -315,7 +315,7 @@ export const SETTINGS = {
   line: {
     label: "LINE",
     global: lineGlobal,
-    globalDefault: { mode: "oa", phone: "", oaId: "@355kxfoj" } as z.infer<typeof lineGlobal>,
+    globalDefault: { mode: "phone", phone: "0829414312", oaId: "" } as z.infer<typeof lineGlobal>,
     localized: lineLocalized,
     localizedDefault: {
       buttonLabel: "สั่งซื้อ / สอบถามทาง LINE",
@@ -404,6 +404,10 @@ export type SettingValue<K extends SettingKey> = GlobalValue<K> & LocalizedValue
  */
 export function parseGlobal<K extends SettingKey>(key: K, raw: unknown): GlobalValue<K> {
   const def = SETTINGS[key];
+  // Older installations stored only an OA handle, before mode selection existed.
+  if (key === "line" && raw && typeof raw === "object" && "oaId" in raw && !("mode" in raw)) {
+    raw = { mode: "oa", phone: "", ...raw };
+  }
   if (
     key === "theme" &&
     raw &&

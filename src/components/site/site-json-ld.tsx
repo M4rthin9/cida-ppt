@@ -1,7 +1,7 @@
 import { getLocale } from "next-intl/server";
 import { assertEnv } from "@/lib/env";
 import { getCachedSetting } from "@/lib/settings/cached";
-import { addFriendUrl } from "@/lib/line";
+import { lineContactUrl } from "@/lib/line";
 import { JsonLd, organisationJsonLd } from "@/lib/seo/jsonld";
 
 /**
@@ -22,11 +22,9 @@ export async function SiteJsonLd() {
     getCachedSetting("line", locale),
   ]);
 
-  const sameAs = [
-    ...(line.mode === "oa" ? [addFriendUrl(line.oaId)] : []),
-    contact.facebookUrl,
-    contact.youtubeUrl,
-  ].filter((url): url is string => Boolean(url));
+  const sameAs = [lineContactUrl(line), contact.facebookUrl, contact.youtubeUrl].filter(
+    (url): url is string => Boolean(url),
+  );
 
   return (
     <JsonLd

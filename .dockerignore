@@ -4,6 +4,7 @@
 node_modules
 .git
 .github
+.local
 
 # Never into an image. `next build` copies a .env from the working directory
 # into `.next/standalone/.env` and the standalone server loads it from there

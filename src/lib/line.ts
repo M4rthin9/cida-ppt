@@ -70,7 +70,11 @@ export function lineIdentity(line: LineDestination): string {
   return line.mode === "phone" ? line.phone : line.oaId;
 }
 export function lineContactUrl(line: LineDestination): string {
-  return line.mode === "phone" ? "/line" : addFriendUrl(line.oaId);
+  return line.mode === "phone" ? phoneFriendUrl(line.phone) : addFriendUrl(line.oaId);
+}
+/** Open the selected personal LINE account rather than the generic friend search. */
+export function phoneFriendUrl(phone: string): string {
+  return `https://line.me/ti/p/~${encodeURIComponent(phone)}`;
 }
 /** LINE's documented Add friends screen; number searching happens in the app. */
 export function openLineFriendsUrl(): string {

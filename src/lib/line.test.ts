@@ -5,6 +5,7 @@ import {
   lineContactUrl,
   lineIdentity,
   openLineFriendsUrl,
+  phoneFriendUrl,
   normaliseOaId,
   oaMessageUrl,
   renderMessageTemplate,
@@ -103,10 +104,11 @@ describe("selected LINE destination", () => {
     expect(lineIdentity(line)).toBe("@store");
     expect(lineContactUrl(line)).toBe(addFriendUrl("@store"));
   });
-  it("uses the phone instructions instead of linking to the saved OA", () => {
+  it("opens the selected phone account instead of the saved OA or generic friend search", () => {
     const phone = { ...line, mode: "phone" as const };
     expect(lineIdentity(phone)).toBe("0812345678");
-    expect(lineContactUrl(phone)).toBe("/line");
+    expect(lineContactUrl(phone)).toBe("https://line.me/ti/p/~0812345678");
+    expect(phoneFriendUrl("0829414312")).toBe("https://line.me/ti/p/~0829414312");
     expect(openLineFriendsUrl()).toBe("https://line.me/R/nv/addFriends");
   });
 });

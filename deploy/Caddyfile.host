@@ -1,0 +1,19 @@
+{
+	auto_https off
+	admin off
+}
+
+:8080 {
+	encode zstd gzip
+	request_body {
+		max_size 25MB
+	}
+	# Uploaded catalogue images live in the persistent media volume.
+	handle_path /media/* {
+		root * /srv/media
+		file_server
+	}
+	handle {
+		reverse_proxy web:3000
+	}
+}

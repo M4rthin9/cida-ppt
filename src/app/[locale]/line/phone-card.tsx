@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { openLineFriendsUrl } from "@/lib/line";
+import { phoneFriendUrl } from "@/lib/line";
 
 export function PhoneCard({ phone, message }: { phone: string; message?: string }) {
   const phoneInput = useRef<HTMLInputElement>(null);
@@ -32,7 +32,7 @@ export function PhoneCard({ phone, message }: { phone: string; message?: string 
         <li>เลือก หน้าแรก → เพิ่มเพื่อน → ค้นหา → หมายเลขโทรศัพท์</li>
         <li>เลือกประเทศของเบอร์โทร วางหมายเลข แล้วกดค้นหาเพื่อเพิ่มเพื่อน</li>
       </ol>
-      <a className="v-button v-button-dark" href={openLineFriendsUrl()}>
+      <a className="v-button v-button-dark" href={phoneFriendUrl(phone)}>
         เปิด LINE เพื่อเพิ่มเพื่อน <span aria-hidden="true">↗</span>
       </a>
       {message && (

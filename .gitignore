@@ -41,3 +41,6 @@ __pycache__/
 
 # pnpm-lock.yaml is the canonical dependency lockfile.
 /package-lock.json
+
+# Host deployment state and secrets.
+/.local/

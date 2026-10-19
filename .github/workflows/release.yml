@@ -85,7 +85,7 @@ jobs:
           # build time — a localhost value here ships localhost canonicals.
           NEXT_PUBLIC_SITE_URL: ${{ vars.SITE_URL }}
           MEDIA_DIR: /tmp/release-media
-          LINE_OA_URL: https://line.me/ti/p/%40355kxfoj
+          LINE_OA_URL: https://line.me/ti/p/~0829414312
 
       - name: Assert the standalone output is complete
         run: |

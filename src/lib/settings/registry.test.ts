@@ -111,9 +111,11 @@ describe("line settings", () => {
 
   it("rejects a pasted URL, which is not a handle", () => {
     // Falls back rather than storing something /go/line cannot build a link from.
-    expect(parseGlobal("line", { oaId: "https://line.me/ti/p/%40355kxfoj" }).oaId).toBe(
-      "@355kxfoj",
-    );
+    expect(parseGlobal("line", { oaId: "https://line.me/ti/p/%40355kxfoj" })).toMatchObject({
+      mode: "phone",
+      phone: "0829414312",
+      oaId: "",
+    });
   });
 
   it("defaults the message template with the placeholders §8 specifies", () => {

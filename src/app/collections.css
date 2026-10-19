@@ -115,16 +115,16 @@
 .v-collection-visual > img {
   object-fit: cover;
 }
-/* Leave a separate caption area beneath the complete six-wreath display. */
+/* Fill the feature tile; the gradient keeps the overlaid caption legible. */
 .v-collection-card.v-bento-wreath.has-background {
   --collection-ground: #152b20;
 }
 .v-collection-card.v-bento-wreath .v-collection-visual.with-image {
-  bottom: 30%;
+  inset: 0;
 }
 .v-collection-card.v-bento-wreath .v-collection-visual.with-image > img {
-  object-fit: contain;
-  object-position: center top;
+  object-fit: cover;
+  object-position: center;
 }
 /* Keep every product in the fiberglass photo composition visible on narrow tiles. */
 .v-collection-card.v-bento-material .v-collection-visual.with-image > img {

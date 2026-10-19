@@ -34,7 +34,7 @@ try {
   const saved = {};
   for (const name of ["mode", "oaId", "phone", "buttonLabel", "messageTemplate"])
     saved[name] = await page.locator(`[name="${name}"]`).inputValue();
-  assert.equal(saved.mode, "oa");
+  const testOaId = saved.oaId || "@verification";
   await page.locator('[name="mode"]').selectOption("phone");
   await page.locator('[name="phone"]').fill("");
   await page.getByRole("button", { name: "บันทึกการตั้งค่า", exact: true }).click();
@@ -52,7 +52,7 @@ try {
     maxRedirects: 0,
   });
   assert.equal(response.status(), 302);
-  assert.equal(response.headers().location, `${origin}/line?p=wreath-khao-phisuth`);
+  assert.equal(response.headers().location, "/line?p=wreath-khao-phisuth");
   await mkdir("test-results/line-settings", { recursive: true });
   for (const width of [320, 390, 768, 1440]) {
     await page.setViewportSize({ width, height: 1000 });
@@ -72,7 +72,7 @@ try {
     assert.equal(await page.evaluate(() => navigator.clipboard.readText()), message);
     assert.equal(
       await page.getByRole("link", { name: /เปิด LINE เพื่อเพิ่มเพื่อน/ }).getAttribute("href"),
-      "https://line.me/R/nv/addFriends",
+      "https://line.me/ti/p/~0812345678",
     );
     assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
     await page.screenshot({
@@ -82,18 +82,22 @@ try {
   }
   await page.goto(`${origin}/contact`, { waitUntil: "networkidle" });
   assert.ok(await page.getByRole("link", { name: "เพิ่มเพื่อนด้วยเบอร์โทร", exact: true }).count());
-  assert.equal(await page.locator('.v-footer a[href="/line"]').innerText(), "LINE 0812345678 ↗");
-  assert.equal(await page.locator(`a[href*="%40${saved.oaId.replace(/^@/, "")}"]`).count(), 0);
+  assert.equal(
+    await page.locator('.v-footer a[href="https://line.me/ti/p/~0812345678"]').innerText(),
+    "LINE 0812345678 ↗",
+  );
+  assert.equal(await page.locator(`a[href*="%40${testOaId.replace(/^@/, "")}"]`).count(), 0);
   await page.goto(`${origin}/products/wreath-khao-phisuth`, { waitUntil: "networkidle" });
   assert.ok((await page.locator(".v-inquiry-note").innerText()).includes("เบอร์โทร"));
   await page.goto(`${origin}/admin/settings/line`, { waitUntil: "networkidle" });
   await page.locator('[name="mode"]').selectOption("oa");
+  await page.locator('[name="oaId"]').fill(testOaId);
   await page.locator('[name="phone"]').fill(saved.phone);
   await page.getByRole("button", { name: "บันทึกการตั้งค่า", exact: true }).click();
   await page.getByText("บันทึกเรียบร้อยแล้ว", { exact: true }).waitFor();
   const oa = await context.request.get(`${origin}/go/line`, { maxRedirects: 0 });
   assert.equal(oa.status(), 302);
-  assert.equal(oa.headers().location, `https://line.me/R/ti/p/${encodeURIComponent(saved.oaId)}`);
+  assert.equal(oa.headers().location, `https://line.me/R/ti/p/${encodeURIComponent(testOaId)}`);
   const productOa = await context.request.get(`${origin}/go/line?p=wreath-khao-phisuth`, {
     maxRedirects: 0,
   });
@@ -102,8 +106,13 @@ try {
   assert.equal(phonePage.status(), 307);
   assert.equal(
     phonePage.headers().location,
-    `https://line.me/R/ti/p/${encodeURIComponent(saved.oaId)}`,
+    `https://line.me/R/ti/p/${encodeURIComponent(testOaId)}`,
   );
+  await page.locator('[name="mode"]').selectOption(saved.mode);
+  for (const name of ["oaId", "phone", "buttonLabel", "messageTemplate"])
+    await page.locator(`[name="${name}"]`).fill(saved[name]);
+  await page.getByRole("button", { name: "บันทึกการตั้งค่า", exact: true }).click();
+  await page.getByText("บันทึกเรียบร้อยแล้ว", { exact: true }).waitFor();
   assert.deepEqual(errors, []);
   await mkdir("content/production-seed", { recursive: true });
   await writeFile(
@@ -128,7 +137,7 @@ try {
     ) + "\n",
   );
   console.log(
-    "PASS LINE OA/phone selection, server validation, product inquiry, clipboard and four responsive widths; restored original OA settings.",
+    "PASS LINE OA/phone selection, server validation, product inquiry, clipboard and four responsive widths; restored original LINE settings.",
   );
 } finally {
   await sql.begin(async (tx) => {

@@ -9729,9 +9729,9 @@
         "key": "line",
         "locale": "*",
         "value": {
-          "mode": "oa",
-          "phone": "",
-          "oaId": "@0829414312"
+          "mode": "phone",
+          "phone": "0829414312",
+          "oaId": ""
         }
       },
       {

@@ -7,13 +7,13 @@ import { resolveTranslation } from "@/db/i18n";
 import { routing } from "@/i18n/routing";
 import { recordLineClick } from "@/lib/clicks";
 import { assertEnv } from "@/lib/env";
-import { addFriendUrl, oaMessageUrl, renderMessageTemplate } from "@/lib/line";
+import { addFriendUrl, oaMessageUrl, phoneFriendUrl, renderMessageTemplate } from "@/lib/line";
 import { pepperedHash } from "@/lib/privacy";
 import { getSetting } from "@/lib/settings/store";
 import { DEFAULT_LOCALE, localePrefix } from "@/lib/slug";
 
 /**
- * `/go/line` — the tracked entry point to the Official Account. SPEC.md §8.
+ * `/go/line` — the tracked entry point to the selected LINE account. SPEC.md §8.
  *
  * It lives under `[locale]` so the locale is a route segment rather than a
  * query parameter the caller could forget: Thai resolves at `/go/line` and any
@@ -86,10 +86,13 @@ export async function GET(
    * link, which is the right action when there is nothing to ask about yet.
    */
   let target: string;
-  if (line.mode === "phone") {
+  if (line.mode === "phone" && !product) {
+    target = phoneFriendUrl(line.phone);
+  } else if (line.mode === "phone") {
     const local = new URL(`${localePrefix(locale)}/line`, request.nextUrl.origin);
     if (product) local.searchParams.set("p", product.slug);
-    target = local.toString();
+    // Keep product enquiries on the current intranet or public origin.
+    target = `${local.pathname}${local.search}`;
   } else if (product) {
     const template = product.override?.trim() || line.messageTemplate;
     const url = new URL(
@@ -137,5 +140,5 @@ export async function GET(
    * analytics to load only after PDPA consent — which is phase 10's banner. The
    * `line_clicks` row above is the durable signal either way.
    */
-  return NextResponse.redirect(target, { status: 302 });
+  return new NextResponse(null, { status: 302, headers: { Location: target } });
 }
